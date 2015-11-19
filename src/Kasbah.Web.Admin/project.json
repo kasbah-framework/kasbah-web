@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0-*",
+  "description": "TODO: populate",
+  "authors": [
+    "Brendan McKenzie"
+  ],
+  "tags": [
+    "kasbah"
+  ],
+  "projectUrl": "http://www.kasbah.io/",
+  "licenseUrl": "",
+  "dependencies": {
+    "Kasbah.Web": ""
+  },
+  "frameworks": {
+    "dnx451": { }
+  }
+}

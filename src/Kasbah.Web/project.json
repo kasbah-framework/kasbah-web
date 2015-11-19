@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0-*",
+  "description": "Provides the base of a web content management system",
+  "authors": [
+    "Brendan McKenzie"
+  ],
+  "tags": [
+    "kasbah"
+  ],
+  "projectUrl": "http://www.kasbah.io/",
+  "licenseUrl": "",
+  "dependencies": {
+    "Kasbah.Core": "",
+    "Kasbah.Core.ContentTree": "",
+    "Kasbah.Core.Events": "",
+    "Kasbah.Core.Index": "",
+    "Microsoft.AspNet.Diagnostics": "1.0.0-beta8",
+    "Microsoft.AspNet.StaticFiles": "1.0.0-beta8",
+    "Microsoft.AspNet.Hosting": "1.0.0-beta8",
+    "Microsoft.AspNet.Cors": "6.0.0-beta8",
+    "Microsoft.AspNet.Mvc": "6.0.0-beta8",
+    "Microsoft.AspNet.Server.Kestrel": "1.0.0-beta8",
+    "Microsoft.AspNet.Server.WebListener": "1.0.0-beta8",
+    "Microsoft.Framework.Logging": "1.0.0-beta8",
+    "Microsoft.Framework.Logging.Console": "1.0.0-beta8"
+  },
+  "frameworks": {
+    "dnx451": { }
+  }
+}
