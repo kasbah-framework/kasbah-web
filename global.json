@@ -1,8 +1,15 @@
 {
-    "projects": [ "src", "test", "lib/kasbah-core/src", "lib/kasbah-core/lib/StackExchange.Redis/StackExchange.Redis/StackExchange" ],
+    "projects": [
+        "src",
+        "test",
+        "../kasbah-core/src",
+        "../kasbah-web/src",
+        "../kasbah-core/lib/StackExchange.Redis/StackExchange.Redis/StackExchange",
+        "../kasbah-identity/src"
+    ],
     "sdk": {
-        "version": "1.0.0-beta8",
-        "runtime": "clr",
+        "version": "1.0.0-rc1-final",
+        "runtime": "coreclr",
         "architecture": "x86"
     }
 }

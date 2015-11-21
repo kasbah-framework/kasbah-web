@@ -10,9 +10,11 @@
   "projectUrl": "http://www.kasbah.io/",
   "licenseUrl": "",
   "dependencies": {
-    "Kasbah.Web": ""
+    "Kasbah.Web": "",
+    "Kasbah.Identity": ""
   },
   "frameworks": {
-    "dnx451": { }
+    "dnx451": { },
+    "dnxcore50": { }
   }
 }

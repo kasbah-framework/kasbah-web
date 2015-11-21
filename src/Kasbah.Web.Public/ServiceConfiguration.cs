@@ -1,8 +1,7 @@
 using System;
 using System.Linq;
-using Kasbah.Web;
 using Microsoft.AspNet.Mvc.Formatters;
-using Microsoft.Framework.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 
 namespace Kasbah.Web.Public
