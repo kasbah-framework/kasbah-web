@@ -2,12 +2,12 @@ using Microsoft.AspNet.Mvc;
 
 namespace Kasbah.Web.Admin.Controllers
 {
-    public class AuthController
+    public class StatusController
     {
-        [Route("/test")]
-        public string Test()
+        [Route("/status")]
+        public string Status()
         {
-            return "Hello";
+            return "ok";
         }
     }
 }
