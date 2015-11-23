@@ -3,7 +3,8 @@ import {
     LOGIN_USER_REQUEST,
     LOGIN_USER_FAILURE,
     LOGIN_USER_SUCCESS,
-    LOGOUT_USER } from '../constants/Auth';
+    LOGOUT_USER } from 'constants/auth';
+import { API_BASE } from 'constants';
 import { pushState } from 'redux-router';
 
 const MimeTypes = {
@@ -24,12 +25,12 @@ export function loginUserSuccess(token) {
   }
 }
 
-export function loginUserFailure(error) {
+export function loginUserFailure(response) {
   return {
     type: LOGIN_USER_FAILURE,
     payload: {
-      status: error.response.status,
-      statusText: error.response.statusText
+      errorCode: response ? response.errorCode : -1,
+      errorMessage: response ? response.errorMessage : 'Something went wrong.'
     }
   }
 }
@@ -53,28 +54,35 @@ export function logoutAndRedirect() {
     }
 }
 
-export function loginUser(email, password, redirect) {
-
+export function loginUser(username, password, persist) {
     return function(dispatch) {
         dispatch(loginUserRequest());
-        return fetch(`{ApiBase}/api/auth/get-token`, {
+        return fetch(`${API_BASE}/api/auth/login`, {
             method: 'POST',
             credentials: 'include',
             headers: {
                 'Accept': MimeTypes.application.json,
                 'Content-Type': MimeTypes.application.json
             },
-            body: JSON.stringify({email: email, password: password})
+            body: JSON.stringify({
+                username,
+                password,
+                persist,
+                method: 'password'
+            })
         })
         .then(checkHttpStatus)
         .then(parseJSON)
         .then(response => {
-            let redirect = redirect || '/';
-            dispatch(loginUserSuccess(response.token));
-            dispatch(pushState(null, redirect));
+            if (response.success) {
+                dispatch(loginUserSuccess(response.token));
+            }
+            else {
+                dispatch(loginUserFailure(response));
+            }
         })
         .catch(error => {
-            dispatch(loginUserFailure(error));
+            dispatch(loginUserFailure(error.response));
         });
     }
 }

@@ -1,8 +1,11 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Kasbah.Identity.Models;
+using Kasbah.Web.Admin.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Kasbah.Web.Admin.Controllers
 {
@@ -12,43 +15,42 @@ namespace Kasbah.Web.Admin.Controllers
         readonly UserManager<KasbahUser> _userManager;
 
         readonly SignInManager<KasbahUser> _signInManager;
+        readonly ILogger _log;
 
-        public AuthController(UserManager<KasbahUser> userManager, SignInManager<KasbahUser> signInManager)
+        public AuthController(UserManager<KasbahUser> userManager, SignInManager<KasbahUser> signInManager, ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _log = loggerFactory.CreateLogger<AuthController>();
         }
 
-        [Route("/api/auth/get-token"), HttpPost]
-        public async Task<GetTokenResponse> GetToken(GetTokenRequest request)
+        [Route("/api/auth/login"), HttpPost]
+        public async Task<LoginResponse> Login([FromBody] LoginRequest request)
         {
             if (ModelState.IsValid)
             {
-                var result = default(SignInResult);
-                switch (request.Method)
-                {
-                    case "password":
-                        result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, request.RememberMe, lockoutOnFailure: false);
-                        break;
-                    default:
-                        throw new Exception();
+                // TODO: implement checking Method on request, maybe. or ditch it
+                var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, request.Persist, lockoutOnFailure: false);
 
-                }
                 if (result.Succeeded)
                 {
-                    return new GetTokenResponse { };
+                    return new LoginResponse { };
                 }
                 else
                 {
-                    return new GetTokenResponse
+                    return new LoginResponse
                     {
-                        ErrorCode = (int)GetTokenResponse.ErrorCodes.InvalidUserNameOrPassword,
+                        ErrorCode = (int)LoginResponse.ErrorCodes.InvalidUserNameOrPassword,
                         ErrorMessage = "Invalid username or password"
                     };
                 }
             }
 
-            return null;
+            return new LoginResponse
+            {
+                ErrorCode = (int)LoginResponse.ErrorCodes.InvalidRequest,
+                ErrorMessage = "Invalid request"
+            };
         }
 
         [Route("/api/auth/logout")]
@@ -67,35 +69,24 @@ namespace Kasbah.Web.Admin.Controllers
                 User
             };
         }
-    }
 
-    public class GetTokenRequest
-    {
-        public string Method { get; set; } // TODO: change this to an enum
-
-        public string UserName { get; set; }
-
-        public string Password { get; set; }
-
-        public bool RememberMe { get; set; }
-    }
-
-    public class GetTokenResponse : BaseApiResponse
-    {
-        public enum ErrorCodes : int
+        [Route("/api/auth/init")]
+        public async Task Init()
         {
-            InvalidUserNameOrPassword = 0x5001
+            var admin = await _userManager.FindByNameAsync("admin");
+            if (admin == null)
+            {
+                var result = await _userManager.CreateAsync(new KasbahUser
+                {
+                    UserName = "admin",
+                    Email = "email@changeme.org"
+                }, "$Passw0rd");
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
+                }
+            }
         }
-
-        public string RedirectUrl { get; set; }
-    }
-
-    public class BaseApiResponse
-    {
-        public bool Success { get { return !ErrorCode.HasValue; } }
-
-        public string ErrorMessage { get; set; }
-
-        public int? ErrorCode { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import { routerStateReducer } from 'redux-router';
-import NodeTree from './nodes';
+import nodes from './nodes';
+import auth from './auth';
 
 export default combineReducers({
-    nodeTree: NodeTree,
+    nodes,
+    auth,
     router: routerStateReducer
 });

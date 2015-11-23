@@ -17,23 +17,25 @@ namespace Kasbah.Web.Admin
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("default", builder => {
+                options.AddPolicy("allowAnyOrigin", builder => {
                     builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
-                    builder.AllowAnyOrigin();
+                    builder.AllowCredentials();
+                    // builder.AllowAnyOrigin();
+                    builder.WithOrigins("http://localhost:3004");
                 });
 
-                options.DefaultPolicyName = "default";
+                options.DefaultPolicyName = "allowAnyOrigin";
             });
 
             services.AddSingleton<IApplicationContext>(svc => config());
 
             // Services
-            services.AddSingleton<Kasbah.Core.ContentTree.ContentTreeService>();
-            services.AddSingleton<Kasbah.Core.Index.IndexService>();
+            services.AddScoped<Kasbah.Core.ContentTree.ContentTreeService>();
+            services.AddScoped<Kasbah.Core.Index.IndexService>();
 
             services.AddScoped<IUserStore<KasbahUser>, UserStore>();
-            services.AddScoped<IRoleStore<KasbahIdentityRole>, UserStore>();
+            services.AddScoped<IRoleStore<KasbahIdentityRole>, RoleStore>();
 
 
             services.AddIdentity<KasbahUser, KasbahIdentityRole>().AddUserStore<UserStore>();

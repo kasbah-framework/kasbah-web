@@ -21,7 +21,7 @@ export default class extends React.Component {
       this.refs[Object.keys(errors)[0]].focus();
     }
     else {
-      this.props.onSubmit(username, password);
+      this.props.onSubmit(username, password, this.refs.persist.checked);
     }
 
     this.setState({ 'errors': errors });
@@ -61,7 +61,7 @@ export default class extends React.Component {
           {this._renderField('password', 'password', 'Enter password', 'Password', this.state.errors)}
           <fieldset className='form-group checkbox'>
             <label>
-              <input type='checkbox' ref='remember' /> Remember me
+              <input type='checkbox' ref='persist' /> Remember me
             </label>
           </fieldset>
 

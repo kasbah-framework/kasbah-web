@@ -1,2 +1,2 @@
-export Auth from './auth';
-export const ApiBase = 'http://localhost:5009';
+export auth from './auth';
+export const API_BASE = 'http://localhost:5009';
