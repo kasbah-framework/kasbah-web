@@ -3,6 +3,9 @@ using System.Linq;
 using Microsoft.AspNet.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using Kasbah.Identity.Models;
+using Kasbah.Identity;
+using Microsoft.AspNet.Identity;
 
 namespace Kasbah.Web.Admin
 {
@@ -28,6 +31,12 @@ namespace Kasbah.Web.Admin
             // Services
             services.AddSingleton<Kasbah.Core.ContentTree.ContentTreeService>();
             services.AddSingleton<Kasbah.Core.Index.IndexService>();
+
+            services.AddScoped<IUserStore<KasbahUser>, UserStore>();
+            services.AddScoped<IRoleStore<KasbahIdentityRole>, UserStore>();
+
+
+            services.AddIdentity<KasbahUser, KasbahIdentityRole>().AddUserStore<UserStore>();
 
             services.AddMvc((options) =>
             {
