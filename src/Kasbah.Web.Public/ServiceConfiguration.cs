@@ -24,8 +24,8 @@ namespace Kasbah.Web.Public
             services.AddSingleton<IApplicationContext>(svc => config());
 
             // Services
-            services.AddSingleton<Kasbah.Core.ContentTree.ContentTreeService>();
-            services.AddSingleton<Kasbah.Core.Index.IndexService>();
+            services.AddScoped<Kasbah.Core.ContentTree.ContentTreeService>();
+            services.AddScoped<Kasbah.Core.Index.IndexService>();
 
             services.AddMvc((options) =>
             {

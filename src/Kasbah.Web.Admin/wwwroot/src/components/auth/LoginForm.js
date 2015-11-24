@@ -59,23 +59,30 @@ export default class extends React.Component {
     );
   }
 
-  render() {
-    const errorMessage = this.props.error ? (
-      <div className='alert alert-danger'>
-        <i className='fa fa-warning' /> {this.props.error}
-      </div>) : null;
+  _renderError() {
+    if (this.props.error) {
+      return (
+        <div className='alert alert-danger'>
+          <i className='fa fa-warning' /> {this.props.error}
+        </div>
+      );
+    }
 
+    return null;
+  }
+
+  render() {
     return (
         <form>
-          {this._renderField('username', 'text', 'Enter username', 'Username', this.state.errors)}
-          {this._renderField('password', 'password', 'Enter password', 'Password', this.state.errors)}
+          {this._renderField('username', 'text', 'admin', 'Username', this.state.errors)}
+          {this._renderField('password', 'password', 'changeme', 'Password', this.state.errors)}
           <fieldset className='form-group checkbox'>
             <label>
               <input type='checkbox' ref='persist' /> Remember me
             </label>
           </fieldset>
 
-          {errorMessage}
+          {this._renderError()}
 
           <div className='text-center'>
             <button type='reset'
