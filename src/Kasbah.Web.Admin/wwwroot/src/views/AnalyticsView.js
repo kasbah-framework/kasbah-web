@@ -9,7 +9,7 @@ export default class extends React.Component {
                         Daily traffic
                     </div>
                     <div className='card-block'>
-                        <p class='card-text'>pretty graphs go here.</p>
+                        <p className='card-text'>pretty graphs go here.</p>
                     </div>
                 </div>
             </div>

@@ -64,7 +64,7 @@ export default class HomeView extends React.Component {
                         Analytics
                     </div>
                     <div className='card-block'>
-                        <p className='card-text'>... maybe ...</p>
+                        <p className='card-text'>... maybe ... graphs and tables go here ...</p>
                     </div>
                 </div>
             </div>

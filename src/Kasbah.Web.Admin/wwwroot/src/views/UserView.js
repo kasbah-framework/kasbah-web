@@ -9,7 +9,7 @@ export default class extends React.Component {
                         System Users
                     </div>
                     <div className='card-block'>
-                        <p class='card-text'>table of filterable users goes here.</p>
+                        <p className='card-text'>table of filterable users goes here.</p>
                     </div>
                 </div>
             </div>
