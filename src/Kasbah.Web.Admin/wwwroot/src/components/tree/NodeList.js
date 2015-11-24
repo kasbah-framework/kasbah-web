@@ -35,7 +35,8 @@ export default class NodeList extends React.Component {
                     <i className='fa fa-file-o' />
                     <span>Add node here</span>
                 </button>
-            </li>);
+            </li>
+        );
     }
 
     render() {

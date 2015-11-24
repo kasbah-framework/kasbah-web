@@ -17,28 +17,28 @@ const MimeTypes = {
 }
 
 export function loginUserSuccess(token) {
-  return {
-    type: LOGIN_USER_SUCCESS,
-    payload: {
-      token: token
+    return {
+        type: LOGIN_USER_SUCCESS,
+        payload: {
+            token: token
+        }
     }
-  }
 }
 
 export function loginUserFailure(response) {
-  return {
-    type: LOGIN_USER_FAILURE,
-    payload: {
-      errorCode: response ? response.errorCode : -1,
-      errorMessage: response ? response.errorMessage : 'Something went wrong.'
+    return {
+        type: LOGIN_USER_FAILURE,
+        payload: {
+            errorCode: response ? response.errorCode : -1,
+            errorMessage: response ? response.errorMessage : 'Something went wrong.'
+        }
     }
-  }
 }
 
 export function loginUserRequest() {
-  return {
-    type: LOGIN_USER_REQUEST
-  }
+    return {
+        type: LOGIN_USER_REQUEST
+    }
 }
 
 export function logout() {
