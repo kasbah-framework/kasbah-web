@@ -1,6 +1,7 @@
 using System;
 using Kasbah.Core.ContentTree;
 using Kasbah.Core.ContentTree.Models;
+using Kasbah.Core.Events;
 using Kasbah.Core.Utils;
 using Microsoft.AspNet.Mvc;
 
@@ -9,10 +10,12 @@ namespace Kasbah.Web.Public.Controllers
     public class ContentController : Controller
     {
         readonly ContentTreeService _contentTreeService;
+        readonly IEventService _eventService;
 
-        public ContentController(ContentTreeService contentTreeService)
+        public ContentController(ContentTreeService contentTreeService, IEventService eventService)
         {
             _contentTreeService = contentTreeService;
+            _eventService = eventService;
         }
 
         [Route("api/node-at")]
@@ -46,7 +49,11 @@ namespace Kasbah.Web.Public.Controllers
             {
                 var type = TypeUtil.TypeFromName(node.Type);
 
-                return _contentTreeService.GetNodeVersion(node.Id, node.ActiveVersion.Value, type);
+                var version = _contentTreeService.GetNodeVersion(node.Id, node.ActiveVersion.Value, type);
+
+                _eventService.Emit<WebPageView>(new WebPageView { /* ... */ });
+
+                return version;
             }
 
             return HttpNotFound();
@@ -70,5 +77,16 @@ namespace Kasbah.Web.Public.Controllers
         {
             return input.ToLower();
         }
+    }
+
+    class WebPageView : EventBase
+    {
+        public Guid Node { get; set; }
+
+        public Guid Version { get; set; }
+
+        public DateTime Viewed { get; set; }
+
+        // etc...
     }
 }

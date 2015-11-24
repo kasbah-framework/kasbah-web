@@ -1,6 +1,5 @@
 import fetch from 'isomorphic-fetch';
-
-const API_BASE = 'http://localhost:5004';
+import { API_BASE } from 'constants';
 
 export const REQUEST_NODES = 'REQUEST_NODES';
 function requestNodes(parent) {

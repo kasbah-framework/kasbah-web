@@ -7,7 +7,7 @@ import {
     RECEIVE_NODE_VERSIONS,
     RECEIVE_NODE_VERSION,
     UPDATE_ITEM,
-    NODE_VERSION_ADD_FIELD } from 'actions/nodes';
+    NODE_VERSION_ADD_FIELD } from 'actions/tree';
 
 function clone(obj) {
     return JSON.parse(JSON.stringify(obj));

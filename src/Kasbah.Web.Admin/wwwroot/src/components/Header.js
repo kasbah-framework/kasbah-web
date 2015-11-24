@@ -6,7 +6,7 @@ export default class extends React.Component {
             <nav className='navbar navbar-dark navbar-static-top'>
                 <a className='navbar-brand' href='#'>KASBAH WEB</a>
                 <ul className='nav navbar-nav'>
-                    <li className='nav-item active'>
+                    <li className='nav-item'>
                         <a className='nav-link' href='/'>Dashboard <span className='sr-only'>(current)</span></a>
                     </li>
                     <li className='nav-item'>
@@ -20,6 +20,12 @@ export default class extends React.Component {
                     </li>
                     <li className='nav-item'>
                         <a className='nav-link' href='/users'>Users</a>
+                    </li>
+                </ul>
+
+                <ul className='nav navbar-nav pull-right'>
+                    <li className='nav-item'>
+                        <button className='btn-link nav-link'>Logout</button>
                     </li>
                 </ul>
             </nav>

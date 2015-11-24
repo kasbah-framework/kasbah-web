@@ -6,7 +6,7 @@ export default class HomeView extends React.Component {
             <div className='container page-content'>
                 <div className='card'>
                     <div className='card-header'>
-                        <strong>Hosted websites</strong>
+                        Hosted websites
                     </div>
                     <ul className='list-group list-group-flush'>
                         <li className='list-group-item'>
@@ -19,7 +19,7 @@ export default class HomeView extends React.Component {
                     <div className='col-lg-4'>
                         <div className='card'>
                             <div className='card-header'>
-                                <strong>Latest content</strong>
+                                Latest content
                             </div>
                             <div className='card-block'>
                                 <p className='card-text'>... maybe ...</p>
@@ -33,7 +33,7 @@ export default class HomeView extends React.Component {
                     <div className='col-lg-4'>
                         <div className='card'>
                             <div className='card-header'>
-                                <strong>Trending content</strong>
+                                Trending content
                             </div>
                             <div className='card-block'>
                                 <p className='card-text'>... maybe ...</p>
@@ -47,7 +47,7 @@ export default class HomeView extends React.Component {
                     <div className='col-lg-4'>
                         <div className='card'>
                             <div className='card-header'>
-                                <strong>System health</strong>
+                                System health
                             </div>
                             <div className='card-block'>
                                 <p className='card-text'>... maybe ...</p>
@@ -61,7 +61,7 @@ export default class HomeView extends React.Component {
 
                 <div className='card'>
                     <div className='card-header'>
-                        <strong>Analytics</strong>
+                        Analytics
                     </div>
                     <div className='card-block'>
                         <p className='card-text'>... maybe ...</p>

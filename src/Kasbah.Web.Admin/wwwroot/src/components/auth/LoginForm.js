@@ -27,6 +27,16 @@ export default class extends React.Component {
     this.setState({ 'errors': errors });
   }
 
+  handleReset() {
+    this.refs.username.value = '';
+    this.refs.password.value = '';
+    this.refs.persist.checked = false;
+
+    this.refs.username.focus();
+
+    this.setState({ 'errors': {} });
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.error) {
       this.refs.username.focus();
@@ -68,6 +78,9 @@ export default class extends React.Component {
           {errorMessage}
 
           <div className='text-center'>
+            <button type='reset'
+              className='btn btn-secondary'
+              onClick={this.handleReset.bind(this)}>Reset</button>
             <button type='submit'
               className='btn btn-lg btn-primary'
               onClick={this.handleSubmit.bind(this)}

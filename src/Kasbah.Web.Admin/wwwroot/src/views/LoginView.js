@@ -17,17 +17,12 @@ export class LoginView extends React.Component {
   }
 
   render() {
-    const errorMessage = (
-      <div className='alert alert-danger'>
-        <i className='fa fa-warning' /> This will only be displayed on authentication failure.
-      </div>);
-
     return (
-      <div className='flex-centred'>
+      <div className='flex-centred login-view'>
         <div className='col-lg-5 col-md-6 col-sm-10'>
           <div className='card'>
             <div className='card-block'>
-              <h4 className='card-title'>Administration login</h4>
+              <h4 className='card-title'>System login</h4>
               <h6 className='card-subtitle text-muted'>Enter your credentials below to access the content administration website</h6>
             </div>
             <div className='card-block'>

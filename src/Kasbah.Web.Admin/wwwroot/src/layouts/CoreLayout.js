@@ -1,5 +1,6 @@
 import React from 'react';
-import Navigation from 'components/Navigation';
+import Header from 'components/Header';
+
 import 'styles/core.scss';
 import 'font-awesome/scss/font-awesome.scss';
 
@@ -11,7 +12,8 @@ export default class CoreLayout extends React.Component {
     render() {
         return (
             <div className='page-container'>
-                <Navigation />
+                <Header />
+
                 <div className='view-container'>
                     {this.props.children}
                 </div>
