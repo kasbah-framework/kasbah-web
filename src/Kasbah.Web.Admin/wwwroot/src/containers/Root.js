@@ -28,8 +28,7 @@ export default class Root extends React.Component {
   }
 
   render () {
-    // const content = localStorage.token ? (<ReduxRouter>{routes}</ReduxRouter>) : (<LoginView />);
-    const content = <ReduxRouter>{routes}</ReduxRouter>;
+    const content = localStorage.token ? (<ReduxRouter>{routes}</ReduxRouter>) : (<LoginView />);
 
     return (
       <div>

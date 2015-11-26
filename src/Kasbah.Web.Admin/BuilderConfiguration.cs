@@ -1,4 +1,5 @@
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Http;
 
 namespace Kasbah.Web.Admin
 {
@@ -9,6 +10,8 @@ namespace Kasbah.Web.Admin
         public static IApplicationBuilder UseKasbahWebAdmin(this IApplicationBuilder app)
         {
             app.UseCors("allowAnyOrigin");
+
+            app.UseIdentity();
 
             app.UseMvc();
 

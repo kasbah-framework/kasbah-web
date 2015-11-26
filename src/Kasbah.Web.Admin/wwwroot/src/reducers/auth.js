@@ -5,7 +5,7 @@ import {
     LOGIN_USER_FAILURE,
     LOGOUT_USER } from '../constants/auth';
 import { pushState } from 'redux-router';
-//import jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 const initialState = {
     token: null,

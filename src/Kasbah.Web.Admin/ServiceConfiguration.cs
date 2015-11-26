@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
+using Kasbah.Identity;
+using Kasbah.Identity.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
-using Kasbah.Identity.Models;
-using Kasbah.Identity;
-using Microsoft.AspNet.Identity;
 
 namespace Kasbah.Web.Admin
 {
@@ -17,7 +17,8 @@ namespace Kasbah.Web.Admin
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("allowAnyOrigin", builder => {
+                options.AddPolicy("allowAnyOrigin", builder =>
+                {
                     builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
                     builder.AllowCredentials();
@@ -37,14 +38,20 @@ namespace Kasbah.Web.Admin
             services.AddScoped<IUserStore<KasbahUser>, UserStore>();
             services.AddScoped<IRoleStore<KasbahIdentityRole>, RoleStore>();
 
-
-            services.AddIdentity<KasbahUser, KasbahIdentityRole>().AddUserStore<UserStore>();
+            services.AddIdentity<KasbahUser, KasbahIdentityRole>()
+                .AddUserStore<UserStore>()
+                .AddDefaultTokenProviders();
 
             services.AddMvc((options) =>
             {
                 var formatter = options.OutputFormatters.SingleOrDefault(f => f is JsonOutputFormatter) as JsonOutputFormatter;
 
                 formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
+
+            services.Configure<IdentityOptions>(options =>
+            { 
+                options.Cookies.ApplicationCookie.CookieName = "kasbah-web";
             });
 
             return services;
