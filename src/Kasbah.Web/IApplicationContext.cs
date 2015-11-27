@@ -4,6 +4,10 @@ namespace Kasbah.Web
 {
     public interface IApplicationContext
     {
+        #region Public Properties
+
         ModelList ModelList { get; }
+
+        #endregion
     }
 }

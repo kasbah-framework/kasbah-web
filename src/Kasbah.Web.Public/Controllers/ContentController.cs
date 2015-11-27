@@ -9,13 +9,34 @@ namespace Kasbah.Web.Public.Controllers
 {
     public class ContentController : Controller
     {
-        readonly ContentTreeService _contentTreeService;
-        readonly IEventService _eventService;
+        #region Public Constructors
 
         public ContentController(ContentTreeService contentTreeService, IEventService eventService)
         {
             _contentTreeService = contentTreeService;
             _eventService = eventService;
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        [Route("api/content-for/{id}")]
+        public object ContentFor(Guid id)
+        {
+            var node = _contentTreeService.GetNode(id);
+            if (node.ActiveVersion.HasValue)
+            {
+                var type = TypeUtil.TypeFromName(node.Type);
+
+                var version = _contentTreeService.GetNodeVersion(node.Id, node.ActiveVersion.Value, type);
+
+                _eventService.Emit<WebPageView>(new WebPageView { /* ... */ });
+
+                return version;
+            }
+
+            return HttpNotFound();
         }
 
         [Route("api/node-at")]
@@ -41,23 +62,16 @@ namespace Kasbah.Web.Public.Controllers
             return ret;
         }
 
-        [Route("api/content-for/{id}")]
-        public object ContentFor(Guid id)
-        {
-            var node = _contentTreeService.GetNode(id);
-            if (node.ActiveVersion.HasValue)
-            {
-                var type = TypeUtil.TypeFromName(node.Type);
+        #endregion
 
-                var version = _contentTreeService.GetNodeVersion(node.Id, node.ActiveVersion.Value, type);
+        #region Private Fields
 
-                _eventService.Emit<WebPageView>(new WebPageView { /* ... */ });
+        readonly ContentTreeService _contentTreeService;
+        readonly IEventService _eventService;
 
-                return version;
-            }
+        #endregion
 
-            return HttpNotFound();
-        }
+        #region Private Methods
 
         Node GetSiteNode(string host)
         {
@@ -77,15 +91,21 @@ namespace Kasbah.Web.Public.Controllers
         {
             return input.ToLower();
         }
+
+        #endregion
     }
 
     class WebPageView : EventBase
     {
+        #region Public Properties
+
         public Guid Node { get; set; }
 
         public Guid Version { get; set; }
 
         public DateTime Viewed { get; set; }
+
+        #endregion
 
         // etc...
     }

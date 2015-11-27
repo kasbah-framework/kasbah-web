@@ -14,7 +14,8 @@ namespace Kasbah.Web.Public
         {
             services = services.AddCors(options =>
             {
-                options.AddPolicy("allowAnyOrigin", builder => {
+                options.AddPolicy("allowAnyOrigin", builder =>
+                {
                     builder.AllowAnyHeader();
                     builder.AllowAnyMethod();
                     builder.AllowAnyOrigin();

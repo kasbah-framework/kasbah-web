@@ -50,7 +50,7 @@ namespace Kasbah.Web.Admin
             });
 
             services.Configure<IdentityOptions>(options =>
-            { 
+            {
                 options.Cookies.ApplicationCookie.CookieName = "kasbah-web";
             });
 

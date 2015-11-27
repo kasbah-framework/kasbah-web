@@ -11,17 +11,36 @@ namespace Kasbah.Web.Admin.Controllers
 {
     public class AuthController : Controller
     {
-
-        readonly UserManager<KasbahUser> _userManager;
-
-        readonly SignInManager<KasbahUser> _signInManager;
-        readonly ILogger _log;
+        #region Public Constructors
 
         public AuthController(UserManager<KasbahUser> userManager, SignInManager<KasbahUser> signInManager, ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _log = loggerFactory.CreateLogger<AuthController>();
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        [Route("/api/auth/init")]
+        public async Task Init()
+        {
+            var admin = await _userManager.FindByNameAsync("admin");
+            if (admin == null)
+            {
+                var result = await _userManager.CreateAsync(new KasbahUser
+                {
+                    UserName = "admin",
+                    Email = "email@changeme.org"
+                }, "$Passw0rd");
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
+                }
+            }
         }
 
         [Route("/api/auth/login"), HttpPost]
@@ -69,23 +88,14 @@ namespace Kasbah.Web.Admin.Controllers
             };
         }
 
-        [Route("/api/auth/init")]
-        public async Task Init()
-        {
-            var admin = await _userManager.FindByNameAsync("admin");
-            if (admin == null)
-            {
-                var result = await _userManager.CreateAsync(new KasbahUser
-                {
-                    UserName = "admin",
-                    Email = "email@changeme.org"
-                }, "$Passw0rd");
+        #endregion
 
-                if (!result.Succeeded)
-                {
-                    throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
-                }
-            }
-        }
+        #region Private Fields
+
+        readonly ILogger _log;
+        readonly SignInManager<KasbahUser> _signInManager;
+        readonly UserManager<KasbahUser> _userManager;
+
+        #endregion
     }
 }

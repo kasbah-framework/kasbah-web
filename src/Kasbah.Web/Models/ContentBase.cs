@@ -7,19 +7,31 @@ namespace Kasbah.Web.Models
 {
     public abstract class ContentBase : ItemBase
     {
+        #region Public Properties
+
         public string View { get; } = nameof(ContentBase);
+
+        #endregion
     }
 
     public class ModelList
     {
-        readonly ICollection<Type> _list;
+        #region Public Constructors
 
         public ModelList()
         {
             _list = new List<Type>();
         }
 
+        #endregion
+
+        #region Public Properties
+
         public IEnumerable<Type> RegisteredModels { get { return _list.AsEnumerable(); } }
+
+        #endregion
+
+        #region Public Methods
 
         public void Register<T>() where T : ContentBase
         {
@@ -33,5 +45,13 @@ namespace Kasbah.Web.Models
                 _list.Add(type);
             }
         }
+
+        #endregion
+
+        #region Private Fields
+
+        readonly ICollection<Type> _list;
+
+        #endregion
     }
 }
