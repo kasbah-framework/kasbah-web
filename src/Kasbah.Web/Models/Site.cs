@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kasbah.Core.ContentTree;
 using Kasbah.Core.Models;
 
 namespace Kasbah.Web.Models
@@ -13,7 +14,7 @@ namespace Kasbah.Web.Models
 
         public string Alias { get; set; }
 
-        public IEnumerable<Domain> Domains { get; set; }
+        public IEnumerable<SiteDomain> Domains { get; set; }
 
 
         #endregion
@@ -25,7 +26,7 @@ namespace Kasbah.Web.Models
 
         public Site(IEnumerable<NodeDefinition> staticStructure)
         {
-            _staticStructure = structure;
+            _staticStructure = staticStructure;
         }
 
         public void EnsureStaticStructure(Guid siteNode, ContentTreeService contentTreeService)
