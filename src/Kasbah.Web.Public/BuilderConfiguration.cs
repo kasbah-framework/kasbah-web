@@ -12,6 +12,8 @@ namespace Kasbah.Web.Public
 
             app.UseMvc();
 
+            app.UseKasbahWeb();
+
             return app;
         }
 
