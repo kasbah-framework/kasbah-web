@@ -38,18 +38,6 @@ class ContentEditor extends React.Component {
         this.props.actions.loadContent(id);
     }
 
-    handleSelectVersion(version) {
-        this.props.actions.selectVersion(version);
-    }
-
-    _renderVersionSelector() {
-        if (!this.props.content) { return null; }
-
-        return (<ul>
-            {this.props.content.versions.map(ent => <li key={ent.id}><button onClick={this.handleSelectVersion.bind(this, ent)}>{ent.id}</button></li>)}
-            </ul>);
-    }
-
     _renderEditor() {
         if (!this.props.currentVersion) { return null; }
 
@@ -59,7 +47,6 @@ class ContentEditor extends React.Component {
     render() {
         return (
             <div>
-                {this._renderVersionSelector()}
                 {this._renderEditor()}
             </div>);
     }
