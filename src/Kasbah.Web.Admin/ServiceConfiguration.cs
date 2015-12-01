@@ -20,10 +20,11 @@ namespace Kasbah.Web.Admin
                 options.AddPolicy("allowAnyOrigin", builder =>
                 {
                     builder.AllowAnyHeader();
-                    builder.AllowAnyMethod();
+                    //builder.AllowAnyMethod();
                     builder.AllowCredentials();
                     // builder.AllowAnyOrigin();
                     builder.WithOrigins("http://localhost:3004");
+                    builder.WithMethods("OPTIONS", "POST", "GET");
                 });
 
                 options.DefaultPolicyName = "allowAnyOrigin";

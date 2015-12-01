@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from 'actions/tree';
 import NodeList from 'components/tree/NodeList';
+import ContentEditor from 'components/content/ContentEditor';
 
 const mapStateToProps = (state) => ({
     tree: state.tree
@@ -12,8 +13,14 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export class ContentView extends React.Component {
-    handleNodeSelected() {
+    constructor() {
+        super();
 
+        this.state = { selectedNode: null };
+    }
+
+    handleNodeSelected(node) {
+        this.setState({ selectedNode: node });
     }
 
     handleToggleNode(node) {
@@ -53,6 +60,8 @@ export class ContentView extends React.Component {
                         </div>
 
                         <div className='col-lg-9'>
+                            {this.state.selectedNode && (<ContentEditor nodeId={this.state.selectedNode.id} />)}
+                            <hr />
                             <p>This is really the crux of the whole system. Everything else is <small>superfluous</small>.</p>
                             <ul>
                                 <li>How do you present a really nice method of editing content to the user?</li>

@@ -6,15 +6,7 @@ import {
     LOGOUT_USER } from 'constants/auth';
 import { API_BASE } from 'constants';
 import { pushState } from 'redux-router';
-
-const MimeTypes = {
-    'text': {
-        'plain': 'text/plain'
-    },
-    'application': {
-        'json': 'application/json'
-    }
-}
+import MimeTypes from 'constants/MimeTypes';
 
 export function loginUserSuccess(token) {
     return {
