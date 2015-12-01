@@ -4,6 +4,7 @@ using Kasbah.Core.ContentTree.Models;
 using Kasbah.Core.Events;
 using Kasbah.Core.Utils;
 using Microsoft.AspNet.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Kasbah.Web.Public.Controllers
 {
@@ -11,10 +12,11 @@ namespace Kasbah.Web.Public.Controllers
     {
         #region Public Constructors
 
-        public ContentController(ContentTreeService contentTreeService, IEventService eventService)
+        public ContentController(ContentTreeService contentTreeService, IEventService eventService, ILoggerFactory loggerFactory)
         {
             _contentTreeService = contentTreeService;
             _eventService = eventService;
+            // _log = loggerFactory.CreateLogger<ContentController>();
         }
 
         #endregion
@@ -27,11 +29,12 @@ namespace Kasbah.Web.Public.Controllers
             var node = _contentTreeService.GetNode(id);
             if (node.ActiveVersion.HasValue)
             {
-                var type = TypeUtil.TypeFromName(node.Type);
+                // var type = TypeUtil.TypeFromName(node.Type);
+                // TODO: make the below call use `type`.
 
-                var version = _contentTreeService.GetNodeVersion(node.Id, node.ActiveVersion.Value, type);
+                var version = _contentTreeService.GetNodeVersion(node.Id, node.ActiveVersion.Value);
 
-                _eventService.Emit<WebPageView>(new WebPageView { /* ... */ });
+                _eventService.Emit(new WebPageView { /* ... */ });
 
                 return version;
             }
@@ -68,6 +71,7 @@ namespace Kasbah.Web.Public.Controllers
 
         readonly ContentTreeService _contentTreeService;
         readonly IEventService _eventService;
+        // readonly ILogger _log;
 
         #endregion
 

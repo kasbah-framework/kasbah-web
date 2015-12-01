@@ -1,7 +1,8 @@
 using Kasbah.Core.ContentTree;
 using Kasbah.Core.Models;
+using Kasbah.Web.Models;
 using Microsoft.AspNet.Builder;
-using Microsoft.Framework.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Kasbah.Web
 {

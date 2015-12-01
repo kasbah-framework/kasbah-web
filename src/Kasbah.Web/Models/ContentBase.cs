@@ -9,7 +9,7 @@ namespace Kasbah.Web.Models
     {
         #region Public Properties
 
-        public string View { get; } = nameof(ContentBase);
+        public string View { get; set; }
 
         #endregion
     }
