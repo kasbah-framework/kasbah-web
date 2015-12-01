@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from 'actions/tree';
 import NodeList from 'components/tree/NodeList';
+import { Button, DropDownButton, DropDownButtonItem, DropDownButtonSeparator, States } from 'components/ui';
 
 const mapStateToProps = (state) => ({
     tree: state.tree
@@ -29,6 +30,10 @@ export class ContentView extends React.Component {
     componentWillMount() {
         // TODO: limit the node tree to start at the /sites/ node
         this.props.actions.fetchChildren(null);
+    }
+
+    handleClick() {
+
     }
 
     render () {
@@ -59,6 +64,19 @@ export class ContentView extends React.Component {
                                 <li>How do you manage publishing content?</li>
                                 <li>How do you handle multiple versions of content?</li>
                             </ul>
+                            <div className='form-group'>
+                                <DropDownButton label='Versions' buttonState='default'>
+                                    <DropDownButtonItem label='List of versions go here' onClick={this.handleClick.bind(this)} />
+                                    <DropDownButtonItem label='List of versions go here' onClick={this.handleClick.bind(this)} />
+                                    <DropDownButtonItem label='List of versions go here' onClick={this.handleClick.bind(this)} />
+                                    <DropDownButtonSeparator />
+                                    <DropDownButtonItem label='New version' onClick={this.handleClick.bind(this)} />
+                                </DropDownButton>
+                            </div>
+                            <div>
+                                <Button label='Reset' onClick={this.handleClick.bind(this)} buttonState='secondary' buttonSize='sm' disabled={true} />
+                                <Button label='Save' onClick={this.handleClick.bind(this)} buttonState='success' buttonSize='sm' />
+                            </div>
                         </div>
                     </div>
                 </div>
