@@ -50,7 +50,7 @@ export class ContentView extends React.Component {
     }
 
     handleNewVersion() {
-        this.props.contentActions.addVersion();
+        this.props.contentActions.addVersion(this.state.selectedNode.id);
     }
 
     _renderVersionSelector() {

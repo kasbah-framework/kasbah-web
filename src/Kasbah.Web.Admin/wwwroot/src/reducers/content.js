@@ -58,7 +58,7 @@ export default createReducer(initialState, {
         const updates = Object.assign({}, state.currentVersion.values);
         updates[payload.field.alias] = payload.value;
         return Object.assign({}, state, {
-            'currentVersion': Object.assign({}, state.currentVersion, { values: updates })
+            'currentVersion': Object.assign({}, state.currentVersion, { values: updates, '$dirty': true })
         });
     },
     [SELECT_VERSION]: (state, payload) => {
@@ -68,7 +68,7 @@ export default createReducer(initialState, {
     },
     [ADD_VERSION]: (state, payload) => {
         return Object.assign({}, state, {
-            'content': Object.assign({}, state.content, { versions: [...state.content.versions, { id: null, values: { } }] })
+            'content': Object.assign({}, state.content, { versions: [...state.content.versions, { id: null, nodeId: payload.node, values: { } }] })
         });
     }
 });

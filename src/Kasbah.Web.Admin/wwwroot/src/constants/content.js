@@ -6,4 +6,7 @@ export default createConstants(
     'LOAD_CONTENT_FAILURE',
     'UPDATE_MODEL',
     'SELECT_VERSION',
-    'ADD_VERSION' );
+    'ADD_VERSION',
+    'SAVE_CONTENT_REQUEST',
+    'SAVE_CONTENT_SUCCESS',
+    'SAVE_CONTENT_FAILURE' );

@@ -6,8 +6,6 @@ import * as actionCreators from 'actions/content';
 import { Button } from 'components/ui';
 
 const mapStateToProps = (state) => ({
-    content: state.content.content,
-    currentVersion: state.content.currentVersion
 });
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(actionCreators, dispatch)
@@ -26,7 +24,7 @@ class ContentEditor extends React.Component {
     }
 
     handleSave() {
-
+        this.props.actions.saveContent(this.props.version);
     }
 
     handleReset() {
@@ -34,14 +32,12 @@ class ContentEditor extends React.Component {
     }
 
     render() {
-        if (!this.props.currentVersion) { return null; }
-
         return (
             <div>
                 <Editor modelDef={this.props.modelDef} model={this.props.version.values} errors={this.props.errors || {}} onFieldChange={this.handleFieldChange.bind(this)} />
                 <div>
-                    <Button label='Reset' onClick={this.handleReset.bind(this)} buttonState='secondary' buttonSize='sm' disabled={true} />
-                    <Button label='Save' onClick={this.handleSave.bind(this)} buttonState='success' buttonSize='sm' />
+                    <Button label='Reset' onClick={this.handleReset.bind(this)} buttonState='secondary' buttonSize='sm' disabled={!this.props.version.$dirty} />
+                    <Button label='Save' onClick={this.handleSave.bind(this)} buttonState='success' buttonSize='sm' disabled={!this.props.version.$dirty} />
                 </div>
             </div>);
     }
