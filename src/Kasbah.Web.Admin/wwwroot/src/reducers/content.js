@@ -4,7 +4,8 @@ import {
     LOAD_CONTENT_SUCCESS,
     LOAD_CONTENT_FAILURE,
     UPDATE_MODEL,
-    SELECT_VERSION } from '../constants/content';
+    SELECT_VERSION,
+    ADD_VERSION } from '../constants/content';
 import { pushState } from 'redux-router';
 import jwtDecode from 'jwt-decode';
 
@@ -26,7 +27,6 @@ export default createReducer(initialState, {
         });
     },
     [LOAD_CONTENT_SUCCESS]: (state, payload) => {
-        console.log(payload);
         try {
             return Object.assign({}, state, {
                 'isLoading': false,
@@ -64,6 +64,11 @@ export default createReducer(initialState, {
     [SELECT_VERSION]: (state, payload) => {
         return Object.assign({}, state, {
             'currentVersion': Object.assign({}, payload.version)
+        });
+    },
+    [ADD_VERSION]: (state, payload) => {
+        return Object.assign({}, state, {
+            'content': Object.assign({}, state.content, { versions: [...state.content.versions, { id: null, values: { } }] })
         });
     }
 });

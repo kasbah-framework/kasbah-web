@@ -6,7 +6,8 @@ import {
     LOAD_CONTENT_SUCCESS,
     LOGOUT_USER,
     UPDATE_MODEL,
-    SELECT_VERSION } from 'constants/content';
+    SELECT_VERSION,
+    ADD_VERSION } from 'constants/content';
 import { API_BASE } from 'constants';
 import MimeTypes from 'constants/MimeTypes';
 
@@ -50,7 +51,6 @@ export function loadContent(id) {
             }
         })
         .catch(error => {
-            console.error(error);
             dispatch(loadContentFailure(error.response));
         });
     }
@@ -72,5 +72,12 @@ export function selectVersion(version) {
         payload: {
             version
         }
+    }
+}
+
+export function addVersion() {
+    return {
+        type: ADD_VERSION,
+        payload: {}
     }
 }

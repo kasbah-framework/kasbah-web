@@ -7,9 +7,11 @@ import NodeList from 'components/tree/NodeList';
 import ContentEditor from 'components/content/ContentEditor';
 import { Button, DropDownButton, DropDownButtonItem, DropDownButtonSeparator, States } from 'components/ui';
 
+
 const mapStateToProps = (state) => ({
     tree: state.tree,
-    content: state.content.content
+    content: state.content.content,
+    currentVersion: state.content.currentVersion
 });
 const mapDispatchToProps = (dispatch) => ({
     treeActions: bindActionCreators(treeActionCreators, dispatch),
@@ -25,6 +27,7 @@ export class ContentView extends React.Component {
 
     handleNodeSelected(node) {
         this.setState({ selectedNode: node });
+        this.props.contentActions.loadContent(node.id);
     }
 
     handleToggleNode(node) {
@@ -47,15 +50,7 @@ export class ContentView extends React.Component {
     }
 
     handleNewVersion() {
-
-    }
-
-    handleSave() {
-
-    }
-
-    handleReset() {
-
+        this.props.contentActions.addVersion();
     }
 
     _renderVersionSelector() {
@@ -63,9 +58,9 @@ export class ContentView extends React.Component {
         return (
             <div className='form-group'>
                 <DropDownButton label='Versions' buttonState='default'>
-                    {this.props.content.versions.map(ent => <DropDownButtonItem key={ent.id} label={ent.id} onClick={this.handleSelectVersion.bind(this, ent)} />)}
-                    <DropDownButtonSeparator />
-                    <DropDownButtonItem label='New version' onClick={this.handleNewVersion.bind(this)} />
+                    {this.props.content.versions.map((ent, index) => <DropDownButtonItem key={index} onClick={this.handleSelectVersion.bind(this, ent)}>{ent.id ? ent.id : <em>Unsaved version</em>} {ent.isActive && <span className="label label-success">active</span>}</DropDownButtonItem>)}
+                    {this.props.content.versions.length > 0 && <DropDownButtonSeparator />}
+                    <DropDownButtonItem onClick={this.handleNewVersion.bind(this)}>New version</DropDownButtonItem>
                 </DropDownButton>
             </div> );
     }
@@ -93,7 +88,7 @@ export class ContentView extends React.Component {
 
                         <div className='col-lg-9'>
                             {this._renderVersionSelector()}
-                            {this.state.selectedNode && (<ContentEditor nodeId={this.state.selectedNode.id} />)}
+                            {this.props.currentVersion && (<ContentEditor modelDef={this.props.content.modelDefinition} version={this.props.currentVersion} errors={{}} />)}
                             <hr />
                             <p>This is really the crux of the whole system. Everything else is <small>superfluous</small>.</p>
                             <ul>
@@ -101,10 +96,6 @@ export class ContentView extends React.Component {
                                 <li>How do you manage publishing content?</li>
                                 <li>How do you handle multiple versions of content?</li>
                             </ul>
-                            <div>
-                                <Button label='Reset' onClick={this.handleReset.bind(this)} buttonState='secondary' buttonSize='sm' disabled={true} />
-                                <Button label='Save' onClick={this.handleSave.bind(this)} buttonState='success' buttonSize='sm' />
-                            </div>
                         </div>
                     </div>
                 </div>

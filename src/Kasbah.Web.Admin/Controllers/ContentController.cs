@@ -41,6 +41,7 @@ namespace Kasbah.Web.Admin.Controllers
                     return new Version
                     {
                         Id = version.Id,
+                        IsActive = version.Id == node.ActiveVersion,
                         Values = _contentTreeService.GetNodeVersion(node.Id, version.Id)
                     };
                 })
@@ -51,7 +52,7 @@ namespace Kasbah.Web.Admin.Controllers
 
         static ModelDefinition GetModelDefinition(Type type)
         {
-            
+
             return new ModelDefinition
             {
                 Fields = type.GetProperties().Select(prop =>
@@ -98,6 +99,8 @@ namespace Kasbah.Web.Admin.Controllers
     public class Version
     {
         public Guid Id { get; set; }
+
+        public bool IsActive { get; set; }
 
         public IDictionary<string, object> Values { get; set; }
     }

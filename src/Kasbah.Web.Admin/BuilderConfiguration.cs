@@ -11,6 +11,7 @@ namespace Kasbah.Web.Admin
             app.UseCors("allowAnyOrigin");
 
             app.UseIdentity();
+            app.UseCookieAuthentication();
 
             app.UseMvc();
 

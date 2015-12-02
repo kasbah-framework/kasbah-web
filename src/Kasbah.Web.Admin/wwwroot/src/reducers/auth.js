@@ -27,12 +27,12 @@ export default createReducer(initialState, {
     [LOGIN_USER_SUCCESS]: (state, payload) => {
         localStorage.setItem('token', payload.token);
         try {
-            let decoded = jwtDecode(payload.token);
+            // let decoded = jwtDecode(payload.token);
             return Object.assign({}, state, {
                 'isAuthenticating': false,
                 'isAuthenticated': true,
                 'token': payload.token,
-                'userName': decoded.userName,
+                'userName': 'unknown', // decoded.userName,
                 'errorCode': null,
                 'errorMessage': null
             });
@@ -49,7 +49,6 @@ export default createReducer(initialState, {
         }
     },
     [LOGIN_USER_FAILURE]: (state, payload) => {
-        console.log(payload);
         localStorage.removeItem('token');
         return Object.assign({}, state, {
             'isAuthenticating': false,

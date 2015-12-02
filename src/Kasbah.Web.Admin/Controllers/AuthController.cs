@@ -50,6 +50,7 @@ namespace Kasbah.Web.Admin.Controllers
             {
                 // TODO: implement checking Method on request, maybe. or ditch it
                 var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, request.Persist, lockoutOnFailure: false);
+
                 if (result.Succeeded)
                 {
                     return new LoginResponse { };

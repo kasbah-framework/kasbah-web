@@ -1,3 +1,4 @@
+import fetch from 'isomorphic-fetch';
 import { checkHttpStatus, parseJSON } from '../utils';
 import {
     LOGIN_USER_REQUEST,
@@ -47,7 +48,7 @@ export function logoutAndRedirect() {
 }
 
 export function loginUser(username, password, persist) {
-    return function(dispatch) {
+    return (dispatch) => {
         dispatch(loginUserRequest());
         return fetch(`${API_BASE}/api/auth/login`, {
             method: 'POST',
@@ -78,44 +79,3 @@ export function loginUser(username, password, persist) {
         });
     }
 }
-
-/*
-export function receiveProtectedData(data) {
-    return {
-        type: RECEIVE_PROTECTED_DATA,
-        payload: {
-            data: data
-        }
-    }
-}
-
-export function fetchProtectedDataRequest() {
-  return {
-    type: FETCH_PROTECTED_DATA_REQUEST
-  }
-}
-
-export function fetchProtectedData(token) {
-
-    return (dispatch, state) => {
-        dispatch(fetchProtectedDataRequest());
-        return fetch('http://localhost:3000/getData/', {
-                credentials: 'include',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(checkHttpStatus)
-            .then(parseJSON)
-            .then(response => {
-                dispatch(receiveProtectedData(response.data));
-            })
-            .catch(error => {
-                if(error.response.status === 401) {
-                  dispatch(loginUserFailure(error));
-                  dispatch(pushState(null, '/login'));
-                }
-            })
-       }
-}
-*/

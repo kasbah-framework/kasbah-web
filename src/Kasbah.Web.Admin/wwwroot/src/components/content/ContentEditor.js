@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Editor from './Editor';
 import * as actionCreators from 'actions/content';
+import { Button } from 'components/ui';
 
 const mapStateToProps = (state) => ({
     content: state.content.content,
@@ -15,39 +16,33 @@ const mapDispatchToProps = (dispatch) => ({
 
 class ContentEditor extends React.Component {
     static propTypes = {
-        nodeId: React.PropTypes.string.isRequired
+        modelDef: React.PropTypes.object.isRequired,
+        version: React.PropTypes.object.isRequired,
+        error: React.PropTypes.object
     }
 
     handleFieldChange(field, value) {
         this.props.actions.updateModel(field, value)
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (!this.props.nodeId || nextProps.nodeId !== this.props.nodeId) {
-            this.load(nextProps.nodeId);
-        }
+    handleSave() {
+
     }
 
-    componentWillMount() {
-        if (this.props.nodeId) {
-            this.load(this.props.nodeId);
-        }
-    }
+    handleReset() {
 
-    load(id) {
-        this.props.actions.loadContent(id);
-    }
-
-    _renderEditor() {
-        if (!this.props.currentVersion) { return null; }
-
-        return (<Editor modelDef={this.props.content.modelDefinition} model={this.props.currentVersion.values} errors={this.props.content.errors || {}} onFieldChange={this.handleFieldChange.bind(this)} />);
     }
 
     render() {
+        if (!this.props.currentVersion) { return null; }
+
         return (
             <div>
-                {this._renderEditor()}
+                <Editor modelDef={this.props.modelDef} model={this.props.version.values} errors={this.props.errors || {}} onFieldChange={this.handleFieldChange.bind(this)} />
+                <div>
+                    <Button label='Reset' onClick={this.handleReset.bind(this)} buttonState='secondary' buttonSize='sm' disabled={true} />
+                    <Button label='Save' onClick={this.handleSave.bind(this)} buttonState='success' buttonSize='sm' />
+                </div>
             </div>);
     }
 }
