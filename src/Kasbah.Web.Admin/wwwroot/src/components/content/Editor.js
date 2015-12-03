@@ -12,8 +12,8 @@ export default class extends React.Component {
     _renderField(field) {
         let editor = Editors.Text;
         for (var ent in Editors) {
-            if (ent.alias === field.type) {
-                editor = ent;
+            if (Editors[ent].alias === field.type) {
+                editor = Editors[ent];
             }
         }
 

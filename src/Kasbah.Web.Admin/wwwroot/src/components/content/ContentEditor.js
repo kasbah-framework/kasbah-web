@@ -31,6 +31,10 @@ class ContentEditor extends React.Component {
 
     }
 
+    handleSetActive() {
+        this.props.actions.setActiveVersion(this.props.version.nodeId, this.props.version.id);
+    }
+
     render() {
         return (
             <div>
@@ -38,6 +42,7 @@ class ContentEditor extends React.Component {
                 <div>
                     <Button label='Reset' onClick={this.handleReset.bind(this)} buttonState='secondary' buttonSize='sm' disabled={!this.props.version.$dirty} />
                     <Button label='Save' onClick={this.handleSave.bind(this)} buttonState='success' buttonSize='sm' disabled={!this.props.version.$dirty} />
+                    <Button label='Set active (publish)' onClick={this.handleSetActive.bind(this)} buttonState='info' buttonSize='sm' disabled={this.props.version.isActive || !this.props.version.id} />
                 </div>
             </div>);
     }

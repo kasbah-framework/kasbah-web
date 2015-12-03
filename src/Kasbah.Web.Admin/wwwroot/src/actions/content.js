@@ -10,7 +10,10 @@ import {
     ADD_VERSION,
     SAVE_CONTENT_REQUEST,
     SAVE_CONTENT_FAILURE,
-    SAVE_CONTENT_SUCCESS } from 'constants/content';
+    SAVE_CONTENT_SUCCESS,
+    SET_ACTIVE_VERSION_REQUEST,
+    SET_ACTIVE_VERSION_FAILURE,
+    SET_ACTIVE_VERSION_SUCCESS } from 'constants/content';
 import { API_BASE } from 'constants';
 import MimeTypes from 'constants/MimeTypes';
 
@@ -139,6 +142,64 @@ export function saveContent(version) {
         })
         .catch(error => {
             dispatch(saveContentFailure(error.response));
+        });
+    }
+}
+
+
+
+export function setActiveVersionSuccess(content) {
+    return {
+        type: SET_ACTIVE_VERSION_SUCCESS,
+        payload: {
+            content
+        }
+    }
+}
+
+export function setActiveVersionFailure(response) {
+    return {
+        type: SET_ACTIVE_VERSION_FAILURE,
+        payload: {
+            errorCode: response ? response.errorCode : -1,
+            errorMessage: response ? response.errorMessage : 'Something went wrong.'
+        }
+    }
+}
+
+export function setActiveVersionRequest() {
+    return {
+        type: SET_ACTIVE_VERSION_REQUEST
+    }
+}
+
+export function setActiveVersion(node, version) {
+    return (dispatch) => {
+        dispatch(loadContentRequest());
+        return fetch(`${API_BASE}/api/node/${node}/set-active/${version}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Accept': MimeTypes.application.json,
+                'Content-Type': MimeTypes.application.json
+            },
+            body: JSON.stringify({
+                version
+            })
+        })
+        .then(checkHttpStatus)
+        .then(parseJSON)
+        .then(response => {
+            if (response.success) {
+                dispatch(setActiveVersionSuccess(response));
+                dispatch(loadContent(node));
+            }
+            else {
+                dispatch(setActiveVersionFailure(response));
+            }
+        })
+        .catch(error => {
+            dispatch(setActiveVersionFailure(error.response));
         });
     }
 }

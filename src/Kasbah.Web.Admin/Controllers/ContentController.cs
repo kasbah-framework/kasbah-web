@@ -7,6 +7,7 @@ using Kasbah.Web.Admin.Models;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
+using Kasbah.Web.Annotations;
 
 namespace Kasbah.Web.Admin.Controllers
 {
@@ -54,6 +55,8 @@ namespace Kasbah.Web.Admin.Controllers
             return new SaveContentResponse { };
         }
 
+        [Route("/api/content/set-active"), HttpPost]
+
         #endregion
 
         #region Private Methods
@@ -68,7 +71,7 @@ namespace Kasbah.Web.Admin.Controllers
                     {
                         Alias = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver().GetResolvedPropertyName(prop.Name),
                         DisplayName = prop.Name,
-                        Type = "text"
+                        Type = GetEditor(prop)
                     };
                 })
             };
@@ -82,6 +85,16 @@ namespace Kasbah.Web.Admin.Controllers
 
             return info.DeclaredProperties.Concat(GetAllProperties(info.BaseType));
 
+        }
+
+        static string GetEditor(PropertyInfo property)
+        {
+            var attribute = property.GetCustomAttribute<EditorAttribute>();
+            if (attribute != null)
+            {
+                return attribute.Editor;
+            }
+            return "text";
         }
 
         #endregion
