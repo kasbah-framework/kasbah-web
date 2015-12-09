@@ -23,12 +23,11 @@ export class Button extends React.Component {
 export class DropDownButtonItem extends React.Component {
     static propTypes = {
         onClick: React.PropTypes.func.isRequired,
-        label: React.PropTypes.string.isRequired,
         disabled: React.PropTypes.bool
     }
 
     render() {
-        return (<button className='dropdown-item' onClick={this.props.onClick}>{this.props.label}</button>)
+        return (<button className='dropdown-item' onClick={this.props.onClick}>{this.props.children}</button>)
     }
 }
 

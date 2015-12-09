@@ -28,7 +28,8 @@ export default class Root extends React.Component {
   }
 
   render () {
-    // const content = localStorage.token ? (<ReduxRouter>{routes}</ReduxRouter>) : (<LoginView />);
+    // console.log(this.props.store.auth.isAuthenticated);
+    // const content = (this.props.store.auth && this.props.store.auth.isAuthenticated) ? (<ReduxRouter>{routes}</ReduxRouter>) : (<LoginView />);
     const content = <ReduxRouter>{routes}</ReduxRouter>;
     return (
       <div>
