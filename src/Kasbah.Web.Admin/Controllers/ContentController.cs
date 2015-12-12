@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Kasbah.Core.ContentTree;
+using Kasbah.Core;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Admin.Models;
 using Microsoft.AspNet.Mvc;
@@ -15,10 +15,10 @@ namespace Kasbah.Web.Admin.Controllers
     {
         #region Public Constructors
 
-        public ContentController(ILoggerFactory loggerFactory, ContentTreeService contentTreeService)
+        public ContentController(ILoggerFactory loggerFactory, ContentBroker contentBroker)
         {
             _log = loggerFactory.CreateLogger<ContentController>();
-            _contentTreeService = contentTreeService;
+            _contentBroker = contentBroker;
         }
 
         #endregion
@@ -28,20 +28,20 @@ namespace Kasbah.Web.Admin.Controllers
         [Route("/api/content/{id}"), HttpGet, HttpPost]
         public GetContentResponse GetContent(Guid id)
         {
-            var node = _contentTreeService.GetNode(id);
+            var node = _contentBroker.GetNode(id);
             var type = TypeUtil.TypeFromName(node.Type);
 
             return new GetContentResponse
             {
                 ModelDefinition = GetModelDefinition(type),
-                Versions = _contentTreeService.GetAllNodeVersions(node.Id).Select(version =>
+                Versions = _contentBroker.GetAllNodeVersions(node.Id).Select(version =>
                 {
                     return new Version
                     {
                         Id = version.Id,
                         NodeId = node.Id,
                         IsActive = version.Id == node.ActiveVersion,
-                        Values = _contentTreeService.GetNodeVersion(node.Id, version.Id)
+                        Values = _contentBroker.GetNodeVersion(node.Id, version.Id)
                     };
                 })
             };
@@ -50,7 +50,7 @@ namespace Kasbah.Web.Admin.Controllers
         [Route("/api/content"), HttpPost]
         public SaveContentResponse SaveContent([FromBody] SaveContentRequest request)
         {
-            _contentTreeService.Save(request.Version.Id ?? Guid.NewGuid(), request.Version.NodeId, (object)request.Version.Values);
+            _contentBroker.Save(request.Version.Id ?? Guid.NewGuid(), request.Version.NodeId, (object)request.Version.Values);
 
             return new SaveContentResponse { };
         }
@@ -101,7 +101,7 @@ namespace Kasbah.Web.Admin.Controllers
 
         #region Private Fields
 
-        readonly ContentTreeService _contentTreeService;
+        readonly ContentBroker _contentBroker;
         readonly ILogger _log;
 
         #endregion

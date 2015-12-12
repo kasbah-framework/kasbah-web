@@ -1,5 +1,5 @@
 using System;
-using Kasbah.Core.ContentTree;
+using Kasbah.Core;
 using Kasbah.Core.ContentTree.Models;
 using Kasbah.Core.Events;
 using Kasbah.Core.Utils;
@@ -12,11 +12,10 @@ namespace Kasbah.Web.Public.Controllers
     {
         #region Public Constructors
 
-        public ContentController(ContentTreeService contentTreeService, IEventService eventService, ILoggerFactory loggerFactory)
+        public ContentController(ContentBroker contentBroker, ILoggerFactory loggerFactory)
         {
-            _contentTreeService = contentTreeService;
-            _eventService = eventService;
-            // _log = loggerFactory.CreateLogger<ContentController>();
+            _contentBroker = contentBroker;
+            _log = loggerFactory.CreateLogger<ContentController>();
         }
 
         #endregion
@@ -26,15 +25,16 @@ namespace Kasbah.Web.Public.Controllers
         [Route("api/content-for/{id}")]
         public object ContentFor(Guid id)
         {
-            var node = _contentTreeService.GetNode(id);
+            var node = _contentBroker.GetNode(id);
             if (node.ActiveVersion.HasValue)
             {
-                // var type = TypeUtil.TypeFromName(node.Type);
-                // TODO: make the below call use `type`.
+                // TODO: find out why below call doesn't work when using `type`.
 
-                var version = _contentTreeService.GetNodeVersion(node.Id, node.ActiveVersion.Value);
+                var type = TypeUtil.TypeFromName(node.Type);
 
-                _eventService.Emit(new WebPageView { /* ... */ });
+                var version = _contentBroker.GetNodeVersion(node.Id, node.ActiveVersion.Value, type);
+
+                // _eventService.Emit(new WebPageView { /* ... */ });
 
                 return version;
             }
@@ -52,13 +52,13 @@ namespace Kasbah.Web.Public.Controllers
                 return null;
             }
 
-            var ret = _contentTreeService.GetChild(siteRoot.Id, "home");
+            var ret = _contentBroker.GetChild(siteRoot.Id, "home");
             if (path != null && ret != null)
             {
                 var parts = path.Split('/');
                 foreach (var part in parts)
                 {
-                    ret = _contentTreeService.GetChild(ret.Id, part);
+                    ret = _contentBroker.GetChild(ret.Id, part);
                 }
             }
 
@@ -69,9 +69,8 @@ namespace Kasbah.Web.Public.Controllers
 
         #region Private Fields
 
-        readonly ContentTreeService _contentTreeService;
-        readonly IEventService _eventService;
-        // readonly ILogger _log;
+        readonly ContentBroker _contentBroker;
+        readonly ILogger _log;
 
         #endregion
 
@@ -79,13 +78,13 @@ namespace Kasbah.Web.Public.Controllers
 
         Node GetSiteNode(string host)
         {
-            var sitesNode = _contentTreeService.GetChild(null, "sites");
+            var sitesNode = _contentBroker.GetChild(null, "sites");
 
-            var ret = _contentTreeService.GetChild(sitesNode.Id, host);
+            var ret = _contentBroker.GetChild(sitesNode.Id, host);
 
             if (ret == null)
             {
-                ret = _contentTreeService.GetChild(sitesNode.Id, "default");
+                ret = _contentBroker.GetChild(sitesNode.Id, "default");
             }
 
             return ret;
