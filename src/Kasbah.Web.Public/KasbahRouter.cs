@@ -71,7 +71,7 @@ namespace Kasbah.Web.Public
                         newRouteData.Values["content"] = content;
                         newRouteData.Values["node"] = node;
 
-                        _logger.LogVerbose(string.Format("Routing to: {0}.{1}", newRouteData.Values["controller"], newRouteData.Values["action"]));
+                        _logger.LogVerbose($"Routing to: {newRouteData.Values["controller"]}.{newRouteData.Values["action"]}");
                     }
                 }
 
