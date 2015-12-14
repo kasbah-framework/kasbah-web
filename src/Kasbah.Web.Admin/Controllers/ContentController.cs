@@ -8,6 +8,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
 using Kasbah.Web.Annotations;
+using Kasbah.Core.ContentBroker;
 
 namespace Kasbah.Web.Admin.Controllers
 {

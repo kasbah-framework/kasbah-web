@@ -6,6 +6,7 @@ using Microsoft.AspNet.Routing;
 using Microsoft.Extensions.Logging;
 using Kasbah.Core.ContentTree.Models;
 using Kasbah.Web.Models;
+using Kasbah.Core.ContentBroker;
 
 namespace Kasbah.Web.Public
 {
