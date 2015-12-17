@@ -22,11 +22,13 @@ namespace Kasbah.Web.Public
                 });
             });
 
-            services.AddSingleton<IApplicationContext>(svc => config());
+            services.AddSingleton(svc => config());
 
             // Services
             services.AddScoped<Kasbah.Core.ContentTree.ContentTreeService>();
             services.AddScoped<Kasbah.Core.Index.IndexService>();
+            services.AddScoped<Kasbah.Core.Events.EventService>();
+            services.AddScoped<Kasbah.Core.ContentBroker.ContentBroker>();
 
             services.AddMvc((options) =>
             {

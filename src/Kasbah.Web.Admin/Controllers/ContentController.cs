@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Kasbah.Core;
+using System.Reflection;
+using Kasbah.Core.ContentBroker;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Admin.Models;
+using Kasbah.Web.Annotations;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Reflection;
-using Kasbah.Web.Annotations;
-using Kasbah.Core.ContentBroker;
 
 namespace Kasbah.Web.Admin.Controllers
 {
@@ -56,9 +55,13 @@ namespace Kasbah.Web.Admin.Controllers
             return new SaveContentResponse { };
         }
 
+        #region Private Methods
+
         [Route("/api/content/set-active"), HttpPost]
 
         #endregion
+
+
 
         #region Private Methods
 
@@ -78,6 +81,8 @@ namespace Kasbah.Web.Admin.Controllers
             };
         }
 
+        #endregion
+
         static IEnumerable<PropertyInfo> GetAllProperties(Type type)
         {
             if (type == null) { return Enumerable.Empty<PropertyInfo>(); }
@@ -85,7 +90,6 @@ namespace Kasbah.Web.Admin.Controllers
             var info = type.GetTypeInfo();
 
             return info.DeclaredProperties.Concat(GetAllProperties(info.BaseType));
-
         }
 
         static string GetEditor(PropertyInfo property)
@@ -141,27 +145,29 @@ namespace Kasbah.Web.Admin.Controllers
         #endregion
     }
 
+    public class SaveContentRequest
+    {
+        #region Public Properties
+
+        public Version Version { get; set; }
+
+        #endregion
+    }
+
+    public class SaveContentResponse : BaseApiResponse
+    {
+    }
+
     public class Version
     {
         #region Public Properties
 
         public Guid? Id { get; set; }
 
-        public Guid NodeId { get; set; }
-
         public bool IsActive { get; set; }
-
+        public Guid NodeId { get; set; }
         public IDictionary<string, object> Values { get; set; }
 
         #endregion
-    }
-
-    public class SaveContentRequest
-    {
-        public Version Version { get; set; }
-    }
-
-    public class SaveContentResponse : BaseApiResponse
-    {
     }
 }
