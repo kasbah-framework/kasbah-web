@@ -27,6 +27,7 @@ namespace Kasbah.Web.Public
             // Services
             services.AddScoped<Kasbah.Core.ContentTree.ContentTreeService>();
             services.AddScoped<Kasbah.Core.Index.IndexService>();
+            services.AddScoped<Kasbah.Core.Events.EventService>();
 
             services.AddMvc((options) =>
             {

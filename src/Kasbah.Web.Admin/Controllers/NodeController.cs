@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Kasbah.Core;
 using Kasbah.Core.ContentTree.Models;
 using Kasbah.Core.Models;
+using Kasbah.Core.ContentBroker;
 using Microsoft.AspNet.Mvc;
 
 namespace Kasbah.Web.Admin

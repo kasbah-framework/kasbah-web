@@ -34,6 +34,7 @@ namespace Kasbah.Web.Admin
             // Services
             services.AddScoped<Kasbah.Core.ContentTree.ContentTreeService>();
             services.AddScoped<Kasbah.Core.Index.IndexService>();
+            services.AddScoped<Kasbah.Core.Events.EventService>();
 
             services.AddScoped<IUserStore<KasbahUser>, UserStore>();
             services.AddScoped<IRoleStore<KasbahIdentityRole>, RoleStore>();
