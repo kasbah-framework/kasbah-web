@@ -9,53 +9,53 @@ import { Button, DropDownButton, DropDownButtonItem, DropDownButtonSeparator, St
 
 
 const mapStateToProps = (state) => ({
-    tree: state.tree,
-    content: state.content.content,
-    currentVersion: state.content.currentVersion
+  tree: state.tree,
+  content: state.content.content,
+  currentVersion: state.content.currentVersion
 });
 const mapDispatchToProps = (dispatch) => ({
-    treeActions: bindActionCreators(treeActionCreators, dispatch),
-    contentActions: bindActionCreators(contentActionCreators, dispatch)
+  treeActions: bindActionCreators(treeActionCreators, dispatch),
+  contentActions: bindActionCreators(contentActionCreators, dispatch)
 });
 
 export class ContentView extends React.Component {
-    constructor() {
-        super();
+    constructor () {
+      super();
 
-        this.state = { selectedNode: null };
+      this.state = { selectedNode: null };
     }
 
-    handleNodeSelected(node) {
-        this.setState({ selectedNode: node });
-        this.props.contentActions.loadContent(node.id);
+    handleNodeSelected (node) {
+      this.setState({ selectedNode: node });
+      this.props.contentActions.loadContent(node.id);
     }
 
-    handleToggleNode(node) {
-        this.props.treeActions.toggleNode(node);
-        if (node.expanded) {
-            this.props.treeActions.clearChildren(node);
+    handleToggleNode (node) {
+      this.props.treeActions.toggleNode(node);
+      if (node.expanded) {
+          this.props.treeActions.clearChildren(node);
         }
         else {
-            this.props.treeActions.fetchChildren(node.id);
+          this.props.treeActions.fetchChildren(node.id);
         }
     }
 
-    componentWillMount() {
+    componentWillMount () {
         // TODO: limit the node tree to start at the /sites/ node
-        this.props.treeActions.fetchChildren(null);
+      this.props.treeActions.fetchChildren(null);
     }
 
-    handleSelectVersion(version) {
-        this.props.contentActions.selectVersion(version);
+    handleSelectVersion (version) {
+      this.props.contentActions.selectVersion(version);
     }
 
-    handleNewVersion() {
-        this.props.contentActions.addVersion(this.state.selectedNode.id);
+    handleNewVersion () {
+      this.props.contentActions.addVersion(this.state.selectedNode.id);
     }
 
-    _renderVersionSelector() {
-        if (!this.props.content) { return null; }
-        return (
+    _renderVersionSelector () {
+      if (!this.props.content) { return null; }
+      return (
             <div className='form-group'>
                 <DropDownButton label='Versions' buttonState='default'>
                     {this.props.content.versions.map((ent, index) => <DropDownButtonItem key={index} onClick={this.handleSelectVersion.bind(this, ent)}>{ent.id ? ent.id : <em>Unsaved version</em>} {ent.isActive && <span className="label label-success">active</span>}</DropDownButtonItem>)}
@@ -66,7 +66,7 @@ export class ContentView extends React.Component {
     }
 
     render () {
-        return (
+      return (
             <div className='container page-content'>
                 <div className='container-fluid'>
                     <div className='row'>

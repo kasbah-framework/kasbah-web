@@ -8,35 +8,35 @@ import { Button } from 'components/ui';
 const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators(actionCreators, dispatch)
+  actions: bindActionCreators(actionCreators, dispatch)
 });
 
 
 class ContentEditor extends React.Component {
     static propTypes = {
-        modelDef: React.PropTypes.object.isRequired,
-        version: React.PropTypes.object.isRequired,
-        error: React.PropTypes.object
+      modelDef: React.PropTypes.object.isRequired,
+      version: React.PropTypes.object.isRequired,
+      error: React.PropTypes.object
     }
 
-    handleFieldChange(field, value) {
-        this.props.actions.updateModel(field, value)
+    handleFieldChange (field, value) {
+      this.props.actions.updateModel(field, value);
     }
 
-    handleSave() {
-        this.props.actions.saveContent(this.props.version);
+    handleSave () {
+      this.props.actions.saveContent(this.props.version);
     }
 
-    handleReset() {
+    handleReset () {
 
     }
 
-    handleSetActive() {
-        this.props.actions.setActiveVersion(this.props.version.nodeId, this.props.version.id);
+    handleSetActive () {
+      this.props.actions.setActiveVersion(this.props.version.nodeId, this.props.version.id);
     }
 
-    render() {
-        return (
+    render () {
+      return (
             <div>
                 <Editor modelDef={this.props.modelDef} model={this.props.version.values} errors={this.props.errors || {}} onFieldChange={this.handleFieldChange.bind(this)} />
                 <div>

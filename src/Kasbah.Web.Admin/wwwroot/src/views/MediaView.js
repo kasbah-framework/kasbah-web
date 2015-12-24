@@ -4,15 +4,15 @@ import React from 'react';
 // as a prototype
 
 export default class extends React.Component {
-    constructor() {
-        super();
+    constructor () {
+      super();
 
-        this.state = {};
+      this.state = {};
     }
 
-    _renderUploadModal() {
+    _renderUploadModal () {
         // TODO: hook this up properly...
-        return (
+      return (
             <div>
                 <div className='modal-backdrop in' />
                 <div className='modal' style={{'display': 'block'}}>
@@ -46,20 +46,20 @@ export default class extends React.Component {
         );
     }
 
-    handleShowMediaUpload() {
-        this.setState({ showMediaUpload: true });
+    handleShowMediaUpload () {
+      this.setState({ showMediaUpload: true });
         // HACK!
-        document.body.className += 'modal-open';
+      document.body.className += 'modal-open';
     }
 
-    handleHideMediaUpload() {
-        this.setState({ showMediaUpload: false });
+    handleHideMediaUpload () {
+      this.setState({ showMediaUpload: false });
         // HACK!
-        document.body.className = document.body.className.replace('modal-open', '');
+      document.body.className = document.body.className.replace('modal-open', '');
     }
 
-    render() {
-        return (
+    render () {
+      return (
             <div className='container page-content'>
                 <ul className='breadcrumb'>
                     <li>media root</li>
@@ -78,7 +78,7 @@ export default class extends React.Component {
                 </div>
 
                 <div className='card-columns'>
-                {[0,0,0,0,0,0,0,0,0,0,0,0,0,0].map((a, index) => (
+                {[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].map((a, index) => (
                         <div className='card' key={index}>
                             <div className='card-header'>
                                 Name of the media

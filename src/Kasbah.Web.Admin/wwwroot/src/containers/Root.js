@@ -1,45 +1,42 @@
-import React                    from 'react';
-import { Provider }             from 'react-redux';
-import routes                   from '../routes';
-import { ReduxRouter }          from 'redux-router';
-import DevTools                 from './DevTools';
-import { createDevToolsWindow } from '../utils';
-import LoginView                from 'views/LoginView';
+// const content = (this.props.store.auth && this.props.store.auth.isAuthenticated) ? (<ReduxRouter>{routes}</ReduxRouter>) : (<LoginView />);
+import React from 'react'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router'
 
 export default class Root extends React.Component {
   static propTypes = {
-    store : React.PropTypes.object.isRequired,
-    debug : React.PropTypes.bool,
-    debugExternal : React.PropTypes.bool
+    history: React.PropTypes.object.isRequired,
+    routes: React.PropTypes.element.isRequired,
+    store: React.PropTypes.object.isRequired
   }
 
-  static defaultProps = {
-    debug : false,
-    debugExternal : false
+  get content () {
+    return (
+      <Router>
+        {this.props.routes}
+      </Router>
+    )
   }
 
-  renderDevTools () {
-    if (!this.props.debug) {
-      return null;
+  get devTools () {
+    if (__DEBUG__) {
+      if (__DEBUG_NEW_WINDOW__) {
+        require('../redux/utils/createDevToolsWindow')(this.props.store)
+      } else {
+        const DevTools = require('containers/DevTools')
+        return <DevTools />
+      }
     }
-
-    return this.props.debugExternal ?
-      createDevToolsWindow(this.props.store) : <DevTools />;
   }
 
   render () {
-    // console.log(this.props.store.auth.isAuthenticated);
-    // const content = (this.props.store.auth && this.props.store.auth.isAuthenticated) ? (<ReduxRouter>{routes}</ReduxRouter>) : (<LoginView />);
-    const content = <ReduxRouter>{routes}</ReduxRouter>;
     return (
-      <div>
-        <Provider store={this.props.store}>
-          <div>
-            {content}
-            {this.renderDevTools()}
-          </div>
-        </Provider>
-      </div>
-    );
+      <Provider store={this.props.store}>
+        <div style={{ height: '100%' }}>
+          {this.content}
+          {this.devTools}
+        </div>
+      </Provider>
+    )
   }
 }

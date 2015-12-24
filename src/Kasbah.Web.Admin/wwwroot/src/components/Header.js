@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class extends React.Component {
     render () {
-        return (
+      return (
             <nav className='navbar navbar-dark navbar-static-top header'>
                 <a className='navbar-brand' href='/'>DASHBOARD</a>
                 <ul className='nav navbar-nav'>

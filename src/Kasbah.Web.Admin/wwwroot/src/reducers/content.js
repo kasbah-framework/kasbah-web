@@ -10,65 +10,65 @@ import { pushState } from 'redux-router';
 import jwtDecode from 'jwt-decode';
 
 const initialState = {
-    isLoading: false,
-    content: null,
-    currentVersion: null,
-    errorCode: null,
-    errorMessage: null
+  isLoading: false,
+  content: null,
+  currentVersion: null,
+  errorCode: null,
+  errorMessage: null
 };
 
 export default createReducer(initialState, {
-    [LOAD_CONTENT_REQUEST]: (state, payload) => {
-        return Object.assign({}, state, {
-            'isLoading': true,
-            'currentVersion': null,
-            'errorCode': null,
-            'errorMessage': null
+  [LOAD_CONTENT_REQUEST]: (state, payload) => {
+      return Object.assign({}, state, {
+          'isLoading': true,
+          'currentVersion': null,
+          'errorCode': null,
+          'errorMessage': null
         });
     },
-    [LOAD_CONTENT_SUCCESS]: (state, payload) => {
-        try {
-            return Object.assign({}, state, {
-                'isLoading': false,
-                'content': payload.content,
-                'currentVersion': null,
-                'errorCode': null,
-                'errorMessage': null
+  [LOAD_CONTENT_SUCCESS]: (state, payload) => {
+      try {
+          return Object.assign({}, state, {
+              'isLoading': false,
+              'content': payload.content,
+              'currentVersion': null,
+              'errorCode': null,
+              'errorMessage': null
             });
         } catch (e) {
-            return Object.assign({}, state, {
-                'isLoading': false,
-                'content': null,
-                'currentVersion': null,
-                'errorCode': -1,
-                'errorMessage': `Error processing data: ${e}`
+          return Object.assign({}, state, {
+              'isLoading': false,
+              'content': null,
+              'currentVersion': null,
+              'errorCode': -1,
+              'errorMessage': `Error processing data: ${e}`
             });
         }
     },
-    [LOAD_CONTENT_FAILURE]: (state, payload) => {
-        return Object.assign({}, state, {
-            'isLoading': false,
-            'content': null,
-            'currentVersion': null,
-            'errorCode': payload.errorCode,
-            'errorMessage': payload.errorMessage,
+  [LOAD_CONTENT_FAILURE]: (state, payload) => {
+      return Object.assign({}, state, {
+          'isLoading': false,
+          'content': null,
+          'currentVersion': null,
+          'errorCode': payload.errorCode,
+          'errorMessage': payload.errorMessage,
         });
     },
-    [UPDATE_MODEL]: (state, payload) => {
-        const updates = Object.assign({}, state.currentVersion.values);
-        updates[payload.field.alias] = payload.value;
-        return Object.assign({}, state, {
-            'currentVersion': Object.assign({}, state.currentVersion, { values: updates, '$dirty': true })
+  [UPDATE_MODEL]: (state, payload) => {
+      const updates = Object.assign({}, state.currentVersion.values);
+      updates[payload.field.alias] = payload.value;
+      return Object.assign({}, state, {
+          'currentVersion': Object.assign({}, state.currentVersion, { values: updates, '$dirty': true })
         });
     },
-    [SELECT_VERSION]: (state, payload) => {
-        return Object.assign({}, state, {
-            'currentVersion': Object.assign({}, payload.version)
+  [SELECT_VERSION]: (state, payload) => {
+      return Object.assign({}, state, {
+          'currentVersion': Object.assign({}, payload.version)
         });
     },
-    [ADD_VERSION]: (state, payload) => {
-        return Object.assign({}, state, {
-            'content': Object.assign({}, state.content, { versions: [...state.content.versions, { id: null, nodeId: payload.node, values: { } }] })
+  [ADD_VERSION]: (state, payload) => {
+      return Object.assign({}, state, {
+          'content': Object.assign({}, state.content, { versions: [...state.content.versions, { id: null, nodeId: payload.node, values: { } }] })
         });
     }
 });

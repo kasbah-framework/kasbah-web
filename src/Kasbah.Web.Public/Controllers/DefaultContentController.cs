@@ -6,8 +6,9 @@ namespace Kasbah.Web.Public.Controllers
     {
         #region Public Methods
 
-        public ActionResult RenderContent(object content)
+        public ActionResult RenderContent()
         {
+            var content = ViewData["content"];
             return View(content);
         }
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class HomeView extends React.Component {
     render () {
-        return (
+      return (
             <div className='container page-content'>
                 <div className='card'>
                     <div className='card-header'>
