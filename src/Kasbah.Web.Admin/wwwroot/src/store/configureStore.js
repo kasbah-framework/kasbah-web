@@ -10,34 +10,34 @@ import {
     createStore } from 'redux';
 
 export default function configureStore (initialState, debug = false) {
-    let createStoreWithMiddleware;
+  let createStoreWithMiddleware;
 
-    const middleware = applyMiddleware(thunk);
+  const middleware = applyMiddleware(thunk);
 
-    if (debug) {
-        createStoreWithMiddleware = compose(
+  if (debug) {
+      createStoreWithMiddleware = compose(
             middleware,
             reduxReactRouter({ routes, createHistory }),
             DevTools.instrument()
         );
     } else {
-        createStoreWithMiddleware = compose(
+      createStoreWithMiddleware = compose(
             middleware,
             reduxReactRouter({ routes, createHistory })
         );
     }
 
-    const store = createStoreWithMiddleware(createStore)(
+  const store = createStoreWithMiddleware(createStore)(
         rootReducer, initialState
     );
 
-    if (module.hot) {
-        module.hot.accept('../reducers', () => {
-            const nextRootReducer = require('../reducers/index');
+  if (module.hot) {
+      module.hot.accept('../reducers', () => {
+          const nextRootReducer = require('../reducers/index');
 
-            store.replaceReducer(nextRootReducer);
+          store.replaceReducer(nextRootReducer);
         });
     }
 
-    return store;
+  return store;
 }

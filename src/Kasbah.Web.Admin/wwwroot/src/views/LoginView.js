@@ -5,19 +5,19 @@ import LoginForm from 'components/auth/LoginForm';
 import * as actionCreators from 'actions/auth';
 
 const mapStateToProps = (state) => ({
-    auth: state.auth
+  auth: state.auth
 });
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators(actionCreators, dispatch)
+  actions: bindActionCreators(actionCreators, dispatch)
 });
 
 export class LoginView extends React.Component {
-    handleSubmit(username, password, persist) {
-        this.props.actions.loginUser(username, password, persist);
+    handleSubmit (username, password, persist) {
+      this.props.actions.loginUser(username, password, persist);
     }
 
-    render() {
-        return (
+    render () {
+      return (
             <div className='flex-centred login-view'>
                 <div className='col-lg-5 col-md-6 col-sm-10'>
                     <div className='card'>

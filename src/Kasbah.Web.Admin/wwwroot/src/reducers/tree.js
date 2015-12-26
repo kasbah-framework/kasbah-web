@@ -9,67 +9,67 @@ import {
     UPDATE_ITEM,
     NODE_VERSION_ADD_FIELD } from 'actions/tree';
 
-function clone(obj) {
-    return JSON.parse(JSON.stringify(obj));
+function clone (obj) {
+  return JSON.parse(JSON.stringify(obj));
 }
 
 const initialState = { nodes: {}, versions: {}, items: {} };
 export default createReducer(initialState, {
-    [RECEIVE_NODES] : (state, payload) => {
-        let ret = clone(state);
+  [RECEIVE_NODES] : (state, payload) => {
+      let ret = clone(state);
 
-        for (var i = 0; i < payload.data.length; i++) {
-            ret.nodes[payload.data[i].id] = payload.data[i];
+      for (var i = 0; i < payload.data.length; i++) {
+          ret.nodes[payload.data[i].id] = payload.data[i];
         }
 
-        return ret;
+      return ret;
     },
-    [TOGGLE_NODE] : (state, payload) => {
-        let ret = clone(state);
+  [TOGGLE_NODE] : (state, payload) => {
+      let ret = clone(state);
 
-        ret.nodes[payload.node.id].expanded = !ret.nodes[payload.node.id].expanded;
+      ret.nodes[payload.node.id].expanded = !ret.nodes[payload.node.id].expanded;
 
-        return ret;
+      return ret;
     },
-    [CLEAR_CHILDREN] : (state, payload) => {
-        let ret = clone(state);
+  [CLEAR_CHILDREN] : (state, payload) => {
+      let ret = clone(state);
 
-        for (var k in ret.nodes) {
-            if (ret.nodes[k].parent == payload.node.id && ret.nodes[k].id !== null) {
-                delete ret[k];
+      for (var k in ret.nodes) {
+          if (ret.nodes[k].parent === payload.node.id && ret.nodes[k].id !== null) {
+              delete ret[k];
             }
         }
 
-        return ret;
+      return ret;
     },
-    [RECEIVE_NODE_VERSIONS]: (state, payload) => {
-        let ret = clone(state);
+  [RECEIVE_NODE_VERSIONS]: (state, payload) => {
+      let ret = clone(state);
 
-        ret.versions[payload.node] = payload.data;
+      ret.versions[payload.node] = payload.data;
 
-        return ret;
+      return ret;
     },
-    [RECEIVE_NODE_VERSION]: (state, payload) => {
-        let ret = clone(state);
+  [RECEIVE_NODE_VERSION]: (state, payload) => {
+      let ret = clone(state);
 
-        ret.items[payload.id] = ret.items[payload.id] || {};
+      ret.items[payload.id] = ret.items[payload.id] || {};
 
-        ret.items[payload.id][payload.version] = payload.data;
+      ret.items[payload.id][payload.version] = payload.data;
 
-        return ret;
+      return ret;
     },
-    [UPDATE_ITEM]: (state, payload) => {
-        let ret = clone(state);
+  [UPDATE_ITEM]: (state, payload) => {
+      let ret = clone(state);
 
-        ret.items[payload.node][payload.version][payload.field] = payload.value;
+      ret.items[payload.node][payload.version][payload.field] = payload.value;
 
-        return ret;
+      return ret;
     },
-    [NODE_VERSION_ADD_FIELD]: (state, payload) => {
-        let ret = clone(state);
+  [NODE_VERSION_ADD_FIELD]: (state, payload) => {
+      let ret = clone(state);
 
-        ret.items[payload.node][payload.version][payload.name] = null;
+      ret.items[payload.node][payload.version][payload.name] = null;
 
-        return ret;
+      return ret;
     }
 });

@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Kasbah.Core;
+using Kasbah.Core.ContentBroker;
+using Kasbah.Core.ContentTree.Models;
+using Kasbah.Web.Models;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Routing;
 using Microsoft.Extensions.Logging;
@@ -112,12 +114,12 @@ namespace Kasbah.Web.Public
 
         Node GetNodeByPath(Site site, string path)
         {
-            var kasbahPath = new [] {
+            var kasbahPath = new[] {
                 "sites",
                 site.Alias,
-                "content",
+                // "content",
                 "home",
-            }.Concat(path.Split('/'));
+            }.Concat(path.Split('/').Where(ent => !string.IsNullOrEmpty(ent)));
 
             return _contentBroker.GetNodeByPath(kasbahPath);
         }

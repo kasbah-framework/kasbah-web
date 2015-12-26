@@ -1,5 +1,5 @@
 using System;
-using Kasbah.Core;
+using Kasbah.Core.ContentBroker;
 using Kasbah.Core.ContentTree.Models;
 using Kasbah.Core.Events;
 using Kasbah.Core.ContentBroker;

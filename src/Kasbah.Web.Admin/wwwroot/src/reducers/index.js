@@ -5,8 +5,8 @@ import auth from './auth';
 import content from './content';
 
 export default combineReducers({
-    tree,
-    auth,
-    content,
-    router: routerStateReducer
+  tree,
+  auth,
+  content,
+  router: routerStateReducer
 });

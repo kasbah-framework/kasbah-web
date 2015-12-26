@@ -3,17 +3,17 @@ import NodeList from './NodeList';
 
 export default class Node extends React.Component {
     static propTypes = {
-        onToggle: React.PropTypes.func.isRequired,
-        onSelect: React.PropTypes.func.isRequired
+      onToggle: React.PropTypes.func.isRequired,
+      onSelect: React.PropTypes.func.isRequired
     }
 
-    render() {
-        const expanded = this.props.node.expanded;
-        const iconClass = 'fa fa-' + (expanded ? 'minus-square-o' : 'plus-square-o');
+    render () {
+      const expanded = this.props.node.expanded;
+      const iconClass = 'fa fa-' + (expanded ? 'minus-square-o' : 'plus-square-o');
 
-        const toggleButton = (this.props.node.hasChildren || this.props.onCreate) ? (<button className='toggle' onClick={this.props.onToggle.bind(this, this.props.node)}><i className={iconClass}></i></button>) : null;
+      const toggleButton = (this.props.node.hasChildren || this.props.onCreate) ? (<button className='toggle' onClick={this.props.onToggle.bind(this, this.props.node)}><i className={iconClass}></i></button>) : null;
 
-        return (
+      return (
             <li>
                 <div>
                     <button onClick={this.props.onSelect.bind(this, this.props.node)}>
