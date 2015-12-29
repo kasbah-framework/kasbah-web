@@ -69,7 +69,7 @@ export class DropDownButton extends React.Component {
       }
 
       return (<div className={classes.join(' ')}>
-            {this.state.isOpen ? <div onClick={this.handleClick.bind(this)} style={{position:'fixed', top:0,left:0,right:0,bottom:0, backgroundColor: 'transparent'}}></div> : null}
+            {this.state.isOpen ? <div onClick={this.handleClick.bind(this)} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'transparent' }}></div> : null}
             <button type='button' className={btnClasses.join(' ')} onClick={this.handleClick.bind(this)}>
                 {this.props.label}
             </button>

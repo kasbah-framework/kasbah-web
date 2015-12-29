@@ -123,7 +123,7 @@ export function saveContentRequest () {
 
 export function saveContent (version) {
   return (dispatch) => {
-    dispatch(loadContentRequest());
+    dispatch(saveContentRequest());
     return fetch(`${API_BASE}/api/content`, {
       method: 'POST',
       credentials: 'include',
