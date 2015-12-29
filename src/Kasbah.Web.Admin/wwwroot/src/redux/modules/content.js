@@ -1,20 +1,28 @@
-import fetch from 'isomorphic-fetch';
-import { checkHttpStatus, parseJSON } from '../utils';
-import {
-    LOAD_CONTENT_REQUEST,
-    LOAD_CONTENT_FAILURE,
-    LOAD_CONTENT_SUCCESS,
-    UPDATE_MODEL,
-    SELECT_VERSION,
-    ADD_VERSION,
-    SAVE_CONTENT_REQUEST,
-    SAVE_CONTENT_FAILURE,
-    SAVE_CONTENT_SUCCESS,
-    SET_ACTIVE_VERSION_REQUEST,
-    SET_ACTIVE_VERSION_FAILURE,
-    SET_ACTIVE_VERSION_SUCCESS } from 'constants/content';
-import { API_BASE } from 'constants';
+import { handleActions } from 'redux-actions';
+import { checkHttpStatus, parseJSON } from '../../utils';
 import MimeTypes from 'constants/MimeTypes';
+
+// ------------------------------------
+// Constants
+// ------------------------------------
+export const LOAD_CONTENT_REQUEST = 'LOAD_CONTENT_REQUEST';
+export const LOAD_CONTENT_SUCCESS = 'LOAD_CONTENT_SUCCESS';
+export const LOAD_CONTENT_FAILURE = 'LOAD_CONTENT_FAILURE';
+export const SAVE_CONTENT_REQUEST = 'SAVE_CONTENT_REQUEST';
+export const SAVE_CONTENT_SUCCESS = 'SAVE_CONTENT_SUCCESS';
+export const SAVE_CONTENT_FAILURE = 'SAVE_CONTENT_FAILURE';
+export const SET_ACTIVE_VERSION_REQUEST = 'SET_ACTIVE_VERSION_REQUEST';
+export const SET_ACTIVE_VERSION_SUCCESS = 'SAVE_CONTENT_SUCCESS';
+export const SET_ACTIVE_VERSION_FAILURE = 'SET_ACTIVE_VERSION_FAILURE';
+export const UPDATE_MODEL = 'UPDATE_MODEL';
+export const SELECT_VERSION = 'SELECT_VERSION';
+export const ADD_VERSION = 'ADD_VERSION';
+
+// ------------------------------------
+// Actions
+// ------------------------------------
+import fetch from 'isomorphic-fetch';
+import { API_BASE } from 'constants';
 
 export function loadContentSuccess (content) {
   return {
@@ -196,3 +204,76 @@ export function setActiveVersion (node, version) {
     });
   };
 }
+
+export const actions = {
+  loadContent,
+  selectVersion,
+  addVersion
+};
+
+// ------------------------------------
+// Reducer
+// ------------------------------------
+const initialState = {
+  isLoading: false,
+  content: null,
+  currentVersion: null,
+  errorCode: null,
+  errorMessage: null
+};
+
+export default handleActions({
+  [LOAD_CONTENT_REQUEST]: (state, { payload }) => {
+    return Object.assign({}, state, {
+      'isLoading': true,
+      'currentVersion': null,
+      'errorCode': null,
+      'errorMessage': null
+    });
+  },
+  [LOAD_CONTENT_SUCCESS]: (state, { payload }) => {
+    try {
+      return Object.assign({}, state, {
+        'isLoading': false,
+        'content': payload.content,
+        'currentVersion': null,
+        'errorCode': null,
+        'errorMessage': null
+      });
+    } catch (e) {
+      return Object.assign({}, state, {
+        'isLoading': false,
+        'content': null,
+        'currentVersion': null,
+        'errorCode': -1,
+        'errorMessage': `Error processing data: ${e}`
+      });
+    }
+  },
+  [LOAD_CONTENT_FAILURE]: (state, { payload }) => {
+    return Object.assign({}, state, {
+      'isLoading': false,
+      'content': null,
+      'currentVersion': null,
+      'errorCode': payload.errorCode,
+      'errorMessage': payload.errorMessage
+    });
+  },
+  [UPDATE_MODEL]: (state, { payload }) => {
+    const updates = Object.assign({}, state.currentVersion.values);
+    updates[payload.field.alias] = payload.value;
+    return Object.assign({}, state, {
+      'currentVersion': Object.assign({}, state.currentVersion, { values: updates, '$dirty': true })
+    });
+  },
+  [SELECT_VERSION]: (state, { payload }) => {
+    return Object.assign({}, state, {
+      'currentVersion': Object.assign({}, payload.version)
+    });
+  },
+  [ADD_VERSION]: (state, { payload }) => {
+    return Object.assign({}, state, {
+      'content': Object.assign({}, state.content, { versions: [...state.content.versions, { id: null, nodeId: payload.node, values: { } }] })
+    });
+  }
+}, initialState);

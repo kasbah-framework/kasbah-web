@@ -10,7 +10,7 @@ export default class NodeList extends React.Component {
       ]),
       onToggleNode: React.PropTypes.func.isRequired,
       onNodeSelected: React.PropTypes.func.isRequired,
-      onCreateNode: React.PropTypes.func.isRequired,
+      onCreateNode: React.PropTypes.func,
       className: React.PropTypes.string
     }
 

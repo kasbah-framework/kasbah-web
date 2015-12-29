@@ -1,29 +1,26 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as treeActionCreators from 'actions/tree';
-import * as contentActionCreators from 'actions/content';
+import { actions as treeActions } from '../redux/modules/tree';
+import { actions as contentActions } from '../redux/modules/content';
 import NodeList from 'components/tree/NodeList';
 import ContentEditor from 'components/content/ContentEditor';
 import { DropDownButton, DropDownButtonItem, DropDownButtonSeparator } from 'components/ui';
 
 const mapStateToProps = (state) => ({
   tree: state.tree,
-  content: (state.content && state.content.content),
-  currentVersion: (state.content && state.content.currentVersion)
-});
-const mapDispatchToProps = (dispatch) => ({
-  treeActions: bindActionCreators(treeActionCreators, dispatch),
-  contentActions: bindActionCreators(contentActionCreators, dispatch)
+  content: state.content
 });
 
 export class ContentView extends React.Component {
     static propTypes = {
-      contentActions: React.PropTypes.object.isRequired,
-      treeActions: React.PropTypes.object.isRequired,
-      tree: React.PropTypes.object.isRequired,
-      content: React.PropTypes.object.isRequired,
-      currentVersion: React.PropTypes.object.isRequired
+      tree: React.PropTypes.object,
+      content: React.PropTypes.object,
+
+      fetchChildren: React.PropTypes.func,
+      toggleNode: React.PropTypes.func,
+      loadContent: React.PropTypes.func,
+      selectVersion: React.PropTypes.func,
+      addVersion: React.PropTypes.func
     }
 
     constructor () {
@@ -34,38 +31,36 @@ export class ContentView extends React.Component {
 
     handleNodeSelected (node) {
       this.setState({ selectedNode: node });
-      this.props.contentActions.loadContent(node.id);
+      this.props.loadContent(node.id);
     }
 
     handleToggleNode (node) {
-      this.props.treeActions.toggleNode(node);
-      if (node.expanded) {
-        this.props.treeActions.clearChildren(node);
-      } else {
-        this.props.treeActions.fetchChildren(node.id);
+      this.props.toggleNode(node);
+      if (!node.expanded) {
+        this.props.fetchChildren(node.id);
       }
     }
 
     componentWillMount () {
-        // TODO: limit the node tree to start at the /sites/ node
-      this.props.treeActions.fetchChildren(null);
+      // TODO: limit the node tree to start at the /sites/ node
+      this.props.fetchChildren(null);
     }
 
     handleSelectVersion (version) {
-      this.props.contentActions.selectVersion(version);
+      this.props.selectVersion(version);
     }
 
     handleNewVersion () {
-      this.props.contentActions.addVersion(this.state.selectedNode.id);
+      this.props.addVersion(this.state.selectedNode.id);
     }
 
     _renderVersionSelector () {
-      if (!this.props.content) { return null; }
+      if (!this.props.content || !this.props.content.content) { return null; }
       return (
             <div className='form-group'>
                 <DropDownButton label='Versions' buttonState='default'>
-                    {this.props.content.versions.map((ent, index) => <DropDownButtonItem key={index} onClick={this.handleSelectVersion.bind(this, ent)}>{ent.id ? ent.id : <em>Unsaved version</em>} {ent.isActive && <span className='label label-success'>active</span>}</DropDownButtonItem>)}
-                    {this.props.content.versions.length > 0 && <DropDownButtonSeparator />}
+                    {this.props.content.content.versions.map((ent, index) => <DropDownButtonItem key={index} onClick={this.handleSelectVersion.bind(this, ent)}>{ent.id ? ent.id : <em>Unsaved version</em>} {ent.isActive && <span className='label label-success'>active</span>}</DropDownButtonItem>)}
+                    {this.props.content.content.versions.length > 0 && <DropDownButtonSeparator />}
                     <DropDownButtonItem onClick={this.handleNewVersion.bind(this)}>New version</DropDownButtonItem>
                 </DropDownButton>
             </div>);
@@ -94,7 +89,7 @@ export class ContentView extends React.Component {
 
                         <div className='col-lg-9'>
                             {this._renderVersionSelector()}
-                            {this.props.currentVersion && (<ContentEditor modelDef={this.props.content.modelDefinition} version={this.props.currentVersion} errors={{}} />)}
+                            {this.props.content && this.props.content.currentVersion && (<ContentEditor modelDef={this.props.content.content.modelDefinition} version={this.props.content.currentVersion} errors={{}} />)}
                             <hr />
                             <p>This is really the crux of the whole system. Everything else is <small>superfluous</small>.</p>
                             <ul>
@@ -110,4 +105,12 @@ export class ContentView extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContentView);
+const actions = {
+  fetchChildren: treeActions.fetchChildren,
+  toggleNode: treeActions.toggleNode,
+  loadContent: contentActions.loadContent,
+  selectVersion: contentActions.selectVersion,
+  addVersion: contentActions.addVersion
+};
+
+export default connect(mapStateToProps, actions)(ContentView);

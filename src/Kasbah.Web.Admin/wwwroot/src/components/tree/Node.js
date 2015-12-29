@@ -5,7 +5,7 @@ export default class Node extends React.Component {
     static propTypes = {
       onToggle: React.PropTypes.func.isRequired,
       onSelect: React.PropTypes.func.isRequired,
-      onCreate: React.PropTypes.func.isRequired,
+      onCreate: React.PropTypes.func,
       node: React.PropTypes.object.isRequired,
       nodeTree: React.PropTypes.object.isRequired
     }

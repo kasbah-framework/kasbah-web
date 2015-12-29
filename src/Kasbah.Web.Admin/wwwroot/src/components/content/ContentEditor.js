@@ -1,30 +1,24 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Editor from './Editor';
-import * as actionCreators from 'actions/content';
 import { Button } from 'components/ui';
 
 const mapStateToProps = (state) => ({
-});
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(actionCreators, dispatch)
 });
 
 class ContentEditor extends React.Component {
     static propTypes = {
       modelDef: React.PropTypes.object.isRequired,
       version: React.PropTypes.object.isRequired,
-      errors: React.PropTypes.object,
-      actions: React.PropTypes.object
+      errors: React.PropTypes.object
     }
 
     handleFieldChange (field, value) {
-      this.props.actions.updateModel(field, value);
+      // this.props.actions.updateModel(field, value);
     }
 
     handleSave () {
-      this.props.actions.saveContent(this.props.version);
+      // this.props.actions.saveContent(this.props.version);
     }
 
     handleReset () {
@@ -32,7 +26,7 @@ class ContentEditor extends React.Component {
     }
 
     handleSetActive () {
-      this.props.actions.setActiveVersion(this.props.version.nodeId, this.props.version.id);
+      // this.props.actions.setActiveVersion(this.props.version.nodeId, this.props.version.id);
     }
 
     render () {
@@ -48,4 +42,4 @@ class ContentEditor extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContentEditor);
+export default connect(mapStateToProps)(ContentEditor);

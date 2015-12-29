@@ -26,7 +26,7 @@ export class DropDownButtonItem extends React.Component {
     static propTypes = {
       onClick: React.PropTypes.func.isRequired,
       disabled: React.PropTypes.bool,
-      children: React.PropTypes.element
+      children: React.PropTypes.node
     }
 
     render () {
@@ -44,7 +44,7 @@ export class DropDownButton extends React.Component {
     static propTypes = {
       label: React.PropTypes.string.isRequired,
       buttonState: React.PropTypes.string,
-      children: React.PropTypes.element
+      children: React.PropTypes.node
     }
 
     constructor () {
