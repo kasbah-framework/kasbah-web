@@ -2,23 +2,24 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Editor from './Editor';
 import { Button } from 'components/ui';
-
-const mapStateToProps = (state) => ({
-});
+import { actions as contentActions } from '../../redux/modules/content';
 
 class ContentEditor extends React.Component {
     static propTypes = {
       modelDef: React.PropTypes.object.isRequired,
       version: React.PropTypes.object.isRequired,
-      errors: React.PropTypes.object
+      errors: React.PropTypes.object,
+      updateModel: React.PropTypes.func,
+      saveContent: React.PropTypes.func,
+      setActiveVersion: React.PropTypes.func
     }
 
     handleFieldChange (field, value) {
-      // this.props.actions.updateModel(field, value);
+      this.props.updateModel(field, value);
     }
 
     handleSave () {
-      // this.props.actions.saveContent(this.props.version);
+      this.props.saveContent(this.props.version);
     }
 
     handleReset () {
@@ -26,7 +27,7 @@ class ContentEditor extends React.Component {
     }
 
     handleSetActive () {
-      // this.props.actions.setActiveVersion(this.props.version.nodeId, this.props.version.id);
+      this.props.setActiveVersion(this.props.version.nodeId, this.props.version.id);
     }
 
     render () {
@@ -42,4 +43,10 @@ class ContentEditor extends React.Component {
     }
 }
 
-export default connect(mapStateToProps)(ContentEditor);
+const actions = {
+  updateModel: contentActions.updateModel,
+  saveContent: contentActions.saveContent,
+  setActiveVersion: contentActions.setActiveVersion
+};
+
+export default connect(null, actions)(ContentEditor);

@@ -12,7 +12,7 @@ export const SAVE_CONTENT_REQUEST = 'SAVE_CONTENT_REQUEST';
 export const SAVE_CONTENT_SUCCESS = 'SAVE_CONTENT_SUCCESS';
 export const SAVE_CONTENT_FAILURE = 'SAVE_CONTENT_FAILURE';
 export const SET_ACTIVE_VERSION_REQUEST = 'SET_ACTIVE_VERSION_REQUEST';
-export const SET_ACTIVE_VERSION_SUCCESS = 'SAVE_CONTENT_SUCCESS';
+export const SET_ACTIVE_VERSION_SUCCESS = 'SET_ACTIVE_VERSION_SUCCESS';
 export const SET_ACTIVE_VERSION_FAILURE = 'SET_ACTIVE_VERSION_FAILURE';
 export const UPDATE_MODEL = 'UPDATE_MODEL';
 export const SELECT_VERSION = 'SELECT_VERSION';
@@ -208,7 +208,10 @@ export function setActiveVersion (node, version) {
 export const actions = {
   loadContent,
   selectVersion,
-  addVersion
+  addVersion,
+  updateModel,
+  saveContent,
+  setActiveVersion
 };
 
 // ------------------------------------
