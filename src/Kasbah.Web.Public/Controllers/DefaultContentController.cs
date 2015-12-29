@@ -8,7 +8,8 @@ namespace Kasbah.Web.Public.Controllers
 
         public ActionResult RenderContent()
         {
-            var content = ViewData["content"];
+            var content = RouteData.Values["content"];
+
             return View(content);
         }
 

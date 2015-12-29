@@ -10,8 +10,8 @@ import { Button, DropDownButton, DropDownButtonItem, DropDownButtonSeparator, St
 
 const mapStateToProps = (state) => ({
   tree: state.tree,
-  content: state.content.content,
-  currentVersion: state.content.currentVersion
+  content: (state.content && state.content.content),
+  currentVersion: (state.content && state.content.currentVersion)
 });
 const mapDispatchToProps = (dispatch) => ({
   treeActions: bindActionCreators(treeActionCreators, dispatch),
@@ -77,12 +77,12 @@ export class ContentView extends React.Component {
                                         <input className='form-control form-control-sm' placeholder='Live search...' disabled />
                                     </form>
                                 </div>
-                                <NodeList
+                                {this.props.tree && <NodeList
                                     parent={null}
                                     nodeTree={this.props.tree}
                                     onNodeSelected={this.handleNodeSelected.bind(this)}
                                     onToggleNode={this.handleToggleNode.bind(this)}
-                                    className='node-list list-group list-group-flush' />
+                                    className='node-list list-group list-group-flush' />}
                             </div>
                         </div>
 

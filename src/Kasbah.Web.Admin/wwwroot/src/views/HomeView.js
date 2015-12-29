@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router'
 
 export default class HomeView extends React.Component {
     render () {
@@ -25,7 +26,7 @@ export default class HomeView extends React.Component {
                                 <p className='card-text'>... maybe ...</p>
                             </div>
                             <div className='card-footer text-right'>
-                                <a className='card-link' href='/content'>Content navigator</a>
+                                <Link className='card-link' to='/content'>Content navigator</Link>
                             </div>
                         </div>
                     </div>
