@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 import Header from 'components/Header';
-import '../styles/core.scss'
+import '../styles/core.scss';
 import 'font-awesome/scss/font-awesome.scss';
 
 // Note: Stateless/function components *will not* hot reload!
@@ -21,11 +21,11 @@ function CoreLayout ({ children }) {
         {children}
       </div>
     </div>
-  )
+  );
 }
 
 CoreLayout.propTypes = {
   children: React.PropTypes.element
-}
+};
 
-export default CoreLayout
+export default CoreLayout;

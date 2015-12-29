@@ -4,7 +4,10 @@ import NodeList from './NodeList';
 export default class Node extends React.Component {
     static propTypes = {
       onToggle: React.PropTypes.func.isRequired,
-      onSelect: React.PropTypes.func.isRequired
+      onSelect: React.PropTypes.func.isRequired,
+      onCreate: React.PropTypes.func.isRequired,
+      node: React.PropTypes.object.isRequired,
+      nodeTree: React.PropTypes.object.isRequired
     }
 
     render () {

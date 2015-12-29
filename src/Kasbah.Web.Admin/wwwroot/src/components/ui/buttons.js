@@ -4,17 +4,19 @@ export class Button extends React.Component {
     static propTypes = {
       onClick: React.PropTypes.func.isRequired,
       label: React.PropTypes.string.isRequired,
-      disabled: React.PropTypes.bool
+      disabled: React.PropTypes.bool,
+      buttonState: React.PropTypes.string,
+      buttonSize: React.PropTypes.string
     }
 
     render () {
       const btnClasses = ['btn'];
       if (this.props.buttonState) {
-          btnClasses.push(`btn-${this.props.buttonState}`);
-        }
+        btnClasses.push(`btn-${this.props.buttonState}`);
+      }
       if (this.props.buttonSize) {
-          btnClasses.push(`btn-${this.props.buttonSize}`);
-        }
+        btnClasses.push(`btn-${this.props.buttonSize}`);
+      }
 
       return (<button className={btnClasses.join(' ')} onClick={this.props.onClick} disabled={this.props.disabled}>{this.props.label}</button>);
     }
@@ -23,7 +25,8 @@ export class Button extends React.Component {
 export class DropDownButtonItem extends React.Component {
     static propTypes = {
       onClick: React.PropTypes.func.isRequired,
-      disabled: React.PropTypes.bool
+      disabled: React.PropTypes.bool,
+      children: React.PropTypes.element
     }
 
     render () {
@@ -40,7 +43,8 @@ export class DropDownButtonSeparator extends React.Component {
 export class DropDownButton extends React.Component {
     static propTypes = {
       label: React.PropTypes.string.isRequired,
-      buttonState: React.PropTypes.string
+      buttonState: React.PropTypes.string,
+      children: React.PropTypes.element
     }
 
     constructor () {
@@ -56,13 +60,13 @@ export class DropDownButton extends React.Component {
     render () {
       const classes = ['btn-group'];
       if (this.state.isOpen) {
-          classes.push('open');
-        }
+        classes.push('open');
+      }
 
       const btnClasses = ['btn', 'btn-sm', 'dropdown-toggle'];
       if (this.props.buttonState) {
-          btnClasses.push(`btn-${this.props.buttonState}`);
-        }
+        btnClasses.push(`btn-${this.props.buttonState}`);
+      }
 
       return (<div className={classes.join(' ')}>
             <button type='button' className={btnClasses.join(' ')} onClick={this.handleClick.bind(this)}>

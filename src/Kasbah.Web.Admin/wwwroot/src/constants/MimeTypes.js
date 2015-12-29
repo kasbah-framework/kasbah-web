@@ -1,10 +1,10 @@
 const MimeTypes = {
   'text': {
-      'plain': 'text/plain'
-    },
+    'plain': 'text/plain'
+  },
   'application': {
-      'json': 'application/json'
-    }
+    'json': 'application/json'
+  }
 };
 
 export default MimeTypes;

@@ -11,12 +11,12 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(actionCreators, dispatch)
 });
 
-
 class ContentEditor extends React.Component {
     static propTypes = {
       modelDef: React.PropTypes.object.isRequired,
       version: React.PropTypes.object.isRequired,
-      error: React.PropTypes.object
+      errors: React.PropTypes.object,
+      actions: React.PropTypes.object
     }
 
     handleFieldChange (field, value) {
@@ -47,6 +47,5 @@ class ContentEditor extends React.Component {
             </div>);
     }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContentEditor);

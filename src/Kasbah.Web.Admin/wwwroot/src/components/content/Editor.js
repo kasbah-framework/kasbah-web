@@ -12,10 +12,10 @@ export default class extends React.Component {
     _renderField (field) {
       let editor = Editors.Text;
       for (var ent in Editors) {
-          if (Editors[ent].alias === field.type) {
-              editor = Editors[ent];
-            }
+        if (Editors[ent].alias === field.type) {
+          editor = Editors[ent];
         }
+      }
 
       const editorEl = React.createElement(editor, { field: field, onChange: this.props.onFieldChange.bind(this), value: this.props.model[field.alias] });
 

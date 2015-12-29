@@ -5,8 +5,7 @@ import * as treeActionCreators from 'actions/tree';
 import * as contentActionCreators from 'actions/content';
 import NodeList from 'components/tree/NodeList';
 import ContentEditor from 'components/content/ContentEditor';
-import { Button, DropDownButton, DropDownButtonItem, DropDownButtonSeparator, States } from 'components/ui';
-
+import { DropDownButton, DropDownButtonItem, DropDownButtonSeparator } from 'components/ui';
 
 const mapStateToProps = (state) => ({
   tree: state.tree,
@@ -19,6 +18,14 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export class ContentView extends React.Component {
+    static propTypes = {
+      contentActions: React.PropTypes.object.isRequired,
+      treeActions: React.PropTypes.object.isRequired,
+      tree: React.PropTypes.object.isRequired,
+      content: React.PropTypes.object.isRequired,
+      currentVersion: React.PropTypes.object.isRequired
+    }
+
     constructor () {
       super();
 
@@ -33,11 +40,10 @@ export class ContentView extends React.Component {
     handleToggleNode (node) {
       this.props.treeActions.toggleNode(node);
       if (node.expanded) {
-          this.props.treeActions.clearChildren(node);
-        }
-        else {
-          this.props.treeActions.fetchChildren(node.id);
-        }
+        this.props.treeActions.clearChildren(node);
+      } else {
+        this.props.treeActions.fetchChildren(node.id);
+      }
     }
 
     componentWillMount () {
@@ -58,11 +64,11 @@ export class ContentView extends React.Component {
       return (
             <div className='form-group'>
                 <DropDownButton label='Versions' buttonState='default'>
-                    {this.props.content.versions.map((ent, index) => <DropDownButtonItem key={index} onClick={this.handleSelectVersion.bind(this, ent)}>{ent.id ? ent.id : <em>Unsaved version</em>} {ent.isActive && <span className="label label-success">active</span>}</DropDownButtonItem>)}
+                    {this.props.content.versions.map((ent, index) => <DropDownButtonItem key={index} onClick={this.handleSelectVersion.bind(this, ent)}>{ent.id ? ent.id : <em>Unsaved version</em>} {ent.isActive && <span className='label label-success'>active</span>}</DropDownButtonItem>)}
                     {this.props.content.versions.length > 0 && <DropDownButtonSeparator />}
                     <DropDownButtonItem onClick={this.handleNewVersion.bind(this)}>New version</DropDownButtonItem>
                 </DropDownButton>
-            </div> );
+            </div>);
     }
 
     render () {

@@ -5,11 +5,13 @@ export default class NodeList extends React.Component {
     static propTypes = {
       nodeTree: React.PropTypes.object.isRequired,
       parent: React.PropTypes.oneOfType([
-          React.PropTypes.object,
-          React.PropTypes.string
-        ]),
+        React.PropTypes.object,
+        React.PropTypes.string
+      ]),
       onToggleNode: React.PropTypes.func.isRequired,
-      onNodeSelected: React.PropTypes.func.isRequired
+      onNodeSelected: React.PropTypes.func.isRequired,
+      onCreateNode: React.PropTypes.func.isRequired,
+      className: React.PropTypes.string
     }
 
     _renderChildren () {
