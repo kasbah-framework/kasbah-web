@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Editor from './Editor';
-import { Button } from 'components/ui';
+import { DropDownButton, DropDownButtonItem, Button } from 'components/ui';
 import { actions as contentActions } from '../../redux/modules/content';
 
 class ContentEditor extends React.Component {
@@ -22,24 +22,24 @@ class ContentEditor extends React.Component {
       this.props.saveContent(this.props.version);
     }
 
-    handleReset () {
-
-    }
-
-    handleSetActive () {
+    handleSaveAndPublish () {
+      this.props.saveContent(this.props.version, true);
       this.props.setActiveVersion(this.props.version.nodeId, this.props.version.id);
     }
 
     render () {
       return (
-            <div>
-                <Editor modelDef={this.props.modelDef} model={this.props.version.values} errors={this.props.errors || {}} onFieldChange={this.handleFieldChange.bind(this)} />
-                <div>
-                    <Button label='Reset' onClick={this.handleReset.bind(this)} buttonState='secondary' buttonSize='sm' disabled={!this.props.version.$dirty} />
-                    <Button label='Save' onClick={this.handleSave.bind(this)} buttonState='success' buttonSize='sm' disabled={!this.props.version.$dirty} />
-                    <Button label='Set active (publish)' onClick={this.handleSetActive.bind(this)} buttonState='info' buttonSize='sm' disabled={this.props.version.isActive || !this.props.version.id} />
-                </div>
-            </div>);
+        <div>
+            <Editor modelDef={this.props.modelDef} model={this.props.version.values} errors={this.props.errors || {}} onFieldChange={this.handleFieldChange.bind(this)} />
+            <div className='form-group'>
+              <DropDownButton buttonSize='sm' label='Save' buttonState='success'>
+                <DropDownButtonItem onClick={this.handleSave.bind(this)}>Save only</DropDownButtonItem>
+                <DropDownButtonItem onClick={this.handleSaveAndPublish.bind(this)}>Save and publish</DropDownButtonItem>
+              </DropDownButton>
+              <Button label='Add child node' buttonSize='sm' buttonState='secondary' />
+              <Button label='View history' buttonSize='sm' buttonState='info' />
+            </div>
+        </div>);
     }
 }
 

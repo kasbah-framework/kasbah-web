@@ -37,16 +37,18 @@ namespace Kasbah.Web.Admin.Controllers
             return new GetContentResponse
             {
                 ModelDefinition = GetModelDefinition(type),
-                Versions = _contentBroker.GetAllNodeVersions(node.Id).Select(version =>
-                {
-                    return new Version
+                Versions = _contentBroker.GetAllNodeVersions(node.Id)
+                    .OrderByDescending(version => version.Created)
+                    .Select(version =>
                     {
-                        Id = version.Id,
-                        NodeId = node.Id,
-                        IsActive = version.Id == node.ActiveVersion,
-                        Values = _contentBroker.GetNodeVersion(node.Id, version.Id)
-                    };
-                })
+                        return new Version
+                        {
+                            Id = version.Id,
+                            NodeId = node.Id,
+                            IsActive = version.Id == node.ActiveVersion,
+                            Values = _contentBroker.GetNodeVersion(node.Id, version.Id)
+                        };
+                    })
             };
         }
 
@@ -80,7 +82,7 @@ namespace Kasbah.Web.Admin.Controllers
                         DisplayName = prop.Name,
                         Type = GetEditor(prop)
                     };
-                })
+                }).Where(ent => ent.Type != null)
             };
         }
 
@@ -102,7 +104,7 @@ namespace Kasbah.Web.Admin.Controllers
             {
                 return attribute.Editor;
             }
-            return "text";
+            return null;
         }
 
         #endregion

@@ -22,7 +22,6 @@ export const ADD_VERSION = 'ADD_VERSION';
 // Actions
 // ------------------------------------
 import fetch from 'isomorphic-fetch';
-import { API_BASE } from 'constants';
 
 export function loadContentSuccess (content) {
   return {
@@ -52,7 +51,7 @@ export function loadContentRequest () {
 export function loadContent (id) {
   return (dispatch) => {
     dispatch(loadContentRequest());
-    return fetch(`${API_BASE}/api/content/${id}`)
+    return fetch(`${API_URL}/api/content/${id}`)
       .then(checkHttpStatus)
       .then(parseJSON)
       .then(response => {
@@ -121,10 +120,10 @@ export function saveContentRequest () {
   };
 }
 
-export function saveContent (version) {
+export function saveContent (version, setActive) {
   return (dispatch) => {
     dispatch(saveContentRequest());
-    return fetch(`${API_BASE}/api/content`, {
+    return fetch(`${API_URL}/api/content`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -178,7 +177,7 @@ export function setActiveVersionRequest () {
 export function setActiveVersion (node, version) {
   return (dispatch) => {
     dispatch(loadContentRequest());
-    return fetch(`${API_BASE}/api/node/${node}/set-active/${version}`, {
+    return fetch(`${API_URL}/api/node/${node}/set-active/${version}`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -239,7 +238,7 @@ export default handleActions({
       return Object.assign({}, state, {
         'isLoading': false,
         'content': payload.content,
-        'currentVersion': null,
+        'currentVersion': payload.content.versions[0] || { id: null, isActive: false, nodeId: payload.content.id, values: {} },
         'errorCode': null,
         'errorMessage': null
       });

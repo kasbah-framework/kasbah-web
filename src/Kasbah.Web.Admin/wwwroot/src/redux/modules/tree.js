@@ -19,7 +19,6 @@ export const NODE_VERSION_ADD_FIELD = 'NODE_VERSION_ADD_FIELD';
 // Actions
 // ------------------------------------
 import fetch from 'isomorphic-fetch';
-import { API_BASE } from 'constants';
 
 export const REQUEST_NODES = 'REQUEST_NODES';
 function requestNodes (parent) {
@@ -44,7 +43,7 @@ function receiveNodes (parent, data) {
 export const fetchChildren = (parent) => {
   return (dispatch, getState) => {
     dispatch(requestNodes(parent));
-    return fetch(`${API_BASE}/api/children?id=${parent}`)
+    return fetch(`${API_URL}/api/children?id=${parent}`)
       .then(response => response.json())
       .then(json => dispatch(receiveNodes(parent, json)));
   };
@@ -95,7 +94,7 @@ function receiveNodeVersions (node, data) {
 export function fetchNodeVersions (node) {
   return dispatch => {
     dispatch(requestNodeVersions(node));
-    return fetch(`${API_BASE}/api/versions/${node}`)
+    return fetch(`${API_URL}/api/versions/${node}`)
       .then(response => response.json())
       .then(json => dispatch(receiveNodeVersions(node, json)));
   };
@@ -116,7 +115,7 @@ export function fetchNodeVersion (id, version) {
   return dispatch => {
     dispatch(requestNodeVersions(id, version));
 
-    return fetch(`${API_BASE}/api/version/${id}/${version}`)
+    return fetch(`${API_URL}/api/version/${id}/${version}`)
       .then(response => response.json())
       .then(json => dispatch(receiveNodeVersion(id, version, json)));
   };
@@ -160,7 +159,7 @@ export function createNode (parent, alias, type) {
     }
   };
   return dispatch => {
-    return fetch(`${API_BASE}/api/node`, options)
+    return fetch(`${API_URL}/api/node`, options)
       .then(response => response.json())
       .then(json => {
         dispatch(notifyNodeCreated(json));
@@ -189,7 +188,7 @@ export function createNodeVersion (node) {
     }
   };
   return dispatch => {
-    return fetch(`${API_BASE}/api/node/${node}/version`, options)
+    return fetch(`${API_URL}/api/node/${node}/version`, options)
       .then(response => response.json())
       .then(json => {
         dispatch(notifyNodeVersionCreated(json));
@@ -219,7 +218,7 @@ export function setActiveVersion (id, version) {
   };
 
   return dispatch => {
-    return fetch(`${API_BASE}/api/node/${id}/set-active/${version}`, options)
+    return fetch(`${API_URL}/api/node/${id}/set-active/${version}`, options)
       .then(response => response.json())
       .then(json => {
           // dispatch(notifyNodeVersionCreated(json));
@@ -238,7 +237,7 @@ export function save (node, version, values) {
   };
 
   return dispatch => {
-    return fetch(`${API_BASE}/api/save/${node}/${version}`, options)
+    return fetch(`${API_URL}/api/save/${node}/${version}`, options)
       .then(response => response.json())
       .then(json => {
 

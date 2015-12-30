@@ -51,6 +51,8 @@ namespace Kasbah.Web.Public
                 if (site != null)
                 {
                     _logger.LogDebug($"Site matched: {site.Alias}");
+                    newRouteData.Values["site"] = site;
+
                     var node = GetNodeByPath(site, context.HttpContext.Request.Path);
                     if (node != null)
                     {
