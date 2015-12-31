@@ -1,8 +1,6 @@
 using Kasbah.Core.ContentBroker;
 using Microsoft.AspNet.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Kasbah.Core;
-using Kasbah.Core.ContentBroker;
 using Microsoft.Extensions.Logging;
 
 namespace Kasbah.Web.Public

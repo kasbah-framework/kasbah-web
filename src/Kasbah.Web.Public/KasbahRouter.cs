@@ -2,13 +2,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.ContentTree.Models;
+using Kasbah.Core.Utils;
 using Kasbah.Web.Models;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Routing;
 using Microsoft.Extensions.Logging;
-using Kasbah.Core.ContentTree.Models;
-using Kasbah.Web.Models;
-using Kasbah.Core.ContentBroker;
 
 namespace Kasbah.Web.Public
 {
@@ -109,7 +107,7 @@ namespace Kasbah.Web.Public
         {
             if (node.ActiveVersion.HasValue)
             {
-                return _contentBroker.GetNodeVersion(node.Id, node.ActiveVersion.Value, node.Type) as ContentBase;
+                return _contentBroker.GetNodeVersion(node.Id, node.ActiveVersion.Value, TypeUtil.TypeFromName(node.Type)) as ContentBase;
             }
             return null;
         }

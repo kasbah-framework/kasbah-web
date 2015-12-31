@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.ContentTree.Models;
 using Kasbah.Core.Models;
-using Kasbah.Core.ContentBroker;
 using Microsoft.AspNet.Mvc;
 
 namespace Kasbah.Web.Admin
@@ -41,7 +40,7 @@ namespace Kasbah.Web.Admin
         [HttpPost, Route("api/node/{id}/version")]
         public NodeVersion CreateNodeVersion(Guid id)
         {
-            return _contentBroker.Save<ItemBase>(Guid.NewGuid(), id, null);
+            return _contentBroker.Save<ItemBase>(id, Guid.NewGuid(), null);
         }
 
         [Route("api/children")]
@@ -68,8 +67,8 @@ namespace Kasbah.Web.Admin
             _contentBroker.Save(version, node, (object)values);
         }
 
-        [HttpPost, Route("api/node/{id}/set-active/{version}")]
-        public void SetActiveVersion(Guid id, Guid version)
+        [HttpPost, Route("api/node/{id}/set-active")]
+        public void SetActiveVersion(Guid id, Guid? version)
         {
             _contentBroker.SetActiveNodeVersion(id, version);
         }
