@@ -43,25 +43,23 @@ namespace Kasbah.Web.Public
 
             try
             {
-                _logger.LogVerbose($"Request {context.HttpContext.Request.Method} {context.HttpContext.Request.Path}");
-
                 var site = GetSiteByRequest(context.HttpContext);
                 if (site != null)
                 {
-                    _logger.LogDebug($"Site matched: {site.Alias}");
+                    _logger.LogVerbose($"Site matched: {site.Alias}");
                     newRouteData.Values["site"] = site;
 
                     var node = GetNodeByPath(site, context.HttpContext.Request.Path);
                     if (node != null)
                     {
-                        _logger.LogDebug($"Node matched: {node.Id}");
+                        _logger.LogVerbose($"Node matched: {node.Id}");
                         newRouteData.Values["controller"] = "DefaultContent";
                         newRouteData.Values["action"] = "RenderContent";
 
                         var content = GetContentByNode(node);
                         if (content != null)
                         {
-                            _logger.LogDebug("Content found");
+                            _logger.LogVerbose("Content found");
                             if (content.Controller != null && content.Action != null)
                             {
                                 newRouteData.Values["controller"] = content.Controller;
@@ -117,7 +115,6 @@ namespace Kasbah.Web.Public
             var kasbahPath = new[] {
                 "sites",
                 site.Alias,
-                // "content",
                 "home",
             }.Concat(path.Split('/').Where(ent => !string.IsNullOrEmpty(ent)));
 

@@ -89,7 +89,7 @@ namespace Kasbah.Web.Admin.Controllers
                 {
                     return new FieldDef
                     {
-                        Alias = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver().GetResolvedPropertyName(prop.Name),
+                        Alias = prop.Name,
                         DisplayName = prop.Name,
                         Type = GetEditor(prop)
                     };
