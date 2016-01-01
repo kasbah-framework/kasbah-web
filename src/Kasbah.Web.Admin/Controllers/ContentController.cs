@@ -52,18 +52,32 @@ namespace Kasbah.Web.Admin.Controllers
         [Route("/api/content"), HttpPost]
         public SaveContentResponse SaveContent([FromBody] SaveContentRequest request)
         {
-            _contentBroker.Save(request.Version.Id ?? Guid.NewGuid(), request.Version.NodeId, (object)request.Version.Values);
+            var node = _contentBroker.GetNode(request.NodeId);
+            var nodeVersions = _contentBroker.GetAllNodeVersions(request.NodeId);
+            var latest = nodeVersions.OrderByDescending(ent => ent.Modified).FirstOrDefault();
+            var versionId = default(Guid);
+
+            if ((latest == null) || (latest.Id == node.ActiveVersion))
+            {
+                // new node with no versions
+                // or latest is active version, create a new version
+                versionId = Guid.NewGuid();
+            }
+            else
+            {
+                // latest is not active, update latest version
+                versionId = latest.Id;
+            }
+
+            _contentBroker.Save(request.NodeId, versionId, request.Data);
+
+            if (request.SetActive)
+            {
+                _contentBroker.SetActiveNodeVersion(request.NodeId, versionId);
+            }
 
             return new SaveContentResponse { };
         }
-
-        #region Private Methods
-
-        [Route("/api/content/set-active"), HttpPost]
-
-        #endregion
-
-
 
         #region Private Methods
 
@@ -151,7 +165,11 @@ namespace Kasbah.Web.Admin.Controllers
     {
         #region Public Properties
 
-        public Version Version { get; set; }
+        public Guid NodeId { get; set; }
+
+        public object Data { get; set; }
+
+        public bool SetActive { get; set; }
 
         #endregion
     }

@@ -131,7 +131,9 @@ export function saveContent (version, setActive) {
         'Content-Type': MimeTypes.application.json
       },
       body: JSON.stringify({
-        version
+        nodeId: version.nodeId,
+        data: version.values,
+        setActive
       })
     })
     .then(checkHttpStatus)

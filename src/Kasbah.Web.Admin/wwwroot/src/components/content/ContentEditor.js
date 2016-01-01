@@ -19,12 +19,11 @@ class ContentEditor extends React.Component {
     }
 
     handleSave () {
-      this.props.saveContent(this.props.version);
+      this.props.saveContent(this.props.version, false);
     }
 
     handleSaveAndPublish () {
       this.props.saveContent(this.props.version, true);
-      this.props.setActiveVersion(this.props.version.nodeId, this.props.version.id);
     }
 
     render () {
@@ -33,8 +32,8 @@ class ContentEditor extends React.Component {
             <Editor modelDef={this.props.modelDef} model={this.props.version.values} errors={this.props.errors || {}} onFieldChange={this.handleFieldChange.bind(this)} />
             <div className='form-group'>
               <DropDownButton buttonSize='sm' label='Save' buttonState='success'>
-                <DropDownButtonItem onClick={this.handleSave.bind(this)}>Save only</DropDownButtonItem>
-                <DropDownButtonItem onClick={this.handleSaveAndPublish.bind(this)}>Save and publish</DropDownButtonItem>
+                <DropDownButtonItem onClick={() => this.handleSave()}>Save only</DropDownButtonItem>
+                <DropDownButtonItem onClick={() => this.handleSaveAndPublish()}>Save and publish</DropDownButtonItem>
               </DropDownButton>
               <Button label='Add child node' buttonSize='sm' buttonState='secondary' />
               <Button label='View history' buttonSize='sm' buttonState='info' />
