@@ -30,30 +30,29 @@ namespace Kasbah.Web.Admin.Controllers
         {
             var node = _contentBroker.GetNode(id);
             var type = TypeUtil.TypeFromName(node.Type);
+            var data = default(object);
+
+            var latestVersion = _contentBroker.GetAllNodeVersions(node.Id)
+                    .OrderByDescending(version => version.Created)
+                    .FirstOrDefault();
+
+            if (latestVersion != null)
+            {
+                data = _contentBroker.GetNodeVersion(node.Id, latestVersion.Id);
+            }
 
             return new GetContentResponse
             {
                 ModelDefinition = GetModelDefinition(type),
-                Versions = _contentBroker.GetAllNodeVersions(node.Id)
-                    .OrderByDescending(version => version.Created)
-                    .Select(version =>
-                    {
-                        return new Version
-                        {
-                            Id = version.Id,
-                            NodeId = node.Id,
-                            IsActive = version.Id == node.ActiveVersion,
-                            Values = _contentBroker.GetNodeVersion(node.Id, version.Id)
-                        };
-                    })
+                Data = data
             };
         }
 
         [Route("/api/content"), HttpPost]
         public SaveContentResponse SaveContent([FromBody] SaveContentRequest request)
         {
-            var node = _contentBroker.GetNode(request.NodeId);
-            var nodeVersions = _contentBroker.GetAllNodeVersions(request.NodeId);
+            var node = _contentBroker.GetNode(request.Node);
+            var nodeVersions = _contentBroker.GetAllNodeVersions(request.Node);
             var latest = nodeVersions.OrderByDescending(ent => ent.Modified).FirstOrDefault();
             var versionId = default(Guid);
 
@@ -69,11 +68,11 @@ namespace Kasbah.Web.Admin.Controllers
                 versionId = latest.Id;
             }
 
-            _contentBroker.Save(request.NodeId, versionId, request.Data);
+            _contentBroker.Save(request.Node, versionId, request.Data);
 
             if (request.SetActive)
             {
-                _contentBroker.SetActiveNodeVersion(request.NodeId, versionId);
+                _contentBroker.SetActiveNodeVersion(request.Node, versionId);
             }
 
             return new SaveContentResponse { };
@@ -147,7 +146,9 @@ namespace Kasbah.Web.Admin.Controllers
 
         public ModelDefinition ModelDefinition { get; set; }
 
-        public IEnumerable<Version> Versions { get; set; }
+        // public IEnumerable<Version> Versions { get; set; }
+
+        public object Data { get; set; }
 
         #endregion
     }
@@ -165,7 +166,7 @@ namespace Kasbah.Web.Admin.Controllers
     {
         #region Public Properties
 
-        public Guid NodeId { get; set; }
+        public Guid Node { get; set; }
 
         public object Data { get; set; }
 
@@ -178,16 +179,16 @@ namespace Kasbah.Web.Admin.Controllers
     {
     }
 
-    public class Version
-    {
-        #region Public Properties
+    // public class Version
+    // {
+    //     #region Public Properties
 
-        public Guid? Id { get; set; }
+    //     public Guid? Id { get; set; }
 
-        public bool IsActive { get; set; }
-        public Guid NodeId { get; set; }
-        public IDictionary<string, object> Values { get; set; }
+    //     public bool IsActive { get; set; }
+    //     public Guid NodeId { get; set; }
+    //     public IDictionary<string, object> Values { get; set; }
 
-        #endregion
-    }
+    //     #endregion
+    // }
 }

@@ -3,7 +3,7 @@ import Editors from './editors';
 
 export default class extends React.Component {
     static propTypes = {
-      modelDef: React.PropTypes.object.isRequired,
+      modelDefinition: React.PropTypes.object.isRequired,
       model: React.PropTypes.object.isRequired,
       errors: React.PropTypes.object.isRequired,
       onFieldChange: React.PropTypes.func.isRequired
@@ -28,6 +28,6 @@ export default class extends React.Component {
     }
 
     render () {
-      return (<form>{this.props.modelDef.fields.map(field => this._renderField(field))}<pre>{JSON.stringify(this.props.model)}</pre></form>);
+      return (<form>{this.props.modelDefinition.fields.map(field => this._renderField(field))}<pre>{JSON.stringify(this.props.model)}</pre></form>);
     }
 }

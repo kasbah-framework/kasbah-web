@@ -62,7 +62,11 @@ export class ContentView extends React.Component {
               </div>
 
               <div className='col-lg-9'>
-                {this.props.content.currentVersion && (<ContentEditor modelDef={this.props.content.content.modelDefinition} version={this.props.content.currentVersion} errors={{}} />)}
+                {this.state.selectedNode &&
+                  this.props.content.modelDefinition &&
+                  this.props.content.data &&
+                  <ContentEditor node={this.state.selectedNode.id} modelDefinition={this.props.content.modelDefinition} model={this.props.content.data} errors={{}} />}
+
                 <hr />
                 <p>This is really the crux of the whole system. Everything else is <small>superfluous</small>.</p>
                 <ul>
@@ -81,16 +85,16 @@ export class ContentView extends React.Component {
                     </ul>
                   </li>
                   <li>During node creation node type is specified</li>
-                  <li>Interface is provided to user to fill in content of fields in node type with two options: &ldquo;Save&rdquo; and &ldquo;Save and publish&rdquo; (similar to Umbraco)</li>
+                  <li>Interface is provided to user to fill in content of fields in node type with two options: &ldquo;Save&rdquo; and &ldquo;Save and publish&rdquo; (similar to Umbraco) <i className='fa fa-check' /></li>
                   <li>
-                    Clicking &ldquo;Save&rdquo; will have follow as described below for the specified circumstances
+                    Clicking &ldquo;Save&rdquo; will have follow as described below for the specified circumstances <i className='fa fa-check' />
                     <ul>
-                      <li>if the node is new and no active versions exist, a new version will be created but not set to active</li>
-                      <li>if the node already has an active version, and has a newer version than the active one, that newer version will be updated with the changes, the active version will not change</li>
-                      <li>if the node already has an active version, and no newer versions exist, a new version will be created, the active version will not change</li>
+                      <li>if the node is new and no active versions exist, a new version will be created but not set to active <i className='fa fa-check' /></li>
+                      <li>if the node already has an active version, and has a newer version than the active one, that newer version will be updated with the changes, the active version will not change <i className='fa fa-check' /></li>
+                      <li>if the node already has an active version, and no newer versions exist, a new version will be created, the active version will not change <i className='fa fa-check' /></li>
                     </ul>
                   </li>
-                  <li>Clicking “Save and publish” will have the same effect as defined above except the active version will change</li>
+                  <li>Clicking “Save and publish” will have the same effect as defined above except the active version will change <i className='fa fa-check' /></li>
                   <li>An option will be available to review other versions in read-only mode, an option will be provided to create a new version as a copy of an old version</li>
                   <li>When selecting a node, the most recent version will be what is presented for editing</li>
                 </ol>
@@ -104,9 +108,7 @@ export class ContentView extends React.Component {
 const actions = {
   fetchChildren: treeActions.fetchChildren,
   toggleNode: treeActions.toggleNode,
-  loadContent: contentActions.loadContent,
-  selectVersion: contentActions.selectVersion,
-  addVersion: contentActions.addVersion
+  loadContent: contentActions.loadContent
 };
 
 export default connect(mapStateToProps, actions)(ContentView);

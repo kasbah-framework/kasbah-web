@@ -77,24 +77,6 @@ export function updateModel (field, value) {
   };
 }
 
-export function selectVersion (version) {
-  return {
-    type: SELECT_VERSION,
-    payload: {
-      version
-    }
-  };
-}
-
-export function addVersion (node) {
-  return {
-    type: ADD_VERSION,
-    payload: {
-      node
-    }
-  };
-}
-
 export function saveContentSuccess (content) {
   return {
     type: SAVE_CONTENT_SUCCESS,
@@ -120,7 +102,7 @@ export function saveContentRequest () {
   };
 }
 
-export function saveContent (version, setActive) {
+export function saveContent (node, data, setActive) {
   return (dispatch) => {
     dispatch(saveContentRequest());
     return fetch(`${API_URL}/api/content`, {
@@ -131,9 +113,7 @@ export function saveContent (version, setActive) {
         'Content-Type': MimeTypes.application.json
       },
       body: JSON.stringify({
-        nodeId: version.nodeId,
-        data: version.values,
-        setActive
+        node, data, setActive
       })
     })
     .then(checkHttpStatus)
@@ -151,68 +131,10 @@ export function saveContent (version, setActive) {
   };
 }
 
-export function setActiveVersionSuccess (content) {
-  return {
-    type: SET_ACTIVE_VERSION_SUCCESS,
-    payload: {
-      content
-    }
-  };
-}
-
-export function setActiveVersionFailure (response) {
-  return {
-    type: SET_ACTIVE_VERSION_FAILURE,
-    payload: {
-      errorCode: response ? response.errorCode : -1,
-      errorMessage: response ? response.errorMessage : 'Something went wrong.'
-    }
-  };
-}
-
-export function setActiveVersionRequest () {
-  return {
-    type: SET_ACTIVE_VERSION_REQUEST
-  };
-}
-
-export function setActiveVersion (node, version) {
-  return (dispatch) => {
-    dispatch(loadContentRequest());
-    return fetch(`${API_URL}/api/node/${node}/set-active/${version}`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Accept': MimeTypes.application.json,
-        'Content-Type': MimeTypes.application.json
-      },
-      body: JSON.stringify({
-        version
-      })
-    })
-    .then(checkHttpStatus)
-    .then(parseJSON)
-    .then(response => {
-      if (response.success) {
-        dispatch(setActiveVersionSuccess(response));
-        dispatch(loadContent(node));
-      } else {
-        dispatch(setActiveVersionFailure(response));
-      }
-    })
-    .catch(error => {
-      dispatch(setActiveVersionFailure(error.response));
-    });
-  };
-}
-
 export const actions = {
   loadContent,
-  selectVersion,
-  addVersion,
   updateModel,
-  saveContent,
-  setActiveVersion
+  saveContent
 };
 
 // ------------------------------------
@@ -220,8 +142,8 @@ export const actions = {
 // ------------------------------------
 const initialState = {
   isLoading: false,
-  content: null,
-  currentVersion: null,
+  modelDefinition: null,
+  data: null,
   errorCode: null,
   errorMessage: null
 };
@@ -239,16 +161,16 @@ export default handleActions({
     try {
       return Object.assign({}, state, {
         'isLoading': false,
-        'content': payload.content,
-        'currentVersion': payload.content.versions[0] || { id: null, isActive: false, nodeId: payload.content.id, values: {} },
+        'modelDefinition': payload.content.modelDefinition,
+        'data': payload.content.data || {},
         'errorCode': null,
         'errorMessage': null
       });
     } catch (e) {
       return Object.assign({}, state, {
         'isLoading': false,
-        'content': null,
-        'currentVersion': null,
+        'modelDefinition': null,
+        'data': null,
         'errorCode': -1,
         'errorMessage': `Error processing data: ${e}`
       });
@@ -264,16 +186,9 @@ export default handleActions({
     });
   },
   [UPDATE_MODEL]: (state, { payload }) => {
-    const updates = Object.assign({}, state.currentVersion.values);
+    const updates = Object.assign({}, state.data);
     updates[payload.field.alias] = payload.value;
-    return Object.assign({}, state, {
-      'currentVersion': Object.assign({}, state.currentVersion, { values: updates, '$dirty': true })
-    });
-  },
-  [SELECT_VERSION]: (state, { payload }) => {
-    return Object.assign({}, state, {
-      'currentVersion': Object.assign({}, payload.version)
-    });
+    return Object.assign({}, state, { data: updates, '$dirty': true });
   },
   [ADD_VERSION]: (state, { payload }) => {
     return Object.assign({}, state, {
