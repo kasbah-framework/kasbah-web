@@ -247,7 +247,8 @@ export function save (node, version, values) {
 
 export const actions = {
   fetchChildren,
-  toggleNode
+  toggleNode,
+  createNode
 };
 
 // ------------------------------------

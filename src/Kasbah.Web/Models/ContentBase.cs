@@ -45,6 +45,16 @@ namespace Kasbah.Web.Models
             if (!_list.Contains(type))
             {
                 _list.Add(type);
+
+                var baseType = type.BaseType;
+                while (baseType != null)
+                {
+                    if (!baseType.IsAbstract && baseType != typeof(object))
+                    {
+                        Register(baseType);
+                    }
+                    baseType = baseType.BaseType;
+                }
             }
         }
 

@@ -1,13 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Annotations;
+using Kasbah.Web.Admin.Models;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using Kasbah.Web.Admin.Models;
+using Kasbah.Core;
 
 namespace Kasbah.Web.Admin.Controllers
 {
@@ -15,8 +14,9 @@ namespace Kasbah.Web.Admin.Controllers
     {
         #region Public Constructors
 
-        public ContentController(ILoggerFactory loggerFactory, ContentBroker contentBroker)
+        public ContentController(IApplicationContext applicationContext, ILoggerFactory loggerFactory, ContentBroker contentBroker)
         {
+            _applicationContext = applicationContext;
             _log = loggerFactory.CreateLogger<ContentController>();
             _contentBroker = contentBroker;
         }
@@ -25,7 +25,20 @@ namespace Kasbah.Web.Admin.Controllers
 
         #region Public Methods
 
-        [Route("/api/content/{id}"), HttpGet, HttpPost]
+        [Route("/api/types"), HttpGet]
+        public GetTypesResponse GetTypes()
+        {
+            return new GetTypesResponse
+            {
+                Types = _applicationContext.ModelList.RegisteredModels.Select(ent => new TypeInfo
+                {
+                    Id = ent.AssemblyQualifiedName,
+                    DisplayName = ent.Name
+                })
+            };
+        }
+
+        [Route("/api/content/{id}"), HttpGet]
         public GetContentResponse GetContent(Guid id)
         {
             var node = _contentBroker.GetNode(id);
@@ -78,43 +91,24 @@ namespace Kasbah.Web.Admin.Controllers
             return new SaveContentResponse { };
         }
 
+        #endregion
+
         #region Private Methods
 
         static ModelDefinition GetModelDefinition(Type type)
         {
             return new ModelDefinition
             {
-                Fields = GetAllProperties(type).Select(prop =>
+                Fields = type.GetAllProperties().Select(prop =>
                 {
                     return new FieldDef
                     {
                         Alias = prop.Name,
                         DisplayName = prop.Name,
-                        Type = GetEditor(prop)
+                        Type = prop.GetAttributeValue<EditorAttribute, string>(attr => attr?.Editor)
                     };
                 }).Where(ent => ent.Type != null)
             };
-        }
-
-        #endregion
-
-        static IEnumerable<PropertyInfo> GetAllProperties(Type type)
-        {
-            if (type == null) { return Enumerable.Empty<PropertyInfo>(); }
-
-            var info = type.GetTypeInfo();
-
-            return info.DeclaredProperties.Concat(GetAllProperties(info.BaseType));
-        }
-
-        static string GetEditor(PropertyInfo property)
-        {
-            var attribute = property.GetCustomAttribute<EditorAttribute>();
-            if (attribute != null)
-            {
-                return attribute.Editor;
-            }
-            return null;
         }
 
         #endregion
@@ -123,72 +117,8 @@ namespace Kasbah.Web.Admin.Controllers
 
         readonly ContentBroker _contentBroker;
         readonly ILogger _log;
+        readonly IApplicationContext _applicationContext;
 
         #endregion
     }
-
-    public class FieldDef
-    {
-        #region Public Properties
-
-        public string Alias { get; set; }
-
-        public string DisplayName { get; set; }
-
-        public string Type { get; set; }
-
-        #endregion
-    }
-
-    public class GetContentResponse : BaseApiResponse
-    {
-        #region Public Properties
-
-        public ModelDefinition ModelDefinition { get; set; }
-
-        // public IEnumerable<Version> Versions { get; set; }
-
-        public object Data { get; set; }
-
-        #endregion
-    }
-
-    public class ModelDefinition
-    {
-        #region Public Properties
-
-        public IEnumerable<FieldDef> Fields { get; set; }
-
-        #endregion
-    }
-
-    public class SaveContentRequest
-    {
-        #region Public Properties
-
-        public Guid Node { get; set; }
-
-        public object Data { get; set; }
-
-        public bool SetActive { get; set; }
-
-        #endregion
-    }
-
-    public class SaveContentResponse : BaseApiResponse
-    {
-    }
-
-    // public class Version
-    // {
-    //     #region Public Properties
-
-    //     public Guid? Id { get; set; }
-
-    //     public bool IsActive { get; set; }
-    //     public Guid NodeId { get; set; }
-    //     public IDictionary<string, object> Values { get; set; }
-
-    //     #endregion
-    // }
 }

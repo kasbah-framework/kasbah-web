@@ -10,8 +10,10 @@ class ContentEditor extends React.Component {
       modelDefinition: React.PropTypes.object.isRequired,
       model: React.PropTypes.object.isRequired,
       errors: React.PropTypes.object,
-      updateModel: React.PropTypes.func,
-      saveContent: React.PropTypes.func
+      updateModel: React.PropTypes.func.isRequired,
+      saveContent: React.PropTypes.func.isRequired,
+      types: React.PropTypes.object.isRequired,
+      onAddChild: React.PropTypes.func.isRequired
     }
 
     handleFieldChange (field, value) {
@@ -24,10 +26,6 @@ class ContentEditor extends React.Component {
 
     handleSaveAndPublish () {
       this.props.saveContent(this.props.node, this.props.model, true);
-    }
-
-    handleAddChild () {
-
     }
 
     handleViewHistory () {
@@ -43,7 +41,9 @@ class ContentEditor extends React.Component {
                 <DropDownButtonItem onClick={() => this.handleSave()}>Save only</DropDownButtonItem>
                 <DropDownButtonItem onClick={() => this.handleSaveAndPublish()}>Save and publish</DropDownButtonItem>
               </DropDownButton>
-              <Button label='Add child node' buttonSize='sm' buttonState='secondary' onClick={() => this.handleAddChild()} />
+              <DropDownButton buttonSize='sm' label='Add child node' buttonState='secondary'>
+                {this.props.types.types.map((type, index) => <DropDownButtonItem key={index} onClick={this.props.onAddChild.bind(this, this.props.node, type)}>{type.displayName}</DropDownButtonItem>)}
+              </DropDownButton>
               <Button label='View history' buttonSize='sm' buttonState='info' onClick={() => this.handleViewHistory()} />
             </div>
         </div>);

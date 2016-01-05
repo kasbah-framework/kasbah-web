@@ -1,6 +1,7 @@
 import { handleActions } from 'redux-actions';
 import { checkHttpStatus, parseJSON } from '../../utils';
 import MimeTypes from 'constants/MimeTypes';
+import fetch from 'isomorphic-fetch';
 
 // ------------------------------------
 // Constants
@@ -21,7 +22,6 @@ export const ADD_VERSION = 'ADD_VERSION';
 // ------------------------------------
 // Actions
 // ------------------------------------
-import fetch from 'isomorphic-fetch';
 
 export function loadContentSuccess (content) {
   return {
