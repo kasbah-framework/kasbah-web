@@ -6,7 +6,8 @@ using Kasbah.Web.Annotations;
 using Kasbah.Web.Admin.Models;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using Kasbah.Core;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Kasbah.Web.Admin.Controllers
 {
@@ -99,16 +100,34 @@ namespace Kasbah.Web.Admin.Controllers
         {
             return new ModelDefinition
             {
-                Fields = type.GetAllProperties().Select(prop =>
+                Fields = GetAllProperties(type).Select(prop =>
                 {
                     return new FieldDef
                     {
                         Alias = prop.Name,
                         DisplayName = prop.Name,
-                        Type = prop.GetAttributeValue<EditorAttribute, string>(attr => attr?.Editor)
+                        Type = GetAttributeValue<EditorAttribute, string>(prop, attr => attr?.Editor)
                     };
                 }).Where(ent => ent.Type != null)
             };
+        }
+
+        // TODO: figure out why these methods can't be found from Kasbah.Core
+        static IEnumerable<PropertyInfo> GetAllProperties(Type type)
+        {
+            if (type == null) { return Enumerable.Empty<PropertyInfo>(); }
+
+            var info = type.GetTypeInfo();
+
+            return info.DeclaredProperties.Concat(GetAllProperties(info.BaseType));
+        }
+
+        public static TRet GetAttributeValue<TAttr, TRet>(MemberInfo info, Func<TAttr, TRet> selector)
+            where TAttr : Attribute
+        {
+            var attribute = info.GetCustomAttribute<TAttr>();
+
+            return selector(attribute);
         }
 
         #endregion

@@ -10,8 +10,7 @@
   "projectUrl": "http://www.kasbah.io/",
   "licenseUrl": "",
   "dependencies": {
-    "Kasbah.Web": "",
-    "Microsoft.Extensions.Logging": "1.0.0-*"
+    "Kasbah.Web": ""
   },
   "frameworks": {
     "dnx451": {},

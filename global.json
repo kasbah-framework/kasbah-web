@@ -2,9 +2,7 @@
     "projects": [
         "src",
         "test",
-        "../kasbah-core/src",
         "../kasbah-web/src",
-        "../kasbah-core/lib/StackExchange.Redis/StackExchange.Redis/StackExchange",
         "../kasbah-identity/src"
     ],
     "sdk": {
