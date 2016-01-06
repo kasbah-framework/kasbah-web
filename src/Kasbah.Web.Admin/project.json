@@ -17,5 +17,8 @@
     "dnx451": {},
     "dnxcore50": { }
   },
-  "exclude": ["wwwroot/node_modules"]
+  "exclude": ["wwwroot/node_modules"],
+  "resource": [
+    "wwwroot/dist/**/*"
+  ]
 }

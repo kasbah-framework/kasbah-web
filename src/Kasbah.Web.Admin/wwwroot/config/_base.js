@@ -31,7 +31,7 @@ const config = {
   compiler_hash_type       : 'hash',
   compiler_fail_on_warning : false,
   compiler_quiet           : false,
-  compiler_public_path     : '/',
+  compiler_public_path     : process.env.NODE_ENV === 'production' ? '/k/' : '/',
   compiler_stats           : {
     chunks : false,
     chunkModules : false,
@@ -79,7 +79,7 @@ config.globals = {
   '__DEBUG__'    : config.env === 'development' && !argv.no_debug,
   '__DEBUG_NEW_WINDOW__' : !!argv.nw,
 
-  'API_URL'      : JSON.stringify(process.env.API_URL)
+  'API_URL'      : JSON.stringify(process.env.API_URL || '')
 };
 
 // ------------------------------------
