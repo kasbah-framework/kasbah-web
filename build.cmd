@@ -37,4 +37,7 @@ IF "%SKIP_DNX_INSTALL%"=="" (
     CALL packages\KoreBuild\build\dnvm use default -runtime CLR -arch x86
 )
 
+(Get-Content packages\KoreBuild\build\k-standard-goals.shade) | ForEach-Object { $_ -replace "vcxproj", "LALALALALALA" } | Set-Content packages\KoreBuild\build\k-standard-goals.shade
+
+
 packages\Sake\tools\Sake.exe -I packages\KoreBuild\build -I build -f makefile.shade %*
