@@ -37,4 +37,6 @@ IF "%SKIP_DNX_INSTALL%"=="" (
     CALL packages\KoreBuild\build\dnvm use default -runtime CLR -arch x86
 )
 
+RMDIR src\Kasbah.Web.Admin\wwwroot\node_modules /s
+
 packages\Sake\tools\Sake.exe -I packages\KoreBuild\build -f makefile.shade %*
