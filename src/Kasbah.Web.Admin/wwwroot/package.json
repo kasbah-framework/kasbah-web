@@ -15,7 +15,7 @@
     "test": "node -r dotenv/config ./node_modules/karma/bin/karma start bin/karma.js",
     "test:dev": "npm run test -- --watch",
     "deploy": "npm run test && npm run clean && npm run compile",
-    "postinstall": "npm run compile && rmdir node_modules /s /q"
+    "postinstall": "npm run compile"
   },
   "repository": {
     "type": "git",

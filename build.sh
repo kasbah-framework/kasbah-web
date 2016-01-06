@@ -40,4 +40,4 @@ else
     dnvm use default -runtime mono
 fi
 
-mono packages/Sake/tools/Sake.exe -I packages/KoreBuild/build -f makefile.shade "$@"
+mono packages/Sake/tools/Sake.exe -I packages/KoreBuild/build -I build -f makefile.shade "$@"
