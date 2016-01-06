@@ -65,7 +65,7 @@ namespace Kasbah.Web.Admin.Controllers
             var assembly = typeof(StaticContentController).Assembly;
             const string Prefix = "Kasbah.Web.Admin.wwwroot.dist";
             var resources = assembly.GetManifestResourceNames();
-            var resPath = $"{Prefix}.{path}".Replace("/", ".");
+            var resPath = $"{Prefix}.{path}".Replace("/", ".").Replace("font-awesome", "font_awesome");
 
             if (resources.Contains(resPath))
             {
