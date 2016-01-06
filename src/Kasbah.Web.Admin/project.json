@@ -11,7 +11,7 @@
   "licenseUrl": "",
   "dependencies": {
     "Kasbah.Web": "",
-    "Kasbah.Identity": ""
+    "Kasbah.Identity": "1.0.0-*"
   },
   "frameworks": {
     "dnx451": {}
