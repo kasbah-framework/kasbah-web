@@ -14,7 +14,7 @@ class ContentEditor extends React.Component {
       saveContent: React.PropTypes.func.isRequired,
       types: React.PropTypes.object.isRequired,
       onAddChild: React.PropTypes.func.isRequired
-    }
+    };
 
     handleFieldChange (field, value) {
       this.props.updateModel(field, value);

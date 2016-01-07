@@ -8,7 +8,7 @@ export default class Node extends React.Component {
       onCreate: React.PropTypes.func,
       node: React.PropTypes.object.isRequired,
       nodeTree: React.PropTypes.object.isRequired
-    }
+    };
 
     render () {
       const expanded = this.props.node.expanded;

@@ -7,7 +7,7 @@ export default class extends React.Component {
       model: React.PropTypes.object.isRequired,
       errors: React.PropTypes.object.isRequired,
       onFieldChange: React.PropTypes.func.isRequired
-    }
+    };
 
     _renderField (field) {
       let editor = Editors.Text;

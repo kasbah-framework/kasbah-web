@@ -12,7 +12,7 @@ export default class NodeList extends React.Component {
       onNodeSelected: React.PropTypes.func.isRequired,
       onCreateNode: React.PropTypes.func,
       className: React.PropTypes.string
-    }
+    };
 
     _renderChildren () {
       var children = Object.keys(this.props.nodeTree.nodes)

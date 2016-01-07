@@ -6,7 +6,7 @@ export default class extends React.Component {
       field: React.PropTypes.object.isRequired,
       value: React.PropTypes.any,
       onChange: React.PropTypes.func.isRequired
-    }
+    };
 
     handleChange (ev) {
       this.props.onChange(this.props.field, ev.target.value);

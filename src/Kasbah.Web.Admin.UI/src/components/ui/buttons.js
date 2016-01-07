@@ -7,7 +7,7 @@ export class Button extends React.Component {
       disabled: React.PropTypes.bool,
       buttonState: React.PropTypes.string,
       buttonSize: React.PropTypes.string
-    }
+    };
 
     render () {
       const btnClasses = ['btn'];
@@ -27,7 +27,7 @@ export class DropDownButtonItem extends React.Component {
       onClick: React.PropTypes.func.isRequired,
       disabled: React.PropTypes.bool,
       children: React.PropTypes.node
-    }
+    };
 
     render () {
       return (<button className='dropdown-item' onClick={this.props.onClick}>{this.props.children}</button>);
@@ -45,7 +45,7 @@ export class DropDownButton extends React.Component {
       label: React.PropTypes.string.isRequired,
       buttonState: React.PropTypes.string,
       children: React.PropTypes.node
-    }
+    };
 
     constructor () {
       super();
