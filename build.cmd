@@ -37,6 +37,4 @@ IF "%SKIP_DNX_INSTALL%"=="" (
     CALL packages\KoreBuild\build\dnvm use default -runtime CLR -arch x86
 )
 
-npm install rimraf -g
-
 packages\Sake\tools\Sake.exe -I packages\KoreBuild\build -I build -f makefile.shade %*
