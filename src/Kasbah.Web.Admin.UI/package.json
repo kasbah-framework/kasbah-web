@@ -14,7 +14,8 @@
     "dev:no-debug": "npm run dev -- --no_debug",
     "test": "node -r dotenv/config ./node_modules/karma/bin/karma start bin/karma.js",
     "test:dev": "npm run test -- --watch",
-    "deploy": "npm run test && npm run clean && npm run compile"
+    "deploy": "npm run test && npm run clean && npm run compile",
+    "postinstall": "npm run compile && rimraf C:\\projects\\kasbah-web\\src\\Kasbah.Web.Admin.UI\\node_modules"
   },
   "repository": {
     "type": "git",
