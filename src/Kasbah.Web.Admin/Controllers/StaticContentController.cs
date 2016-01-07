@@ -28,7 +28,7 @@ namespace Kasbah.Web.Admin.Controllers
         }
 
         [Route("/k/{*path}")]
-        public IActionResult Content(string path)
+        public IActionResult StaticContent(string path)
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -63,7 +63,7 @@ namespace Kasbah.Web.Admin.Controllers
         static byte[] MapPathToResource(string path)
         {
             var assembly = typeof(StaticContentController).Assembly;
-            const string Prefix = "Kasbah.Web.Admin.wwwroot.dist";
+            const string Prefix = "Kasbah.Web.Admin.wwwroot";
             var resources = assembly.GetManifestResourceNames();
             var resPath = $"{Prefix}.{path}".Replace("/", ".").Replace("font-awesome", "font_awesome");
 
