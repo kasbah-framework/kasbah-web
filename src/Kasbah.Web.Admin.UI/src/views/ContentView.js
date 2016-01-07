@@ -23,7 +23,7 @@ export class ContentView extends React.Component {
       loadContent: React.PropTypes.func.isRequired,
       loadTypes: React.PropTypes.func.isRequired,
       createNode: React.PropTypes.func.isRequired
-    }
+    };
 
     constructor () {
       super();
