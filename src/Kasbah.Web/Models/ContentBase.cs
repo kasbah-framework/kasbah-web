@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Kasbah.Core.Models;
+using Kasbah.Web.Annotations;
 
 namespace Kasbah.Web.Models
 {
@@ -9,9 +10,12 @@ namespace Kasbah.Web.Models
     {
         #region Public Properties
 
-        public string Action { get; set; }
-        public string Controller { get; set; }
-        public string View { get; set; }
+        [Editor("text")]
+        public virtual string Action { get; set; }
+        [Editor("text")]
+        public virtual string Controller { get; set; }
+        [Editor("text")]
+        public virtual string View { get; set; }
 
         #endregion
     }
