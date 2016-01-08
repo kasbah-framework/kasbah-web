@@ -16,8 +16,7 @@
   "frameworks": {
     "dnx451": {}
   },
-  "exclude": ["wwwroot/node_modules"],
   "resource": [
-    "wwwroot/dist/**/*"
+    "wwwroot/**/*"
   ]
 }

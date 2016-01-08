@@ -9,8 +9,13 @@ namespace Kasbah.Web.Public.Controllers
         public ActionResult RenderContent()
         {
             var content = RouteData.Values["content"];
+            var viewName = (RouteData.Values["view"] as string);
+            if (string.IsNullOrEmpty(viewName))
+            {
+                viewName = nameof(RenderContent);
+            }
 
-            return View(content);
+            return View(viewName, content);
         }
 
         #endregion
