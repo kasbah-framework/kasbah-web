@@ -1,12 +1,13 @@
 using System;
 using System.Linq;
+using Kasbah.Core;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.Utils;
-using Kasbah.Web.Annotations;
 using Kasbah.Web.Admin.Models;
+using Kasbah.Web.Annotations;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using Kasbah.Core;
+using Newtonsoft.Json.Serialization;
 
 namespace Kasbah.Web.Admin.Controllers
 {
@@ -97,13 +98,15 @@ namespace Kasbah.Web.Admin.Controllers
 
         static ModelDefinition GetModelDefinition(Type type)
         {
+            var nameResolver = new CamelCasePropertyNamesContractResolver();
+
             return new ModelDefinition
             {
                 Fields = type.GetAllProperties().Select(prop =>
                 {
                     return new FieldDef
                     {
-                        Alias = prop.Name,
+                        Alias = nameResolver.GetResolvedPropertyName(prop.Name),
                         DisplayName = prop.Name,
                         Type = prop.GetAttributeValue<EditorAttribute, string>(attr => attr?.Editor)
                     };

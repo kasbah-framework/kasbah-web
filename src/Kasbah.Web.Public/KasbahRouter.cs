@@ -60,9 +60,21 @@ namespace Kasbah.Web.Public
                         if (content != null)
                         {
                             _logger.LogVerbose("Content found");
-                            if (content.Controller != null && content.Action != null)
+                            if (!string.IsNullOrEmpty(content.Controller) && !string.IsNullOrEmpty(content.Action))
                             {
-                                newRouteData.Values["controller"] = content.Controller;
+                                if (content.Controller.Contains("."))
+                                {
+                                    var parts = content.Controller.Split('.');
+                                    var controller = parts.Last();
+                                    var ns = string.Join(".", parts.Take(parts.Count() - 1));
+
+                                    newRouteData.Values["controller"] = controller;
+                                    newRouteData.Values["namespace"] = ns;
+                                }
+                                else
+                                {
+                                    newRouteData.Values["controller"] = content.Controller;
+                                }
                                 newRouteData.Values["action"] = content.Action;
                             }
 
@@ -72,7 +84,7 @@ namespace Kasbah.Web.Public
                         newRouteData.Values["content"] = content;
                         newRouteData.Values["node"] = node;
 
-                        _logger.LogVerbose($"Routing to: {newRouteData.Values["controller"]}.{newRouteData.Values["action"]} (view: {newRouteData.Values["view"]})");
+                        _logger.LogVerbose($"Routing to: ({newRouteData.Values["namespace"]}.){newRouteData.Values["controller"]}.{newRouteData.Values["action"]} (view: {newRouteData.Values["view"]})");
                     }
                 }
 
