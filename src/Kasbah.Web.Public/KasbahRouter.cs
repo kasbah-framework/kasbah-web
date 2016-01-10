@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Kasbah.Core.ContentBroker;
-using Kasbah.Core.ContentTree.Models;
+using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Models;
 using Microsoft.AspNet.Http;

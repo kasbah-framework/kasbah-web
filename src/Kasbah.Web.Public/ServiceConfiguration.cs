@@ -12,6 +12,7 @@ namespace Kasbah.Web.Public
             services.AddSingleton(svc => config());
 
             // Services
+            services.AddScoped<Kasbah.Web.Services.UrlService>();
             services.AddScoped<Kasbah.Core.ContentTree.ContentTreeService>();
             services.AddScoped<Kasbah.Core.Index.IndexService>();
             services.AddScoped<Kasbah.Core.Events.EventService>();
