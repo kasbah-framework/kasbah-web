@@ -13,8 +13,6 @@
     "Kasbah.Web": ""
   },
   "frameworks": {
-    "dnx451": {},
-    "dnxcore50": { }
-  },
-  "exclude": ["wwwroot/node_modules"]
+    "dnx451": {}
+  }
 }
