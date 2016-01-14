@@ -1,6 +1,6 @@
 using Kasbah.Core.Models;
-using Kasbah.Web.Annotations;
 using Kasbah.Core.Annotations;
+using Kasbah.Web.Annotations;
 
 namespace Kasbah.Web.Models
 {
@@ -8,11 +8,11 @@ namespace Kasbah.Web.Models
     {
         #region Public Properties
 
-        [Editor("text")]
+        [Editor("text"), Section("Output", int.MaxValue)]
         public virtual string Action { get; set; }
-        [Editor("text")]
+        [Editor("text"), Section("Output", int.MaxValue)]
         public virtual string Controller { get; set; }
-        [Editor("text")]
+        [Editor("text"), Section("Output", int.MaxValue)]
         public virtual string View { get; set; }
 
         [SystemField]

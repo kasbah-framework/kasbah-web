@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Kasbah.Web.Annotations;
+using System.Collections.Generic;
 
 namespace Kasbah.Web.Models
 {

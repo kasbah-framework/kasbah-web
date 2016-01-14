@@ -21,6 +21,10 @@ namespace Kasbah.Web.Admin.Models
 
         public string DisplayName { get; set; }
 
+        public string HelpText { get; set; }
+
+        public string Section { get; set; }
+
         public string Type { get; set; }
 
         #endregion
@@ -31,6 +35,8 @@ namespace Kasbah.Web.Admin.Models
         #region Public Properties
 
         public IEnumerable<FieldDef> Fields { get; set; }
+
+        public IEnumerable<string> Sections { get; set; }
 
         #endregion
     }

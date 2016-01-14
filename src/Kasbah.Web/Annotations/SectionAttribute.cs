@@ -6,9 +6,10 @@ namespace Kasbah.Web.Annotations
     {
         #region Public Constructors
 
-        public SectionAttribute(string section)
+        public SectionAttribute(string section, int sortOrder = 0)
         {
             Section = section;
+            SortOrder = sortOrder;
         }
 
         #endregion
@@ -16,6 +17,7 @@ namespace Kasbah.Web.Annotations
         #region Public Properties
 
         public string Section { get; set; }
+        public int SortOrder { get; set; }
 
         #endregion
     }

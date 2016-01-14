@@ -1,5 +1,6 @@
 import React from 'react';
 import Editors from './editors';
+import { Tab, Tabs, TabList , TabPanel } from 'react-tabs';
 
 export default class extends React.Component {
     static propTypes = {
@@ -27,7 +28,25 @@ export default class extends React.Component {
             </fieldset>);
     }
 
+    renderSection(section) {
+      return this.props
+        .modelDefinition
+        .fields
+        .filter(ent => ent.section == section)
+        .map(field => this._renderField(field));
+    }
+
     render () {
-      return (<form>{this.props.modelDefinition.fields.map(field => this._renderField(field))}<pre>{JSON.stringify(this.props.model)}</pre></form>);
+      const tabs = this.props.modelDefinition.sections;
+      return (
+        <form>
+          <Tabs>
+            <TabList>
+              {tabs.map(ent => <Tab key={ent}>{ent}</Tab>)}
+            </TabList>
+
+          {tabs.map((ent, index) => <TabPanel key={index}>{this.renderSection(ent)}</TabPanel>)}
+          </Tabs>
+        </form>);
     }
 }
