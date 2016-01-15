@@ -1,21 +1,44 @@
-// const content = (this.props.store.auth && this.props.store.auth.isAuthenticated) ? (<ReduxRouter>{routes}</ReduxRouter>) : (<LoginView />);
 import React from 'react';
+import { Route, IndexRoute } from 'react-router';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+import CoreLayout from 'layouts/CoreLayout';
+
+import HomeView from 'views/HomeView';
+import ContentView from 'views/ContentView';
+import AnalyticsView from 'views/AnalyticsView';
+import UserView from 'views/UserView';
+import MediaView from 'views/MediaView';
 import LoginView from 'views/LoginView';
+
 
 export default class Root extends React.Component {
   static propTypes = {
     history: React.PropTypes.object.isRequired,
-    routes: React.PropTypes.element.isRequired,
     store: React.PropTypes.object.isRequired
   };
 
+  checkAuth(nextState, replace) {
+    // if (!auth.loggedIn()) {
+      replace({
+        pathname: '/login',
+        state: { nextPathname: nextState.location.pathname }
+      });
+    // }
+  }
+
   get content () {
-    // return <LoginView />
     return (
       <Router>
-        {this.props.routes}
+        <Route path='/' component={CoreLayout}>
+          <IndexRoute component={HomeView} />
+          <Route path='/content' component={ContentView} onEnter={this.checkAuth.bind(this)} />
+          <Route path='/analytics' component={AnalyticsView} onEnter={this.checkAuth.bind(this)} />
+          <Route path='/users' component={UserView} onEnter={this.checkAuth.bind(this)} />
+          <Route path='/media' component={MediaView} onEnter={this.checkAuth.bind(this)} />
+
+          <Route path='/login' component={LoginView} />
+        </Route>
       </Router>
     );
   }

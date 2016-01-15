@@ -1,5 +1,6 @@
 import { handleActions } from 'redux-actions';
 import MimeTypes from '../../constants/MimeTypes';
+import { parseJSON, checkHttpStatus } from 'utils';
 
 // ------------------------------------
 // Constants
@@ -53,7 +54,7 @@ export function logoutAndRedirect () {
 export function loginUser (username, password, persist) {
   return (dispatch) => {
       dispatch(loginUserRequest());
-      return fetch(`${API_BASE}/api/auth/login`, {
+      return fetch(`${API_URL}/api/auth/login`, {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -83,6 +84,13 @@ export function loginUser (username, password, persist) {
     };
 }
 
+export const actions = {
+  loginUser
+};
+
+// ------------------------------------
+// Reducer
+// ------------------------------------
 const initialState = {
   token: null,
   userName: null,
@@ -93,56 +101,55 @@ const initialState = {
 };
 
 export default handleActions({
-  [LOGIN_USER_REQUEST]: (state, payload) => {
-    return Object.assign({}, state, {
-      'isAuthenticating': true,
-      'errorCode': null,
-      'errorMessage': null
-    });
+  [LOGIN_USER_REQUEST]: (state, { payload }) => {
+    return {
+      token: null,
+      userName: null,
+      isAuthenticated: false,
+      isAuthenticating: true,
+      errorCode: null,
+      errorMessage: null
+    };
   },
-  [LOGIN_USER_SUCCESS]: (state, payload) => {
-    localStorage.setItem('token', payload.token);
+  [LOGIN_USER_SUCCESS]: (state, { payload }) => {
     try {
         // let decoded = jwtDecode(payload.token);
-      return Object.assign({}, state, {
+      return {
         'isAuthenticating': false,
         'isAuthenticated': true,
         'token': payload.token,
         'userName': 'unknown', // decoded.userName,
         'errorCode': null,
         'errorMessage': null
-      });
+      };
     } catch (e) {
-      localStorage.removeItem('token');
-      return Object.assign({}, state, {
+      return {
         'isAuthenticating': false,
         'isAuthenticated': false,
         'token': null,
         'userName': null,
         'errorCode': -1,
         'errorMessage': `Invalid access token. Please log in again.`
-      });
+      };
     }
   },
-  [LOGIN_USER_FAILURE]: (state, payload) => {
-    localStorage.removeItem('token');
-    return Object.assign({}, state, {
+  [LOGIN_USER_FAILURE]: (state, { payload }) => {
+    return {
       'isAuthenticating': false,
       'isAuthenticated': false,
       'token': null,
       'userName': null,
       'errorCode': payload.errorCode,
       'errorMessage': payload.errorMessage
-    });
+    };
   },
-  [LOGOUT_USER]: (state, payload) => {
-    localStorage.removeItem('token');
-    return Object.assign({}, state, {
+  [LOGOUT_USER]: (state, { payload }) => {
+    return {
       'isAuthenticated': false,
       'token': null,
       'userName': null,
       'errorCode': null,
       'errorMessage': null
-    });
+    };
   }
 }, initialState);

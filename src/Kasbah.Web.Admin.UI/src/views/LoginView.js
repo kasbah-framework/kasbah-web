@@ -2,24 +2,22 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import LoginForm from 'components/auth/LoginForm';
-import * as actionCreators from '../redux/modules/auth';
-
-const mapStateToProps = (state) => ({
-  auth: state.auth
-});
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(actionCreators, dispatch)
-});
+import { actions as authActions } from '../redux/modules/auth';
 
 export class LoginView extends React.Component {
+    static propTypes = {
+      auth: React.PropTypes.object.isRequired,
+      loginUser: React.PropTypes.func.isRequired
+    };
+
     handleSubmit (username, password, persist) {
-      this.props.actions.loginUser(username, password, persist);
+      this.props.loginUser(username, password, persist);
     }
 
     render () {
       return (
             <div className='flex-centred login-view'>
-                <div className='col-lg-3 col-md-6 col-sm-10'>
+                <div className='col-lg-4 col-md-6 col-sm-10'>
                     <div className='card'>
                         <div className='card-block'>
                             <h4 className='card-title'>Kasbah Login</h4>
@@ -35,4 +33,12 @@ export class LoginView extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginView);
+const mapStateToProps = (state) => ({
+  auth: state.auth
+});
+
+const actions = {
+  loginUser: authActions.loginUser,
+};
+
+export default connect(mapStateToProps, actions)(LoginView);

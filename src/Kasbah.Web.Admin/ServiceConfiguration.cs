@@ -50,10 +50,10 @@ namespace Kasbah.Web.Admin
                 formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
 
-            services.Configure<IdentityOptions>(options =>
-            {
-                options.Cookies.ApplicationCookie.CookieName = "kasbah-web";
-            });
+            // services.Configure<IdentityOptions>(options =>
+            // {
+            //     options.Cookies.ApplicationCookie.CookieName = "kasbah-web";
+            // });
 
             return services;
         }

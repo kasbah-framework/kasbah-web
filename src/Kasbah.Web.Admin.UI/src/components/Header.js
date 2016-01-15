@@ -5,19 +5,19 @@ export default class extends React.Component {
     render () {
       return (
             <nav className='navbar navbar-dark navbar-static-top header'>
-                <a className='navbar-brand' href='/'>DASHBOARD</a>
+                <Link className='navbar-brand' to='/'>DASHBOARD</Link>
                 <ul className='nav navbar-nav'>
                     <li className='nav-item'>
                         <Link className='nav-link' to='/content'>Content</Link>
                     </li>
                     <li className='nav-item'>
-                        <a className='nav-link' href='/media'>Media</a>
+                        <Link className='nav-link' to='/media'>Media</Link>
                     </li>
                     <li className='nav-item'>
-                        <a className='nav-link' href='/analytics'>Analytics</a>
+                        <Link className='nav-link' to='/analytics'>Analytics</Link>
                     </li>
                     <li className='nav-item'>
-                        <a className='nav-link' href='/users'>Users</a>
+                        <Link className='nav-link' to='/users'>Users</Link>
                     </li>
                 </ul>
 
