@@ -82,7 +82,7 @@ namespace Kasbah.Web.Admin.Controllers
                 versionId = latest.Id;
             }
 
-            _contentBroker.Save(request.Node, versionId, request.Data);
+            _contentBroker.SaveAnonymous(request.Node, versionId, request.Data);
 
             if (request.SetActive)
             {

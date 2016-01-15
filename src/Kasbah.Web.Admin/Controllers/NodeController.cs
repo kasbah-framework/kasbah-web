@@ -63,7 +63,7 @@ namespace Kasbah.Web.Admin
         [HttpPost, Route("api/save/{node}/{version}")]
         public void Save(Guid node, Guid version, [FromBody]IDictionary<string, object> values)
         {
-            _contentBroker.Save(version, node, (object)values);
+            _contentBroker.SaveAnonymous(version, node, values);
         }
 
         [HttpPost, Route("api/node/{id}/set-active")]

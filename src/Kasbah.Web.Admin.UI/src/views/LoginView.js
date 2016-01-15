@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import LoginForm from 'components/auth/LoginForm';
-import * as actionCreators from 'actions/auth';
+import * as actionCreators from '../redux/modules/auth';
 
 const mapStateToProps = (state) => ({
   auth: state.auth
@@ -19,7 +19,7 @@ export class LoginView extends React.Component {
     render () {
       return (
             <div className='flex-centred login-view'>
-                <div className='col-lg-5 col-md-6 col-sm-10'>
+                <div className='col-lg-3 col-md-6 col-sm-10'>
                     <div className='card'>
                         <div className='card-block'>
                             <h4 className='card-title'>Kasbah Login</h4>

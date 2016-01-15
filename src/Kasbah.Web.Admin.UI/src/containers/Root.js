@@ -2,6 +2,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
+import LoginView from 'views/LoginView';
 
 export default class Root extends React.Component {
   static propTypes = {
@@ -11,6 +12,7 @@ export default class Root extends React.Component {
   };
 
   get content () {
+    // return <LoginView />
     return (
       <Router>
         {this.props.routes}
