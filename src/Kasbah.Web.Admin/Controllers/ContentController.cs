@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Kasbah.Core;
 using Kasbah.Core.ContentBroker;
@@ -50,6 +51,26 @@ namespace Kasbah.Web.Admin.Controllers
                     DisplayName = site.Alias,
                     Domains = site.Domains.Select(dom => dom.Domain)
                 })
+            };
+        }
+
+        [RouteAttribute("/api/controllers")]
+        public GetControllersResponse GetControllers()
+        {
+            const string ControllerNameSuffix = "Controller";
+            return new GetControllersResponse
+            {
+                Controllers = AppDomain.CurrentDomain.GetAssemblies()
+                    .SelectMany(asm => asm.GetTypes())
+                    .Where(typ => typ.Name.EndsWith(ControllerNameSuffix))
+                    .Select(typ => new ControllerInfo
+                    {
+                        Alias = typ.Name.Substring(0, typ.Name.Length - ControllerNameSuffix.Length),
+                        DisplayName = typ.Name.Substring(0, typ.Name.Length - ControllerNameSuffix.Length),
+                        Actions = typ.GetMethods()
+                            .Where(meth => meth.IsPublic)
+                            .Select(meth => meth.Name)
+                    })
             };
         }
 
