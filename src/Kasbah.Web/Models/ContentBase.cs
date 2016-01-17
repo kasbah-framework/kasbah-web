@@ -8,11 +8,11 @@ namespace Kasbah.Web.Models
     {
         #region Public Properties
 
-        [Editor("text"), Section("Output", int.MaxValue)]
+        [Editor("text", 1), Section("Output", int.MaxValue)]
         public virtual string Action { get; set; }
-        [Editor("text"), Section("Output", int.MaxValue)]
+        [Editor("text", 0), Section("Output", int.MaxValue)]
         public virtual string Controller { get; set; }
-        [Editor("text"), Section("Output", int.MaxValue)]
+        [Editor("text", 2), Section("Output", int.MaxValue)]
         public virtual string View { get; set; }
 
         [SystemField]

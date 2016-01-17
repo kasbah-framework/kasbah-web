@@ -5,35 +5,35 @@ import MimeTypes from 'constants/MimeTypes';
 // ------------------------------------
 // Constants
 // ------------------------------------
-const LOAD_TYPES_SUCCESS = 'LOAD_TYPES_SUCCESS';
+const LOAD_SITES_SUCCESS = 'LOAD_SITES_SUCCESS';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-const loadTypesSuccess = (data) => {
+const loadSitesSuccess = (data) => {
   return {
-    type: LOAD_TYPES_SUCCESS,
+    type: LOAD_SITES_SUCCESS,
     payload: {
       data
     }
   };
 };
 
-export const loadTypes = () => {
+export const loadSites = () => {
   return (dispatch) => {
-    return fetch(`${API_URL}/api/types`, { credentials: 'include' })
+    return fetch(`${API_URL}/api/sites`, { credentials: 'include' })
       .then(checkHttpStatus)
       .then(parseJSON)
       .then(response => {
         if (response.success) {
-          dispatch(loadTypesSuccess(response));
+          dispatch(loadSitesSuccess(response));
         }
       });
   };
 };
 
 export const actions = {
-  loadTypes
+  loadSites
 };
 
 // ------------------------------------
@@ -42,7 +42,7 @@ export const actions = {
 const initialState = {};
 
 export default handleActions({
-  [LOAD_TYPES_SUCCESS]: (state, { payload }) => {
+  [LOAD_SITES_SUCCESS]: (state, { payload }) => {
     return Object.assign({}, state, payload.data);
   }
 }, initialState);

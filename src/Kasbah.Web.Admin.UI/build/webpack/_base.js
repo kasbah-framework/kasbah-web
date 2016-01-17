@@ -31,7 +31,8 @@ const webpackConfig = {
   ],
   resolve : {
     extensions : ['', '.js', '.jsx'],
-    alias      : config.get('utils_aliases')
+    alias      : {       'react-ace':  path.join(__dirname, '..', 'src', 'ace.jsx')
+ }
   },
   module : {
     loaders : [

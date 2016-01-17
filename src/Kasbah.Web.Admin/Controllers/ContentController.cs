@@ -39,6 +39,20 @@ namespace Kasbah.Web.Admin.Controllers
             };
         }
 
+        [Route("/api/sites"), HttpGet]
+        public GetSitesResponse GetSites()
+        {
+            return new GetSitesResponse
+            {
+                Sites = _applicationContext.Sites.Select(site => new SiteInfo
+                {
+                    Alias = site.Alias,
+                    DisplayName = site.Alias,
+                    Domains = site.Domains.Select(dom => dom.Domain)
+                })
+            };
+        }
+
         [Route("/api/content/{id}"), HttpGet]
         public GetContentResponse GetContent(Guid id)
         {
@@ -107,17 +121,20 @@ namespace Kasbah.Web.Admin.Controllers
                     .OrderBy(ent => ent?.SortOrder ?? 0)
                     .Select(ent => ent?.Section ?? "General")
                     .Distinct(),
-                Fields = type.GetAllProperties().Select(prop =>
-                {
-                    return new FieldDef
+                Fields = type.GetAllProperties()
+                    .OrderBy(ent => ent.GetAttributeValue<EditorAttribute, int>(attr => attr?.SortOrder ?? 0))
+                    .Select(prop =>
                     {
-                        Alias = nameResolver.GetResolvedPropertyName(prop.Name),
-                        DisplayName = prop.GetAttributeValue<DisplayNameAttribute, string>(attr => attr?.DisplayName) ?? prop.Name,
-                        HelpText = prop.GetAttributeValue<DisplayNameAttribute, string>(attr => attr?.HelpText),
-                        Section = prop.GetAttributeValue<SectionAttribute, string>(attr => attr?.Section) ?? "General",
-                        Type = prop.GetAttributeValue<EditorAttribute, string>(attr => attr?.Editor)
-                    };
-                }).Where(ent => ent.Type != null)
+                        return new FieldDef
+                        {
+                            Alias = nameResolver.GetResolvedPropertyName(prop.Name),
+                            DisplayName = prop.GetAttributeValue<DisplayNameAttribute, string>(attr => attr?.DisplayName) ?? prop.Name,
+                            HelpText = prop.GetAttributeValue<DisplayNameAttribute, string>(attr => attr?.HelpText),
+                            Section = prop.GetAttributeValue<SectionAttribute, string>(attr => attr?.Section) ?? "General",
+                            Type = prop.GetAttributeValue<EditorAttribute, string>(attr => attr?.Editor)
+                        };
+                    })
+                    .Where(ent => ent.Type != null)
             };
         }
 

@@ -1,7 +1,22 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { actions as siteActions } from '../redux/modules/sites';
 import { Link } from 'react-router';
 
-export default class HomeView extends React.Component {
+const mapStateToProps = (state) => ({
+  sites: state.sites
+});
+
+export class HomeView extends React.Component {
+    static propTypes = {
+      sites: React.PropTypes.object.isRequired,
+      loadSites: React.PropTypes.func.isRequired,
+    };
+
+    componentWillMount() {
+        this.props.loadSites();
+    }
+
     render () {
       return (
             <div className='container page-content'>
@@ -9,11 +24,12 @@ export default class HomeView extends React.Component {
                     <div className='card-header'>
                         Hosted websites
                     </div>
-                    <ul className='list-group list-group-flush'>
-                        <li className='list-group-item'>
-                            Site
-                        </li>
-                    </ul>
+                    <div className='list-group list-group-flush'>
+                    {this.props.sites.sites.map(site =>
+                        <Link to={`/content?site=${site.alias}`} className='list-group-item'>
+                            {site.displayName} <span className='pull-right'>({site.domains.join(', ')})</span>
+                        </Link>)}
+                    </div>
                 </div>
 
                 <div className='row'>
@@ -72,3 +88,9 @@ export default class HomeView extends React.Component {
         );
     }
 }
+
+const actions = {
+  loadSites: siteActions.loadSites
+};
+
+export default connect(mapStateToProps, actions)(HomeView);

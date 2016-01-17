@@ -1,4 +1,5 @@
 import React from 'react';
+// import AceEditor from 'react-ace';
 
 export default class extends React.Component {
     static alias = 'longtext';
@@ -13,6 +14,7 @@ export default class extends React.Component {
     }
 
     render () {
+      // return <AceEditor onChange={this.handleChange.bind(this)} value={this.props.value} />;
       return (<textarea className='form-control' onChange={this.handleChange.bind(this)} value={this.props.value} />);
     }
 }
