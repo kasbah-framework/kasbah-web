@@ -16,24 +16,22 @@ namespace Kasbah.Web.Admin
             app.UseIdentity();
             app.UseCookieAuthentication();
 
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                TokenValidationParameters = new TokenValidationParameters
-                {
-                    IssuerSigningKey = ServiceConfiguration.Key,
-                    ValidAudience = ServiceConfiguration.TokenOptions.Audience,
-                    ValidIssuer = ServiceConfiguration.TokenOptions.Issuer,
-                    ValidateSignature = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                }
-            });
+            // app.UseJwtBearerAuthentication(new JwtBearerOptions
+            // {
+            //     TokenValidationParameters = new TokenValidationParameters
+            //     {
+            //         IssuerSigningKey = ServiceConfiguration.Key,
+            //         ValidAudience = ServiceConfiguration.TokenOptions.Audience,
+            //         ValidIssuer = ServiceConfiguration.TokenOptions.Issuer,
+            //         ValidateSignature = true,
+            //         ValidateLifetime = true,
+            //         ClockSkew = TimeSpan.Zero
+            //     }
+            // });
 
             app.UseMvc();
 
             app.UseKasbahWeb();
-
-            new System.IdentityModel.Tokens.AsymmetricSignatureProvider(null, null);
 
             return app;
         }
