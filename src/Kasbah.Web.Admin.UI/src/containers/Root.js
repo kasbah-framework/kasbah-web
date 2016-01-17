@@ -19,11 +19,11 @@ export default class Root extends React.Component {
   };
 
   checkAuth(nextState, replace) {
-    // if (!auth.loggedIn()) {
-      replace({
-        pathname: '/login',
-        state: { nextPathname: nextState.location.pathname }
-      });
+    // if (!sessionStorage.isAuthenticated) {
+    //   const state = { nextPathname: nextState.location.pathname };
+    //   const path = { pathname: '/login' };
+
+    //   replace(state, path);
     // }
   }
 
@@ -37,8 +37,8 @@ export default class Root extends React.Component {
           <Route path='/users' component={UserView} onEnter={this.checkAuth.bind(this)} />
           <Route path='/media' component={MediaView} onEnter={this.checkAuth.bind(this)} />
 
-          <Route path='/login' component={LoginView} />
         </Route>
+        <Route path='/login' component={LoginView} />
       </Router>
     );
   }

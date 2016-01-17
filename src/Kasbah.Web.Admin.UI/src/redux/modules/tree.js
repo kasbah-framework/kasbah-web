@@ -43,7 +43,7 @@ function receiveNodes (parent, data) {
 export const fetchChildren = (parent) => {
   return (dispatch, getState) => {
     dispatch(requestNodes(parent));
-    return fetch(`${API_URL}/api/children?id=${parent}`)
+    return fetch(`${API_URL}/api/children?id=${parent}`, { credentials: 'include' })
       .then(response => response.json())
       .then(json => dispatch(receiveNodes(parent, json)));
   };
@@ -94,7 +94,7 @@ function receiveNodeVersions (node, data) {
 export function fetchNodeVersions (node) {
   return dispatch => {
     dispatch(requestNodeVersions(node));
-    return fetch(`${API_URL}/api/versions/${node}`)
+    return fetch(`${API_URL}/api/versions/${node}`, { credentials: 'include' })
       .then(response => response.json())
       .then(json => dispatch(receiveNodeVersions(node, json)));
   };
@@ -115,7 +115,7 @@ export function fetchNodeVersion (id, version) {
   return dispatch => {
     dispatch(requestNodeVersions(id, version));
 
-    return fetch(`${API_URL}/api/version/${id}/${version}`)
+    return fetch(`${API_URL}/api/version/${id}/${version}`, { credentials: 'include' })
       .then(response => response.json())
       .then(json => dispatch(receiveNodeVersion(id, version, json)));
   };
@@ -152,6 +152,7 @@ function notifyNodeCreated (id) {
 export function createNode (parent, alias, type) {
   const options = {
     method: 'POST',
+    credentials: 'include',
     body: JSON.stringify({ parent, alias, type }),
     headers: {
       'Accept': 'application/json',
@@ -181,6 +182,7 @@ function notifyNodeVersionCreated (node, id) {
 export function createNodeVersion (node) {
   const options = {
     method: 'POST',
+    credentials: 'include',
     body: JSON.stringify({}),
     headers: {
       'Accept': 'application/json',
@@ -211,6 +213,7 @@ export function addField (node, version, name) {
 export function setActiveVersion (id, version) {
   const options = {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -229,6 +232,7 @@ export function setActiveVersion (id, version) {
 export function save (node, version, values) {
   const options = {
     method: 'POST',
+    credentials: 'include',
     body: JSON.stringify(values),
     headers: {
       'Accept': 'application/json',

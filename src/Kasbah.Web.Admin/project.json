@@ -11,7 +11,10 @@
   "licenseUrl": "",
   "dependencies": {
     "Kasbah.Web": "",
-    "Kasbah.Identity": "1.0.0-*"
+    "Kasbah.Identity": "1.0.0-*",
+    "Microsoft.AspNet.Authentication.JwtBearer": "1.0.0-rc1-*",
+    "System.IdentityModel.Tokens": "5.0.0-rc1-*",
+    "System.IdentityModel.Tokens.Jwt": "5.0.0-rc1-*"
   },
   "frameworks": {
     "dnx451": {}

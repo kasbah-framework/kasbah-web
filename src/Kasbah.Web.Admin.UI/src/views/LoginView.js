@@ -7,11 +7,31 @@ import { actions as authActions } from '../redux/modules/auth';
 export class LoginView extends React.Component {
     static propTypes = {
       auth: React.PropTypes.object.isRequired,
-      loginUser: React.PropTypes.func.isRequired
+      loginUser: React.PropTypes.func.isRequired,
+      location: React.PropTypes.object.isRequired
+    };
+
+    static contextTypes = {
+      history: React.PropTypes.object.isRequired
     };
 
     handleSubmit (username, password, persist) {
       this.props.loginUser(username, password, persist);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.auth.isAuthenticated) {
+            sessionStorage.isAuthenticated = true;
+
+            const { history } = this.context;
+            const { location } = this.props;
+
+            if (location.state && location.state.nextPathname) {
+                history.pushState(null, location.state.nextPathname);
+            } else {
+                history.pushState(null, '/');
+            }
+        }
     }
 
     render () {

@@ -113,12 +113,11 @@ export default handleActions({
   },
   [LOGIN_USER_SUCCESS]: (state, { payload }) => {
     try {
-        // let decoded = jwtDecode(payload.token);
       return {
         'isAuthenticating': false,
         'isAuthenticated': true,
-        'token': payload.token,
-        'userName': 'unknown', // decoded.userName,
+        'token': null,
+        'userName': null,
         'errorCode': null,
         'errorMessage': null
       };

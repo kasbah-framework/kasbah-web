@@ -22,7 +22,7 @@ const loadTypesSuccess = (data) => {
 export const loadTypes = () => {
   return (dispatch) => {
     // dispatch(loadTypesRequest());
-    return fetch(`${API_URL}/api/types`)
+    return fetch(`${API_URL}/api/types`, { credentials: 'include' })
       .then(checkHttpStatus)
       .then(parseJSON)
       .then(response => {

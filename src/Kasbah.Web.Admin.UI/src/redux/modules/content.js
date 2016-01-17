@@ -51,7 +51,7 @@ export function loadContentRequest () {
 export function loadContent (id) {
   return (dispatch) => {
     dispatch(loadContentRequest());
-    return fetch(`${API_URL}/api/content/${id}`)
+    return fetch(`${API_URL}/api/content/${id}`, { credentials: 'include' })
       .then(checkHttpStatus)
       .then(parseJSON)
       .then(response => {
