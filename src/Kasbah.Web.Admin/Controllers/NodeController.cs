@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Kasbah.Core.ContentBroker;
+using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.Models;
 using Microsoft.AspNet.Mvc;
 

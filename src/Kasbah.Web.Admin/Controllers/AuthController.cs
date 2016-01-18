@@ -30,20 +30,20 @@ namespace Kasbah.Web.Admin.Controllers
         [Route("/api/auth/init")]
         public async Task Init()
         {
-            var admin = await _userManager.FindByNameAsync("admin");
-            if (admin == null)
-            {
-                var result = await _userManager.CreateAsync(new KasbahUser
-                {
-                    UserName = "admin",
-                    Email = "email@changeme.org"
-                }, "$Passw0rd");
+            //var admin = await _userManager.FindByNameAsync("admin");
+            //if (admin == null)
+            //{
+            //    var result = await _userManager.CreateAsync(new KasbahUser
+            //    {
+            //        UserName = "admin",
+            //        Email = "email@changeme.org"
+            //    }, "$Passw0rd");
 
-                if (!result.Succeeded)
-                {
-                    throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
-                }
-            }
+            //    if (!result.Succeeded)
+            //    {
+            //        throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
+            //    }
+            //}
         }
 
         [Route("/api/auth/login"), HttpPost]
@@ -51,33 +51,33 @@ namespace Kasbah.Web.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByIdAsync(request.UserName);
-                if (user != null)
-                {
-                    var passwordOk = await _userManager.CheckPasswordAsync(user, request.Password);
-                    if (passwordOk)
-                    {
-                        var token = GetToken(user.UserName, null);
+                //var user = await _userManager.FindByIdAsync(request.UserName);
+                //if (user != null)
+                //{
+                //    var passwordOk = await _userManager.CheckPasswordAsync(user, request.Password);
+                //    if (passwordOk)
+                //    {
+                //        var token = GetToken(user.UserName, null);
 
-                        return new LoginResponse { Token = token };
-                    }
-                    else
-                    {
-                        return new LoginResponse
-                        {
-                            ErrorCode = (int)LoginResponse.ErrorCodes.InvalidUserNameOrPassword,
-                            ErrorMessage = "Invalid username or password"
-                        };
-                    }
-                }
-                else
-                {
-                    return new LoginResponse
-                    {
-                        ErrorCode = (int)LoginResponse.ErrorCodes.InvalidUserNameOrPassword,
-                        ErrorMessage = "Invalid username or password"
-                    };
-                }
+                //        return new LoginResponse { Token = token };
+                //    }
+                //    else
+                //    {
+                //        return new LoginResponse
+                //        {
+                //            ErrorCode = (int)LoginResponse.ErrorCodes.InvalidUserNameOrPassword,
+                //            ErrorMessage = "Invalid username or password"
+                //        };
+                //    }
+                //}
+                //else
+                //{
+                //    return new LoginResponse
+                //    {
+                //        ErrorCode = (int)LoginResponse.ErrorCodes.InvalidUserNameOrPassword,
+                //        ErrorMessage = "Invalid username or password"
+                //    };
+                //}
 
                 // TODO: implement checking Method on request, maybe. or ditch it
                 // var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, request.Persist, lockoutOnFailure: false);

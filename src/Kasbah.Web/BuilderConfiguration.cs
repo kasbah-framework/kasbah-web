@@ -1,5 +1,5 @@
+using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.ContentTree;
-using Kasbah.Core.Models;
 using Kasbah.Web.Models;
 using Microsoft.AspNet.Builder;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.ContentTree;
-using Kasbah.Core.Models;
 
 namespace Kasbah.Web.Models
 {

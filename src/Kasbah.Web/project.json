@@ -21,6 +21,7 @@
     "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-*"
   },
   "frameworks": {
-    "dnx451": {}
+    "dnx451": { },
+    "dnxcore50": { }
   }
 }

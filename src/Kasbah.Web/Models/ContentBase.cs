@@ -1,6 +1,6 @@
-using Kasbah.Core.Models;
 using Kasbah.Core.Annotations;
 using Kasbah.Web.Annotations;
+using Kasbah.Core.ContentBroker.Models;
 
 namespace Kasbah.Web.Models
 {

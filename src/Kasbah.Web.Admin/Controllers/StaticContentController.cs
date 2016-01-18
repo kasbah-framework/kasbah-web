@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Microsoft.AspNet.Mvc;
 
 namespace Kasbah.Web.Admin.Controllers
@@ -46,7 +47,7 @@ namespace Kasbah.Web.Admin.Controllers
 
         #region Private Fields
 
-        private static IDictionary<string, string> _mappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
+        private static IDictionary<string, string> _mappings = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase) {
             {".js", "application/x-javascript"},
             {".html", "text/html"},
             {".txt", "text/plain"},
@@ -62,7 +63,7 @@ namespace Kasbah.Web.Admin.Controllers
 
         static byte[] MapPathToResource(string path)
         {
-            var assembly = typeof(StaticContentController).Assembly;
+            var assembly = typeof(StaticContentController).GetTypeInfo().Assembly;
             const string Prefix = "Kasbah.Web.Admin.wwwroot";
             var resources = assembly.GetManifestResourceNames();
             var resPath = $"{Prefix}.{path}".Replace("/", ".").Replace("font-awesome", "font_awesome");

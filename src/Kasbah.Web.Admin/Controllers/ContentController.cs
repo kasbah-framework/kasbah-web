@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Kasbah.Core;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.Utils;
@@ -32,10 +33,10 @@ namespace Kasbah.Web.Admin.Controllers
         {
             return new GetTypesResponse
             {
-                Types = _applicationContext.ModelList.RegisteredModels.Select(ent => new TypeInfo
+                Types = _applicationContext.ModelList.RegisteredModels.Select(ent => new Models.TypeInfo
                 {
                     Id = ent.AssemblyQualifiedName,
-                    DisplayName = ent.GetAttributeValue<DisplayNameAttribute, string>(attr => attr?.DisplayName) ?? ent.Name
+                    DisplayName = ent.GetTypeInfo().GetAttributeValue<DisplayNameAttribute, string>(attr => attr?.DisplayName) ?? ent.Name
                 })
             };
         }
@@ -54,21 +55,25 @@ namespace Kasbah.Web.Admin.Controllers
             };
         }
 
-        [RouteAttribute("/api/controllers")]
+        [Route("/api/controllers")]
         public GetControllersResponse GetControllers()
         {
             const string ControllerNameSuffix = "Controller";
+#if DNXCORE50
+            var types = typeof(ContentController).GetTypeInfo().Assembly.GetTypes();
+#else
+            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(asm => asm.GetTypes());
+#endif
             return new GetControllersResponse
             {
-                Controllers = AppDomain.CurrentDomain.GetAssemblies()
-                    .SelectMany(asm => asm.GetTypes())
-                    .Where(typ => typ.Name.EndsWith(ControllerNameSuffix))
+                Controllers = types
+                    .Where(typ => typ.Name.EndsWith(ControllerNameSuffix) && typ.Name != ControllerNameSuffix)
                     .Select(typ => new ControllerInfo
                     {
                         Alias = typ.Name.Substring(0, typ.Name.Length - ControllerNameSuffix.Length),
                         DisplayName = typ.Name.Substring(0, typ.Name.Length - ControllerNameSuffix.Length),
                         Actions = typ.GetMethods()
-                            .Where(meth => meth.IsPublic)
+                            .Where(meth => meth.IsPublic && meth.DeclaringType == typ && !meth.IsSpecialName && !meth.IsStatic)
                             .Select(meth => meth.Name)
                     })
             };
@@ -127,9 +132,9 @@ namespace Kasbah.Web.Admin.Controllers
             return new SaveContentResponse { };
         }
 
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
 
         static ModelDefinition GetModelDefinition(Type type)
         {
@@ -159,14 +164,14 @@ namespace Kasbah.Web.Admin.Controllers
             };
         }
 
-        #endregion
+#endregion
 
-        #region Private Fields
+#region Private Fields
 
         readonly ContentBroker _contentBroker;
         readonly ILogger _log;
         readonly IApplicationContext _applicationContext;
 
-        #endregion
+#endregion
     }
 }
