@@ -2,6 +2,17 @@ import React from 'react';
 import { Link } from 'react-router';
 
 export default class extends React.Component {
+
+  static contextTypes = {
+    router: React.PropTypes.object.isRequired
+  };
+
+  handleLogout () {
+    sessionStorage.removeItem('isAuthenticated');
+
+    this.context.router.push('/');
+  }
+
   render () {
     return (
       <nav className='navbar navbar-dark navbar-static-top header'>
@@ -24,7 +35,7 @@ export default class extends React.Component {
 
           <ul className='nav navbar-nav pull-right'>
             <li className='nav-item'>
-              <button className='btn-link nav-link'>Logout</button>
+              <button className='btn-link nav-link' onClick={this.handleLogout.bind(this)}>Logout</button>
             </li>
           </ul>
         </div>

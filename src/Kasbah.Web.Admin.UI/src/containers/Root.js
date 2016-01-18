@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router';
+import { Router, browserHistory } from 'react-router';
 import CoreLayout from 'layouts/CoreLayout';
 
 import HomeView from 'views/HomeView';
@@ -14,24 +14,23 @@ import LoginView from 'views/LoginView';
 
 export default class Root extends React.Component {
   static propTypes = {
-    history: React.PropTypes.object.isRequired,
     store: React.PropTypes.object.isRequired
   };
 
   checkAuth(nextState, replace) {
     if (!sessionStorage.isAuthenticated) {
-      // replace({
-      //   pathname: '/login',
-      //   state: { nextPathname: nextState.location.pathname }
-      // });
+      replace({
+        pathname: '/login',
+        state: { nextPathname: nextState.location.pathname }
+      });
     }
   }
 
   get content () {
     return (
-      <Router>
+      <Router history={browserHistory}>
         <Route path='/' component={CoreLayout}>
-          <IndexRoute component={HomeView} />
+          <IndexRoute component={HomeView} onEnter={this.checkAuth.bind(this)} />
           <Route path='/content' component={ContentView} onEnter={this.checkAuth.bind(this)} />
           <Route path='/analytics' component={AnalyticsView} onEnter={this.checkAuth.bind(this)} />
           <Route path='/users' component={UserView} onEnter={this.checkAuth.bind(this)} />

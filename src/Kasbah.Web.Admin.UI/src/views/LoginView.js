@@ -12,7 +12,7 @@ export class LoginView extends React.Component {
     };
 
     static contextTypes = {
-      history: React.PropTypes.object.isRequired
+      router: React.PropTypes.object.isRequired
     };
 
     handleSubmit (username, password, persist) {
@@ -27,9 +27,9 @@ export class LoginView extends React.Component {
             const { location } = this.props;
 
             if (location.state && location.state.nextPathname) {
-                history.pushState(null, location.state.nextPathname);
+                this.context.router.push(location.state.nextPathname);
             } else {
-                history.pushState(null, '/');
+                this.context.router.push('/');
             }
         }
     }
