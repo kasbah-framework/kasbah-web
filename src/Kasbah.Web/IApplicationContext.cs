@@ -8,7 +8,7 @@ namespace Kasbah.Web
 
         ModelList ModelList { get; }
 
-        SiteList Sites { get; }
+        SiteList Sites { get; set; }
 
         #endregion
     }

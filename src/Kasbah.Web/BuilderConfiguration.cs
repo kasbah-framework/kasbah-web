@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using Kasbah.Core.ContentBroker;
 using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.ContentTree;
 using Kasbah.Web.Models;
@@ -12,16 +15,32 @@ namespace Kasbah.Web
 
         public static IApplicationBuilder UseKasbahWeb(this IApplicationBuilder app)
         {
-            var contentTreeService = app.ApplicationServices.GetRequiredService<ContentTreeService>();
+            var contentBroker = app.ApplicationServices.GetRequiredService<ContentBroker>();
             var applicationContext = app.ApplicationServices.GetRequiredService<IApplicationContext>();
 
-            var sitesRootNode = contentTreeService.GetOrCreate<EmptyItem>(null, "sites");
+            var sitesRootNode = contentBroker.GetOrCreate<EmptyItem>(null, "sites");
+            var actualSites = new SiteList();
             foreach (var site in applicationContext.Sites)
             {
-                var siteNode = contentTreeService.GetOrCreate<Site>(sitesRootNode, site.Alias);
+                var siteNodeId = contentBroker.GetOrCreate<Site>(sitesRootNode, site.Alias);
+                var siteNode = contentBroker.GetNode(siteNodeId);
+                Guid versionId;
 
-                site.EnsureStaticStructure(siteNode, contentTreeService);
+                if (!siteNode.ActiveVersion.HasValue)
+                {
+                    versionId = contentBroker.Save(siteNodeId, Guid.NewGuid(), site).Id;
+                }
+                else
+                {
+                    versionId = siteNode.ActiveVersion.Value;
+                }
+
+                actualSites.Add(contentBroker.GetNodeVersion<Site>(siteNodeId, versionId));
+
+                site.EnsureStaticStructure(siteNodeId, contentBroker);
             }
+
+            applicationContext.Sites = actualSites;
 
             return app;
         }

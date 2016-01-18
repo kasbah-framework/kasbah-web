@@ -50,7 +50,8 @@ namespace Kasbah.Web.Admin.Controllers
                 {
                     Alias = site.Alias,
                     DisplayName = site.Alias,
-                    Domains = site.Domains.Select(dom => dom.Domain)
+                    Domains = site.Domains.Select(dom => dom.Domain),
+                    Id = site.Node.Id
                 })
             };
         }
@@ -59,8 +60,8 @@ namespace Kasbah.Web.Admin.Controllers
         public GetControllersResponse GetControllers()
         {
             const string ControllerNameSuffix = "Controller";
-#if DNXCORE50
-            var types = typeof(ContentController).GetTypeInfo().Assembly.GetTypes();
+#if DNXCORE50            
+            var types = Assembly.GetEntryAssembly().GetTypes();
 #else
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(asm => asm.GetTypes());
 #endif

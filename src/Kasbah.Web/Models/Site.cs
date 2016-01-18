@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kasbah.Core.ContentBroker;
 using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.ContentTree;
 
@@ -37,11 +38,11 @@ namespace Kasbah.Web.Models
 
         #region Public Methods
 
-        public void EnsureStaticStructure(Guid siteNode, ContentTreeService contentTreeService)
+        public void EnsureStaticStructure(Guid siteNode, ContentBroker contentBroker)
         {
             if (_staticStructure == null) { return; }
 
-            CreateChildren(contentTreeService, _staticStructure, siteNode, null);
+            CreateChildren(contentBroker, _staticStructure, siteNode, null);
         }
 
         #endregion
@@ -62,13 +63,13 @@ namespace Kasbah.Web.Models
 
         #region Private Methods
 
-        void CreateChildren(ContentTreeService contentTreeService, IEnumerable<NodeDefinition> structure, Guid node, NodeDefinition nodeDefinition)
+        void CreateChildren(ContentBroker contentBroker, IEnumerable<NodeDefinition> structure, Guid node, NodeDefinition nodeDefinition)
         {
             foreach (var childNodeDefinition in _staticStructure.Where(ent => ent.Parent == nodeDefinition))
             {
-                var childNode = contentTreeService.GetOrCreate(node, childNodeDefinition.Alias, childNodeDefinition.Type);
+                var childNode = contentBroker.GetOrCreate(node, childNodeDefinition.Alias, childNodeDefinition.Type);
 
-                CreateChildren(contentTreeService, structure, childNode, childNodeDefinition);
+                CreateChildren(contentBroker, structure, childNode, childNodeDefinition);
             }
         }
 

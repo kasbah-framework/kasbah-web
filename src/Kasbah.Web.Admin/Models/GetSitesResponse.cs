@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Kasbah.Web.Admin.Models
@@ -14,5 +15,7 @@ namespace Kasbah.Web.Admin.Models
         public string DisplayName { get; set; }
 
         public IEnumerable<string> Domains { get; set; }
+
+        public Guid Id { get; set; }
     }
 }
