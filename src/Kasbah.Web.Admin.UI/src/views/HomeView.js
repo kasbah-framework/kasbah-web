@@ -26,7 +26,7 @@ export class HomeView extends React.Component {
                     </div>
                     <div className='list-group list-group-flush'>
                     {this.props.sites.sites && this.props.sites.sites.map(site =>
-                        <Link to={`/content?site=${site.id}`} className='list-group-item'>
+                        <Link key={site.id} to={{ pathname: '/content', query: { site: site.id } }} className='list-group-item'>
                             <strong>{site.displayName}</strong> <span className='pull-right'>({site.domains.join(', ')})</span>
                         </Link>)}
                     </div>

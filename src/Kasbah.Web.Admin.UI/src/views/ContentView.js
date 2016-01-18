@@ -44,8 +44,10 @@ export class ContentView extends React.Component {
     }
 
     componentWillMount () {
+      let { query } = this.props.location;
+
       // TODO: limit the node tree to start at the /sites/ node
-      this.props.fetchChildren(null);
+      this.props.fetchChildren(query.site || null);
       this.props.loadTypes();
     }
 
@@ -57,6 +59,7 @@ export class ContentView extends React.Component {
     }
 
     render () {
+      let { query } = this.props.location;
       return (
         <div className='container page-content'>
           <div className='container-fluid'>
@@ -64,7 +67,7 @@ export class ContentView extends React.Component {
               <div className='col-lg-3'>
                 <div className='card'>
                   <NodeList
-                    parent={null}
+                    parent={query.site || null}
                     nodeTree={this.props.tree}
                     onNodeSelected={this.handleNodeSelected.bind(this)}
                     onToggleNode={this.handleToggleNode.bind(this)}

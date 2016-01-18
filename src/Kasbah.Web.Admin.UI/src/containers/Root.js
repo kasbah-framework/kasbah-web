@@ -19,12 +19,12 @@ export default class Root extends React.Component {
   };
 
   checkAuth(nextState, replace) {
-    // if (!sessionStorage.isAuthenticated) {
-    //   const state = { nextPathname: nextState.location.pathname };
-    //   const path = { pathname: '/login' };
-
-    //   replace(state, path);
-    // }
+    if (!sessionStorage.isAuthenticated) {
+      // replace({
+      //   pathname: '/login',
+      //   state: { nextPathname: nextState.location.pathname }
+      // });
+    }
   }
 
   get content () {
