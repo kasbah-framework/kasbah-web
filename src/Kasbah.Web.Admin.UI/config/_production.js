@@ -8,6 +8,6 @@ export default (config) => ({
     chunkModules : true,
     colors : true
   },
-  compiler_public_path: '/k/',
+  compiler_public_path: '/',
   dir_dist: '../Kasbah.Web.Admin/wwwroot'
 });

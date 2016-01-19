@@ -28,7 +28,7 @@ namespace Kasbah.Web.Admin.Controllers
             return _mappings.TryGetValue(extension, out mime) ? mime : "application/octet-stream";
         }
 
-        [Route("/k/{*path}")]
+        [Route("/{*path}")]
         public IActionResult StaticContent(string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -38,7 +38,11 @@ namespace Kasbah.Web.Admin.Controllers
 
             var data = MapPathToResource(path);
 
-            if (data == null) { return new HttpNotFoundResult(); }
+            if (data == null)
+            {
+                path = "index.html";
+                data = MapPathToResource(path);
+            }
 
             return new FileStreamResult(new MemoryStream(data), GetMimeType(path.Split('.').Last()));
         }

@@ -21,29 +21,30 @@ namespace Kasbah.Web.Admin.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _log = loggerFactory.CreateLogger<AuthController>();
+
+            EnsureAdmin().Wait();
         }
 
         #endregion
 
         #region Public Methods
 
-        [Route("/api/auth/init")]
-        public async Task Init()
+        async Task EnsureAdmin()
         {
-            //var admin = await _userManager.FindByNameAsync("admin");
-            //if (admin == null)
-            //{
-            //    var result = await _userManager.CreateAsync(new KasbahUser
-            //    {
-            //        UserName = "admin",
-            //        Email = "email@changeme.org"
-            //    }, "$Passw0rd");
+            var admin = await _userManager.FindByNameAsync("admin");
+            if (admin == null)
+            {
+               var result = await _userManager.CreateAsync(new KasbahUser
+               {
+                   UserName = "admin",
+                   Email = "email@changeme.org"
+               }, "$Passw0rd");
 
-            //    if (!result.Succeeded)
-            //    {
-            //        throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
-            //    }
-            //}
+               if (!result.Succeeded)
+               {
+                   throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
+               }
+            }
         }
 
         [Route("/api/auth/login"), HttpPost]
