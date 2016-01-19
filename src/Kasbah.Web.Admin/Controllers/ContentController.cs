@@ -49,7 +49,7 @@ namespace Kasbah.Web.Admin.Controllers
                 Sites = _applicationContext.Sites.Select(site => new SiteInfo
                 {
                     Alias = site.Alias,
-                    DisplayName = site.Alias,
+                    DisplayName = site.DisplayName,
                     Domains = site.Domains.Select(dom => dom.Domain),
                     Id = site.Node.Id
                 })
@@ -60,7 +60,7 @@ namespace Kasbah.Web.Admin.Controllers
         public GetControllersResponse GetControllers()
         {
             const string ControllerNameSuffix = "Controller";
-#if DNXCORE50            
+#if DNXCORE50
             var types = Assembly.GetEntryAssembly().GetTypes();
 #else
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(asm => asm.GetTypes());

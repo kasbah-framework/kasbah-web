@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { actions as siteActions } from '../redux/modules/sites';
 import { Link } from 'react-router';
+import SiteList from 'components/ui/SiteList';
 
 const mapStateToProps = (state) => ({
   sites: state.sites
@@ -24,12 +25,7 @@ export class HomeView extends React.Component {
                     <div className='card-header'>
                         Hosted websites
                     </div>
-                    <div className='list-group list-group-flush'>
-                    {this.props.sites.sites && this.props.sites.sites.map(site =>
-                        <Link key={site.id} to={{ pathname: '/content', query: { site: site.id } }} className='list-group-item'>
-                            <strong>{site.displayName}</strong> <span className='pull-right'>({site.domains.join(', ')})</span>
-                        </Link>)}
-                    </div>
+                    {this.props.sites.sites && <SiteList sites={this.props.sites.sites} />}
                 </div>
 
                 <div className='row'>

@@ -57,6 +57,8 @@ namespace Kasbah.Web.Models
 
         public string Alias { get; set; }
 
+        public string DisplayName { get; set; }
+
         public IEnumerable<SiteDomain> Domains { get; set; }
 
         #endregion
