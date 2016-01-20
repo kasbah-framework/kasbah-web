@@ -41,7 +41,7 @@ namespace Kasbah.Web.Admin
                     builder.AllowAnyMethod();
                     builder.AllowCredentials();
                     // builder.AllowAnyOrigin();
-                    builder.WithOrigins("http://localhost:3004");
+                    builder.WithOrigins("http://localhost:3004", "http://127.0.0.1:3004");
                 });
 
                 options.DefaultPolicyName = "allowAnyOrigin";

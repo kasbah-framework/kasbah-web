@@ -24,7 +24,7 @@ namespace Kasbah.Web.Public
 
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{*path}");
             });
 
             app.UseKasbahWeb();

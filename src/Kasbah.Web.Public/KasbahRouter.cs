@@ -43,6 +43,7 @@ namespace Kasbah.Web.Public
 
             try
             {
+                _logger.LogVerbose($"Trying to match {context.HttpContext.Request.Host}");
                 var site = GetSiteByRequest(context.HttpContext);
                 if (site != null)
                 {

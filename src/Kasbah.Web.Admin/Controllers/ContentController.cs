@@ -144,11 +144,11 @@ namespace Kasbah.Web.Admin.Controllers
             {
                 Sections = type.GetAllProperties()
                     .Select(prop => prop.GetAttributeValue<SectionAttribute, SectionAttribute>(attr => attr))
-                    .OrderBy(ent => ent?.SortOrder ?? 0)
+                    .OrderBy(ent => ent?.SortOrder ?? int.MaxValue - 1)
                     .Select(ent => ent?.Section ?? "General")
                     .Distinct(),
                 Fields = type.GetAllProperties()
-                    .OrderBy(ent => ent.GetAttributeValue<EditorAttribute, int>(attr => attr?.SortOrder ?? 0))
+                    .OrderBy(ent => ent.GetAttributeValue<EditorAttribute, int>(attr => attr?.SortOrder ?? int.MaxValue))
                     .Select(prop =>
                     {
                         return new FieldDef
