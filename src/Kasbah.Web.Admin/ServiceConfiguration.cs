@@ -54,9 +54,12 @@ namespace Kasbah.Web.Admin
             // classes to protect.
             services.AddAuthorization(auth =>
             {
-                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                var bearerPolicy = new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes("Bearer")
-                    .RequireAuthenticatedUser().Build());
+                    .RequireAuthenticatedUser().Build();
+                auth.AddPolicy("Bearer", bearerPolicy);
+
+                auth.DefaultPolicy = bearerPolicy;
             });
 
             services.AddSingleton<IApplicationContext>(svc => config());

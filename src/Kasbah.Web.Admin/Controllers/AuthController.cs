@@ -34,16 +34,16 @@ namespace Kasbah.Web.Admin.Controllers
             var admin = await _userManager.FindByNameAsync("admin");
             if (admin == null)
             {
-               var result = await _userManager.CreateAsync(new KasbahUser
-               {
-                   UserName = "admin",
-                   Email = "email@changeme.org"
-               }, "$Passw0rd");
+                var result = await _userManager.CreateAsync(new KasbahUser
+                {
+                    UserName = "admin",
+                    Email = "email@changeme.org"
+                }, "$Passw0rd");
 
-               if (!result.Succeeded)
-               {
-                   throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
-               }
+                if (!result.Succeeded)
+                {
+                    throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
+                }
             }
         }
 
@@ -52,40 +52,24 @@ namespace Kasbah.Web.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var user = await _userManager.FindByIdAsync(request.UserName);
-                //if (user != null)
-                //{
-                //    var passwordOk = await _userManager.CheckPasswordAsync(user, request.Password);
-                //    if (passwordOk)
-                //    {
-                //        var token = GetToken(user.UserName, null);
-
-                //        return new LoginResponse { Token = token };
-                //    }
-                //    else
-                //    {
-                //        return new LoginResponse
-                //        {
-                //            ErrorCode = (int)LoginResponse.ErrorCodes.InvalidUserNameOrPassword,
-                //            ErrorMessage = "Invalid username or password"
-                //        };
-                //    }
-                //}
-                //else
-                //{
-                //    return new LoginResponse
-                //    {
-                //        ErrorCode = (int)LoginResponse.ErrorCodes.InvalidUserNameOrPassword,
-                //        ErrorMessage = "Invalid username or password"
-                //    };
-                //}
-
-                // TODO: implement checking Method on request, maybe. or ditch it
-                var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, request.Persist, lockoutOnFailure: false);
-
-                if (result.Succeeded)
+                var user = await _userManager.FindByIdAsync(request.UserName);
+                if (user != null)
                 {
-                    return new LoginResponse { };
+                    var passwordOk = await _userManager.CheckPasswordAsync(user, request.Password);
+                    if (passwordOk)
+                    {
+                        var token = GetToken(user, null);
+
+                        return new LoginResponse { Token = token };
+                    }
+                    else
+                    {
+                        return new LoginResponse
+                        {
+                            ErrorCode = (int)LoginResponse.ErrorCodes.InvalidUserNameOrPassword,
+                            ErrorMessage = "Invalid username or password"
+                        };
+                    }
                 }
                 else
                 {
@@ -131,13 +115,13 @@ namespace Kasbah.Web.Admin.Controllers
 
         #endregion
 
-        private string GetToken(string user, DateTime? expires)
+        private string GetToken(KasbahUser user, DateTime? expires)
         {
             var handler = new JwtSecurityTokenHandler();
 
             // Here, you should create or look up an identity for the user which is being authenticated.
             // For now, just creating a simple generic identity.
-            ClaimsIdentity identity = new ClaimsIdentity(new GenericIdentity(user, "TokenAuth"), new[] { new Claim("EntityID", "1", ClaimValueTypes.Integer) });
+            var identity = new ClaimsIdentity(new GenericIdentity(user.UserName, "TokenAuth"), new[] { new Claim("EntityID", user.Id, ClaimValueTypes.String) });
 
             var securityToken = handler.CreateToken(
                 issuer: ServiceConfiguration.TokenOptions.Issuer,

@@ -1,6 +1,7 @@
 import { handleActions } from 'redux-actions';
 import MimeTypes from '../../constants/MimeTypes';
 import { parseJSON, checkHttpStatus } from 'utils';
+import decode from 'jwt-decode';
 
 // ------------------------------------
 // Constants
@@ -113,11 +114,14 @@ export default handleActions({
   },
   [LOGIN_USER_SUCCESS]: (state, { payload }) => {
     try {
+      var token = payload.token;
+      var decoded = decode(token);
+      localStorage.token = token;
       return {
         'isAuthenticating': false,
         'isAuthenticated': true,
-        'token': null,
-        'userName': null,
+        'token': token,
+        'userName': decoded.unique_name,
         'errorCode': null,
         'errorMessage': null
       };
@@ -143,6 +147,7 @@ export default handleActions({
     };
   },
   [LOGOUT_USER]: (state, { payload }) => {
+    localStorage.removeItem('token');
     return {
       'isAuthenticated': false,
       'token': null,

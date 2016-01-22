@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.Models;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 
 namespace Kasbah.Web.Admin
@@ -18,6 +19,7 @@ namespace Kasbah.Web.Admin
         #endregion
     }
 
+    [Authorize()]
     public class NodeController
     {
         #region Public Constructors

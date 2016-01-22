@@ -4,14 +4,16 @@ using System.Reflection;
 using Kasbah.Core;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.Utils;
+using Kasbah.Web.Admin.Models;
 using Kasbah.Web.Annotations;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
-using Kasbah.Web.Admin.Models;
 
 namespace Kasbah.Web.Admin.Controllers
 {
+    [Authorize()]
     public class ContentController : Controller
     {
         #region Public Constructors
@@ -132,9 +134,9 @@ namespace Kasbah.Web.Admin.Controllers
             return new SaveContentResponse { };
         }
 
-#endregion
+        #endregion
 
-#region Private Methods
+        #region Private Methods
 
         static ModelDefinition GetModelDefinition(Type type)
         {
@@ -164,14 +166,14 @@ namespace Kasbah.Web.Admin.Controllers
             };
         }
 
-#endregion
+        #endregion
 
-#region Private Fields
+        #region Private Fields
 
         readonly ContentBroker _contentBroker;
         readonly ILogger _log;
         readonly IApplicationContext _applicationContext;
 
-#endregion
+        #endregion
     }
 }
