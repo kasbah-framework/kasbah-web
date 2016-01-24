@@ -29,24 +29,6 @@ namespace Kasbah.Web.Admin.Controllers
 
         #region Public Methods
 
-        async Task EnsureAdmin()
-        {
-            var admin = await _userManager.FindByNameAsync("admin");
-            if (admin == null)
-            {
-                var result = await _userManager.CreateAsync(new KasbahUser
-                {
-                    UserName = "admin",
-                    Email = "email@changeme.org"
-                }, "$Passw0rd");
-
-                if (!result.Succeeded)
-                {
-                    throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
-                }
-            }
-        }
-
         [Route("/api/auth/login"), HttpPost]
         public async Task<LoginResponse> Login([FromBody] LoginRequest request)
         {
@@ -115,7 +97,9 @@ namespace Kasbah.Web.Admin.Controllers
 
         #endregion
 
-        private string GetToken(KasbahUser user, DateTime? expires)
+        #region Private Methods
+
+        string GetToken(KasbahUser user, DateTime? expires)
         {
             var handler = new JwtSecurityTokenHandler();
 
@@ -133,5 +117,24 @@ namespace Kasbah.Web.Admin.Controllers
             return handler.WriteToken(securityToken);
         }
 
+        async Task EnsureAdmin()
+        {
+            var admin = await _userManager.FindByNameAsync("admin");
+            if (admin == null)
+            {
+                var result = await _userManager.CreateAsync(new KasbahUser
+                {
+                    UserName = "admin",
+                    Email = "email@changeme.org"
+                }, "$Passw0rd");
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
+                }
+            }
+        }
+
+        #endregion
     }
 }

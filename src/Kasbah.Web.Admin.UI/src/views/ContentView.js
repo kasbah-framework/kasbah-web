@@ -46,7 +46,6 @@ export class ContentView extends React.Component {
     componentWillMount () {
       let { query } = this.props.location;
 
-      // TODO: limit the node tree to start at the /sites/ node
       this.props.fetchChildren(query.site || null);
       this.props.loadTypes();
     }
