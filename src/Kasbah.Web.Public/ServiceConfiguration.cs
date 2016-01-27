@@ -11,19 +11,9 @@ namespace Kasbah.Web.Public
         {
             services.AddSingleton(svc => config());
 
-            // Services
-            services.AddScoped<Kasbah.Web.Services.UrlService>();
-            services.AddScoped<Kasbah.Core.ContentTree.ContentTreeService>();
-            services.AddScoped<Kasbah.Core.Index.IndexService>();
-            services.AddScoped<Kasbah.Core.Events.EventService>();
-            services.AddScoped<Kasbah.Core.ContentBroker.ContentBroker>();
+            services.AddKasbahWeb();
 
-            services.AddMvc((options) =>
-            {
-            //     var formatter = options.OutputFormatters.SingleOrDefault(f => f is JsonOutputFormatter) as JsonOutputFormatter;
-
-            //     formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            });
+            services.AddMvc();
 
             return services;
         }

@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNet.Authentication.JwtBearer;
 using Microsoft.AspNet.Builder;
+using System.Collections.Generic;
 
 namespace Kasbah.Web.Admin
 {
@@ -33,6 +34,8 @@ namespace Kasbah.Web.Admin
 
         public static IServiceCollection AddKasbahWebAdmin(this IServiceCollection services, Func<IApplicationContext> config)
         {
+            services.AddKasbahWeb();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("allowAnyOrigin", builder =>
@@ -64,11 +67,6 @@ namespace Kasbah.Web.Admin
 
             services.AddSingleton<IApplicationContext>(svc => config());
 
-            // Services
-            services.AddScoped<Kasbah.Core.ContentTree.ContentTreeService>();
-            services.AddScoped<Kasbah.Core.Index.IndexService>();
-            services.AddScoped<Kasbah.Core.Events.EventService>();
-
             services.AddScoped<IUserStore<KasbahUser>, UserStore>();
             services.AddScoped<IRoleStore<KasbahIdentityRole>, RoleStore>();
 
@@ -82,11 +80,6 @@ namespace Kasbah.Web.Admin
 
                 formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
-
-            // services.Configure<IdentityOptions>(options =>
-            // {
-            //     options.Cookies.ApplicationCookie.CookieName = "kasbah-web";
-            // });
 
             return services;
         }

@@ -16,17 +16,17 @@ namespace Kasbah.Web.Admin
             app.UseIdentity();
 
             app.UseJwtBearerAuthentication(new JwtBearerOptions
-             {
-                 TokenValidationParameters = new TokenValidationParameters
-                 {
-                     IssuerSigningKey = ServiceConfiguration.Key,
-                     ValidAudience = ServiceConfiguration.TokenOptions.Audience,
-                     ValidIssuer = ServiceConfiguration.TokenOptions.Issuer,
-                     ValidateSignature = true,
-                     ValidateLifetime = true,
-                     ClockSkew = TimeSpan.Zero
-                 }
-             });
+            {
+                TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = ServiceConfiguration.Key,
+                    ValidAudience = ServiceConfiguration.TokenOptions.Audience,
+                    ValidIssuer = ServiceConfiguration.TokenOptions.Issuer,
+                    ValidateSignature = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                }
+            });
 
             app.UseMvc();
 
