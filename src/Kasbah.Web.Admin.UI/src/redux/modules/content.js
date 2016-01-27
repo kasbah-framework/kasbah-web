@@ -51,7 +51,7 @@ export function loadContentRequest () {
 export function loadContent (id) {
   return (dispatch) => {
     dispatch(loadContentRequest());
-    return fetch(`${API_URL}/api/content/${id}`, { credentials: 'include' })
+    return fetch(`${API_URL}/api/content/${id}`, { credentials: 'include', headers: { 'Authorization': `Bearer ${localStorage.token}` } })
       .then(checkHttpStatus)
       .then(parseJSON)
       .then(response => {
@@ -110,7 +110,8 @@ export function saveContent (node, data, setActive) {
       credentials: 'include',
       headers: {
         'Accept': MimeTypes.application.json,
-        'Content-Type': MimeTypes.application.json
+        'Content-Type': MimeTypes.application.json,
+        'Authorization': `Bearer ${localStorage.token}`
       },
       body: JSON.stringify({
         node, data, setActive

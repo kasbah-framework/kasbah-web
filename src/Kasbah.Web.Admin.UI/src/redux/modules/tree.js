@@ -43,7 +43,7 @@ function receiveNodes (parent, data) {
 export const fetchChildren = (parent) => {
   return (dispatch, getState) => {
     dispatch(requestNodes(parent));
-    return fetch(`${API_URL}/api/children?id=${parent}`, { credentials: 'include' })
+    return fetch(`${API_URL}/api/children?id=${parent}`, { credentials: 'include', headers: { 'Authorization': `Bearer ${localStorage.token}` } })
       .then(response => response.json())
       .then(json => dispatch(receiveNodes(parent, json)));
   };
@@ -94,7 +94,7 @@ function receiveNodeVersions (node, data) {
 export function fetchNodeVersions (node) {
   return dispatch => {
     dispatch(requestNodeVersions(node));
-    return fetch(`${API_URL}/api/versions/${node}`, { credentials: 'include' })
+    return fetch(`${API_URL}/api/versions/${node}`, { credentials: 'include', headers: { 'Authorization': `Bearer ${localStorage.token}` } })
       .then(response => response.json())
       .then(json => dispatch(receiveNodeVersions(node, json)));
   };
@@ -115,7 +115,7 @@ export function fetchNodeVersion (id, version) {
   return dispatch => {
     dispatch(requestNodeVersions(id, version));
 
-    return fetch(`${API_URL}/api/version/${id}/${version}`, { credentials: 'include' })
+    return fetch(`${API_URL}/api/version/${id}/${version}`, { credentials: 'include', headers: { 'Authorization': `Bearer ${localStorage.token}` } })
       .then(response => response.json())
       .then(json => dispatch(receiveNodeVersion(id, version, json)));
   };
@@ -156,7 +156,8 @@ export function createNode (parent, alias, type) {
     body: JSON.stringify({ parent, alias, type }),
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.token}`
     }
   };
   return dispatch => {
@@ -186,7 +187,8 @@ export function createNodeVersion (node) {
     body: JSON.stringify({}),
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.token}`
     }
   };
   return dispatch => {
@@ -216,7 +218,8 @@ export function setActiveVersion (id, version) {
     credentials: 'include',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.token}`
     }
   };
 
@@ -236,7 +239,8 @@ export function save (node, version, values) {
     body: JSON.stringify(values),
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.token}`
     }
   };
 

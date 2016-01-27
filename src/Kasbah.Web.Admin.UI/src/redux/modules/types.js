@@ -21,7 +21,7 @@ const loadTypesSuccess = (data) => {
 
 export const loadTypes = () => {
   return (dispatch) => {
-    return fetch(`${API_URL}/api/types`, { credentials: 'include' })
+    return fetch(`${API_URL}/api/types`, { credentials: 'include', headers: { 'Authorization': `Bearer ${localStorage.token}` } })
       .then(checkHttpStatus)
       .then(parseJSON)
       .then(response => {

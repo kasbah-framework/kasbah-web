@@ -21,7 +21,7 @@ const loadSitesSuccess = (data) => {
 
 export const loadSites = () => {
   return (dispatch) => {
-    return fetch(`${API_URL}/api/sites`, { credentials: 'include', headers: { Authorization: `Bearer ${localStorage.token}` } })
+    return fetch(`${API_URL}/api/sites`, { credentials: 'include', headers: { 'Authorization': `Bearer ${localStorage.token}` } })
       .then(checkHttpStatus)
       .then(parseJSON)
       .then(response => {
