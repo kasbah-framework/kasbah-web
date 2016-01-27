@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNet.Authentication.JwtBearer;
 using Microsoft.AspNet.Builder;
+using System.Reflection;
 
 namespace Kasbah.Web.Admin
 {
@@ -21,7 +22,7 @@ namespace Kasbah.Web.Admin
         public const string TokenAudience = "Myself";
         public const string TokenIssuer = "MyProject";
 
-        public static RsaSecurityKey Key = new RsaSecurityKey(RSAKeyUtils.GetRandomKey());
+        public static RsaSecurityKey Key = new RsaSecurityKey(RSAKeyUtils.GetOrGenerate());
         public static TokenAuthOptions TokenOptions = new TokenAuthOptions
         {
             Audience = TokenAudience,
@@ -103,6 +104,19 @@ namespace Kasbah.Web.Admin
 
     public class RSAKeyUtils
     {
+        public static RSAParameters GetOrGenerate()
+        {
+            var root = Directory.GetCurrentDirectory();
+            const string FileName = "rsa.key";
+            var path = Path.Combine(root, FileName);
+            if (!File.Exists(path))
+            {
+                GenerateKeyAndSave(path);
+            }
+
+            return GetKeyParameters(path);
+        }
+
         public static RSAParameters GetRandomKey()
         {
             using (var rsa = new RSACryptoServiceProvider(2048))
