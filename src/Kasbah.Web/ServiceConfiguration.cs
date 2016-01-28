@@ -15,6 +15,8 @@ namespace Kasbah.Web
             services.AddScoped<Kasbah.Core.Cache.CacheService>();
             services.AddScoped<Kasbah.Core.ContentBroker.ContentBroker>();
 
+            services.AddScoped<Kasbah.Web.Services.UrlService>();
+
             return services;
         }
 
