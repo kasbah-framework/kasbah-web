@@ -19,6 +19,15 @@ namespace Kasbah.Web.Admin
         #endregion
     }
 
+    public class DeleteNodeRequest
+    {
+        #region Public Properties
+
+        public Guid Id { get; set; }
+
+        #endregion
+    }
+
     [Authorize()]
     public class NodeController
     {
@@ -43,6 +52,12 @@ namespace Kasbah.Web.Admin
         public NodeVersion CreateNodeVersion(Guid id)
         {
             return _contentBroker.Save<ItemBase>(id, Guid.NewGuid(), null);
+        }
+
+        [HttpDelete, Route("api/node")]
+        public void DeleteNode([FromBody]DeleteNodeRequest request)
+        {
+            _contentBroker.Delete(request.Id);
         }
 
         [Route("api/children")]

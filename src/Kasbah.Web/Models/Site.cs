@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.ContentBroker.Models;
-using Kasbah.Core.ContentTree;
 
 namespace Kasbah.Web.Models
 {

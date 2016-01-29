@@ -1,7 +1,7 @@
 using System;
 using Kasbah.Core.ContentBroker;
-using Kasbah.Core.Models;
 using Kasbah.Core.Events;
+using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;

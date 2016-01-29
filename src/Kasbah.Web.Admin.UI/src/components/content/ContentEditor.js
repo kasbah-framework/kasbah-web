@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Editor from './Editor';
 import { DropDownButton, DropDownButtonItem, Button } from 'components/ui';
 import { actions as contentActions } from '../../redux/modules/content';
+import { actions as treeActions } from '../../redux/modules/tree';
 
 class ContentEditor extends React.Component {
     static propTypes = {
@@ -13,7 +14,8 @@ class ContentEditor extends React.Component {
       updateModel: React.PropTypes.func.isRequired,
       saveContent: React.PropTypes.func.isRequired,
       types: React.PropTypes.object.isRequired,
-      onAddChild: React.PropTypes.func.isRequired
+      onAddChild: React.PropTypes.func.isRequired,
+      deleteNode: React.PropTypes.func.isRequired
     };
 
     handleFieldChange (field, value) {
@@ -32,6 +34,12 @@ class ContentEditor extends React.Component {
 
     }
 
+    handleDelete() {
+      if (confirm('Are you sure?')) {
+        this.props.deleteNode(this.props.node);
+      }
+    }
+
     render () {
       return (
         <div>
@@ -44,6 +52,7 @@ class ContentEditor extends React.Component {
               <DropDownButton buttonSize='sm' label='Add child node' buttonState='secondary'>
                 {this.props.types.types.map((type, index) => <DropDownButtonItem key={index} onClick={this.props.onAddChild.bind(this, this.props.node, type)}>{type.displayName}</DropDownButtonItem>)}
               </DropDownButton>
+              <Button label='Delete' buttonSize='sm' buttonState='danger' onClick={() => this.handleDelete()} />
               <Button label='View history' buttonSize='sm' buttonState='info' onClick={() => this.handleViewHistory()} />
             </div>
         </div>);
@@ -52,7 +61,8 @@ class ContentEditor extends React.Component {
 
 const actions = {
   updateModel: contentActions.updateModel,
-  saveContent: contentActions.saveContent
+  saveContent: contentActions.saveContent,
+  deleteNode: treeActions.deleteNode
 };
 
 export default connect(null, actions)(ContentEditor);

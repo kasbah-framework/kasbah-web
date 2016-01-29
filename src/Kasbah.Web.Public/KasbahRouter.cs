@@ -63,7 +63,7 @@ namespace Kasbah.Web.Public
                         {
                             _logger.LogVerbose("Content found");
 
-                            if (typeof(VersionedContentBase).IsAssignableFrom(content.GetType().GetTypeInfo()))
+                            if (typeof(VersionedContentBase).IsAssignableFrom(content.GetType()))
                             {
                                 var versionedContent = content as VersionedContentBase;
 

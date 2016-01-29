@@ -4,13 +4,20 @@ namespace Kasbah.Web.Admin.Models
 {
     public class GetTypesResponse : BaseApiResponse
     {
+        #region Public Properties
+
         public IEnumerable<TypeInfo> Types { get; set; }
+
+        #endregion
     }
 
     public class TypeInfo
     {
-        public string Id { get; set; }
+        #region Public Properties
 
         public string DisplayName { get; set; }
+        public string Id { get; set; }
+
+        #endregion
     }
 }

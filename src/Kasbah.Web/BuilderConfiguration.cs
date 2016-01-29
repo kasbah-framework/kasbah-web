@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.ContentBroker.Models;
-using Kasbah.Core.ContentTree;
 using Kasbah.Web.Models;
 using Microsoft.AspNet.Builder;
 using Microsoft.Extensions.DependencyInjection;
