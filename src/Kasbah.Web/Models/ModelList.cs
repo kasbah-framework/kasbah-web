@@ -37,7 +37,7 @@ namespace Kasbah.Web.Models
 
                 _list.Add(type);
 
-                #if !DNXCORE50
+#if !DNXCORE50
                 var baseType = type.BaseType;
                 while (baseType != null)
                 {
@@ -47,7 +47,7 @@ namespace Kasbah.Web.Models
                     }
                     baseType = baseType.BaseType;
                 }
-                #endif
+#endif
             }
         }
 

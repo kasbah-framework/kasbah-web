@@ -253,10 +253,40 @@ export function save (node, version, values) {
   };
 }
 
+export const NODE_DELETED = 'NODE_DELETED';
+function notifyNodeDeleted (id) {
+  return {
+    type: NODE_DELETED,
+    payload: {
+      id
+    }
+  };
+}
+
+export function deleteNode (id) {
+  const options = {
+    method: 'DELETE',
+    credentials: 'include',
+    body: JSON.stringify({ id }),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.token}`
+    }
+  };
+  return dispatch => {
+    return fetch(`${API_URL}/api/node`, options)
+      .then(resp => {
+        dispatch(notifyNodeDeleted(id));
+      });
+  };
+}
+
 export const actions = {
   fetchChildren,
   toggleNode,
-  createNode
+  createNode,
+  deleteNode
 };
 
 // ------------------------------------
@@ -320,5 +350,13 @@ export default handleActions({
     ret.items[payload.node][payload.version][payload.name] = null;
 
     return ret;
+  },
+  [NODE_DELETED]: (state, { payload }) => {
+    let ret = clone(state);
+
+    delete ret.items[payload.id];
+
+    return ret;
+
   }
 }, initialState);

@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.Models;
@@ -61,6 +62,14 @@ namespace Kasbah.Web.Public
                         if (content != null)
                         {
                             _logger.LogVerbose("Content found");
+
+                            if (typeof(VersionedContentBase).IsAssignableFrom(content.GetType()))
+                            {
+                                var versionedContent = content as VersionedContentBase;
+
+                                content = versionedContent.SelectVersion(context);
+                            }
+
                             if (!string.IsNullOrEmpty(content.Controller) && !string.IsNullOrEmpty(content.Action))
                             {
                                 if (content.Controller.Contains("."))

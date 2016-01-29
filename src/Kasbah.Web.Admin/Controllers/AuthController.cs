@@ -99,24 +99,6 @@ namespace Kasbah.Web.Admin.Controllers
 
         #region Private Methods
 
-        string GetToken(KasbahUser user, DateTime? expires)
-        {
-            var handler = new JwtSecurityTokenHandler();
-
-            // Here, you should create or look up an identity for the user which is being authenticated.
-            // For now, just creating a simple generic identity.
-            var identity = new ClaimsIdentity(new GenericIdentity(user.UserName, "TokenAuth"), new[] { new Claim("EntityID", user.Id, ClaimValueTypes.String) });
-
-            var securityToken = handler.CreateToken(
-                issuer: ServiceConfiguration.TokenOptions.Issuer,
-                audience: ServiceConfiguration.TokenOptions.Audience,
-                signingCredentials: ServiceConfiguration.TokenOptions.SigningCredentials,
-                subject: identity,
-                expires: expires);
-
-            return handler.WriteToken(securityToken);
-        }
-
         async Task EnsureAdmin()
         {
             var admin = await _userManager.FindByNameAsync("admin");
@@ -133,6 +115,24 @@ namespace Kasbah.Web.Admin.Controllers
                     throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
                 }
             }
+        }
+
+        string GetToken(KasbahUser user, DateTime? expires)
+        {
+            var handler = new JwtSecurityTokenHandler();
+
+            // Here, you should create or look up an identity for the user which is being authenticated.
+            // For now, just creating a simple generic identity.
+            var identity = new ClaimsIdentity(new GenericIdentity(user.UserName, "TokenAuth"), new[] { new Claim("EntityID", user.Id, ClaimValueTypes.String) });
+
+            var securityToken = handler.CreateToken(
+                issuer: ServiceConfiguration.TokenOptions.Issuer,
+                audience: ServiceConfiguration.TokenOptions.Audience,
+                signingCredentials: ServiceConfiguration.TokenOptions.SigningCredentials,
+                subject: identity,
+                expires: expires);
+
+            return handler.WriteToken(securityToken);
         }
 
         #endregion

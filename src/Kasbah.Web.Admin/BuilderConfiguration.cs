@@ -1,7 +1,7 @@
 using System;
 using System.IdentityModel.Tokens;
-using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Authentication.JwtBearer;
+using Microsoft.AspNet.Builder;
 
 namespace Kasbah.Web.Admin
 {

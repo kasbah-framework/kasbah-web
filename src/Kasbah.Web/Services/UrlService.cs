@@ -8,12 +8,16 @@ namespace Kasbah.Web.Services
 {
     public class UrlService
     {
-        readonly ContentBroker _contentBroker;
+        #region Public Constructors
 
         public UrlService(ContentBroker contentBroker)
         {
             _contentBroker = contentBroker;
         }
+
+        #endregion
+
+        #region Public Methods
 
         public string GetUrl(Node node)
         {
@@ -40,5 +44,13 @@ namespace Kasbah.Web.Services
 
             return null;
         }
+
+        #endregion
+
+        #region Private Fields
+
+        readonly ContentBroker _contentBroker;
+
+        #endregion
     }
 }
