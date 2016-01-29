@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Kasbah.Core;
@@ -164,6 +165,12 @@ namespace Kasbah.Web.Admin.Controllers
                     })
                     .Where(ent => ent.Type != null)
             };
+        }
+
+        [Route("/api/modules")]
+        public IEnumerable<string> GetAdditionalModules()
+        {
+            return _applicationContext.AdditionalModules;
         }
 
         #endregion

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Kasbah.Web.Models;
 
 namespace Kasbah.Web
@@ -9,6 +10,8 @@ namespace Kasbah.Web
         ModelList ModelList { get; }
 
         SiteList Sites { get; set; }
+
+        IEnumerable<string> AdditionalModules { get; set; }
 
         #endregion
     }

@@ -3,13 +3,15 @@
 @import 'vendor/bootstrap';
 @import 'node-tree';
 
+$brand-color: #03A9F4;
+
 body {
     font-family: 'Source Sans Pro', "Titillium Web";
     font-size: 14px;
 }
 
 nav.navbar.header, .login-view {
-    background-color: #c63e1e;
+    background-color: $brand-color;
 }
 
 .login-view .card {

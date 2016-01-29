@@ -100,7 +100,7 @@ namespace Kasbah.Web.Admin
         public static RSAParameters GetOrGenerate()
         {
             var root = Directory.GetCurrentDirectory();
-            const string FileName = "rsa.key";
+            const string FileName = "rsa.json";
             var path = Path.Combine(root, FileName);
             if (!File.Exists(path))
             {
