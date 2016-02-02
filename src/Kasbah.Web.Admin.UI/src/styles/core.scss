@@ -1,8 +1,7 @@
 @import 'bulma/utilities/utilities';
 @import 'bulma/config/variables';
 
-$family-sans-serif: "Source Sans Pro", sans-serif; // Add a sans-serif family
-$family-primary: $family-sans-serif; // Use the new sans-serif family
+$family-sans-serif: "Source Sans Pro", "Open Sans Pro", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 
 @import 'bulma/config/generated-variables';
 @import 'bulma/base/base';
@@ -17,5 +16,19 @@ div > .button {
 
     &:last-child {
         margin-right: 0;
+    }
+}
+
+.view-container {
+    margin-top: 20px;
+}
+
+.select.is-fullwidth {
+    width: 100%;
+    display: block;
+
+    select {
+        width: 100%;
+        display: block;
     }
 }

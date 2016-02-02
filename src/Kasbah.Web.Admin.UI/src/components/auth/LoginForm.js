@@ -45,16 +45,16 @@ export default class extends React.Component {
   }
 
   _renderField (id, type, placeholder, label, errors) {
-    let classes = ['form-group'];
+    let classes = ['control'];
     if (errors[id]) {
-      classes.push('has-error');
+      classes.push('is-danger');
     }
 
     return (
       <fieldset className={classes.join(' ')}>
-        <label htmlFor={id} className='control-label'>{label}</label>
-        <input type={type} className='form-control' id={id} placeholder={placeholder} ref={id} />
-        {errors[id] && (<p className='help-block'>{errors[id]}</p>)}
+        <label htmlFor={id}>{label}</label>
+        <input type={type} className='input' id={id} placeholder={placeholder} ref={id} />
+        {errors[id] && (<p className='is-danger'>{errors[id]}</p>)}
       </fieldset>
     );
   }
@@ -62,7 +62,7 @@ export default class extends React.Component {
   _renderError () {
     if (this.props.error) {
       return (
-        <div className='alert alert-danger'>
+        <div className='notification is-danger'>
           <i className='fa fa-warning' /> {this.props.error}
         </div>
       );
@@ -85,8 +85,6 @@ export default class extends React.Component {
         {this._renderError()}
 
         <div className='text-center'>
-          <div className='columns___'>
-            <div className='container'>
               <button type='reset'
                 className='button'
                 onClick={this.handleReset.bind(this)}>Reset</button>
@@ -96,8 +94,6 @@ export default class extends React.Component {
                 disabled={this.props.loading}>
                 <span>Login</span>
               </button>
-            </div>
-          </div>
         </div>
       </form>
     );

@@ -36,18 +36,21 @@ export class LoginView extends React.Component {
 
     render () {
       return (
-            <div className='flex-centred login-view'>
-                <div className='col-lg-4 col-md-6 col-sm-10'>
-                    <div className='card'>
-                        <div className='card-block'>
-                            <h4 className='card-title'>Kasbah Login</h4>
-                            <h6 className='card-subtitle text-muted'>Enter your credentials below to access the content administration website.</h6>
-                        </div>
-                        <div className='card-block'>
-                            <LoginForm onSubmit={this.handleSubmit.bind(this)} loading={this.props.auth.isAuthenticating} error={this.props.auth.errorMessage} />
+            <div className='is-fullheight'>
+                <section className='hero'>
+                    <div className='hero-content'>
+                        <div className='container'>
+                            <div className='columns'>
+                                <div className='column' />
+                                <div className='column is-4'>
+                                    <h1 className='title'>Login</h1>
+                                    <LoginForm onSubmit={this.handleSubmit.bind(this)} loading={this.props.auth.isAuthenticating} error={this.props.auth.errorMessage} />
+                                </div>
+                                <div className='column' />
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
         );
     }

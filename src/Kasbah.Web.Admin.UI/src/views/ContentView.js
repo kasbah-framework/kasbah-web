@@ -92,19 +92,19 @@ export class ContentView extends React.Component {
               <div className='column is-3'>
 
                 <div className='menu'>
-                  <p className="menu-heading">
+                  <p className='menu-heading'>
                     Context
                   </p>
-                  <p className="menu-tabs">
-                    <a className="is-active" href="#">Child nodes</a>
+                  <p className='menu-tabs'>
+                    <a className='is-active' href='#'>Child nodes</a>
                   </p>
                   {Object.keys(this.props.tree.nodes)
                     .map(k => this.props.tree.nodes[k])
                     .filter(ent => ent.parent === query.node || (ent.parent == null && !query.node))
                     .map(ent =>
-                      <Link key={ent.id} className="menu-block is-active" to={{ pathname: '/content', query: { node: ent.id } }}>
-                        <span className="menu-icon">
-                          <i className="fa fa-book"></i>
+                      <Link key={ent.id} className='menu-block' to={{ pathname: '/content', query: { node: ent.id } }}>
+                        <span className='menu-icon'>
+                          <i className='fa fa-book'></i>
                         </span>
                         {ent.alias}
                       </Link>
@@ -119,9 +119,9 @@ export class ContentView extends React.Component {
                       </span>
                     </p>
                     <p className='control'>
-                      <input className="input" type="text" placeholder="Node alias" ref='nodeAlias' />
+                      <input className='input' type='text' placeholder='Node alias' ref='nodeAlias' />
                     </p>
-                    <button className="button is-primary is-fullwidth" onClick={() => this.handleAddChild()}>
+                    <button className='button is-primary is-fullwidth' onClick={() => this.handleAddChild()}>
                       Add child
                     </button>
                   </div>

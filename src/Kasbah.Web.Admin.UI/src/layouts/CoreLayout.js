@@ -15,7 +15,7 @@ import 'font-awesome/scss/font-awesome.scss';
 function CoreLayout ({ children }) {
   return (
     <div className='page-container'>
-                <Header />
+      <Header />
 
       <div className='view-container'>
         {children}
