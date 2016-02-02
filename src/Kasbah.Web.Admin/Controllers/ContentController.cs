@@ -101,7 +101,8 @@ namespace Kasbah.Web.Admin.Controllers
             return new GetContentResponse
             {
                 ModelDefinition = GetModelDefinition(type),
-                Data = data
+                Data = data,
+                Node = node
             };
         }
 

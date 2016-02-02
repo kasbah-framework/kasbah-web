@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Kasbah.Core.Models;
 
 namespace Kasbah.Web.Admin.Models
 {
@@ -25,6 +26,8 @@ namespace Kasbah.Web.Admin.Models
 
         public object Data { get; set; }
         public ModelDefinition ModelDefinition { get; set; }
+
+        public Node Node { get; set; }
 
         #endregion
     }

@@ -1,8 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Kasbah.Core;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.Models;
+using Kasbah.Core.Utils;
+using Kasbah.Web.Annotations;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 
@@ -63,7 +68,16 @@ namespace Kasbah.Web.Admin
         [Route("api/children")]
         public IEnumerable<Node> GetChildren(Guid? id = null)
         {
-            return _contentBroker.GetChildren(id);
+            return _contentBroker.GetChildren(id).Select(ent => new NodeExt
+            {
+                ActiveVersion = ent.ActiveVersion,
+                HasChildren = ent.HasChildren,
+                Alias = ent.Alias,
+                Id = ent.Id,
+                Parent = ent.Parent,
+                Type = ent.Type,
+                Icon = TypeUtil.TypeFromName(ent.Type)?.GetTypeInfo().GetAttributeValue<IconAttribute, string>(attr => attr?.Icon)
+            });
         }
 
         [Route("api/version/{id}/{version}")]
@@ -95,6 +109,15 @@ namespace Kasbah.Web.Admin
         #region Private Fields
 
         readonly ContentBroker _contentBroker;
+
+        #endregion
+    }
+
+    public class NodeExt : Node
+    {
+        #region Public Properties
+
+        public string Icon { get; set; }
 
         #endregion
     }

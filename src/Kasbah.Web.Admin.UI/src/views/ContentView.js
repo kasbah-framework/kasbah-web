@@ -90,8 +90,15 @@ export class ContentView extends React.Component {
 
                 <div className='menu'>
                   <p className='menu-heading'>
-                    Context
+                    {this.props.content.node.alias}
                   </p>
+                  {this.props.content.node.parent &&
+                    <Link className='menu-block' to={{ pathname: '/content', query: { node: this.props.content.node.parent } }}>
+                      <span className='menu-icon'>
+                        <i className='fa fa-level-up'></i>
+                      </span>
+                      Up one level
+                    </Link>}
                   <p className='menu-tabs'>
                     <a className='is-active' href='#'>Child nodes</a>
                   </p>
@@ -101,7 +108,7 @@ export class ContentView extends React.Component {
                     .map(ent =>
                       <Link key={ent.id} className='menu-block' to={{ pathname: '/content', query: { node: ent.id } }}>
                         <span className='menu-icon'>
-                          <i className='fa fa-book'></i>
+                          <i className={`fa fa-${ent.icon || 'file-text-o'}`}></i>
                         </span>
                         {ent.alias}
                       </Link>

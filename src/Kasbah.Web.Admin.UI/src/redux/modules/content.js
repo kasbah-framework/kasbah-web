@@ -145,6 +145,7 @@ const initialState = {
   isLoading: false,
   modelDefinition: null,
   data: null,
+  node: null,
   errorCode: null,
   errorMessage: null
 };
@@ -153,7 +154,6 @@ export default handleActions({
   [LOAD_CONTENT_REQUEST]: (state, { payload }) => {
     return Object.assign({}, state, {
       'isLoading': true,
-      'currentVersion': null,
       'errorCode': null,
       'errorMessage': null
     });
@@ -164,6 +164,7 @@ export default handleActions({
         'isLoading': false,
         'modelDefinition': payload.content.modelDefinition,
         'data': payload.content.data || {},
+        'node': payload.content.node,
         'errorCode': null,
         'errorMessage': null
       });

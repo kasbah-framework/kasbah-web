@@ -4,6 +4,7 @@ using Kasbah.Web.Annotations;
 
 namespace Kasbah.Web.Models
 {
+    [Icon("file-text-o")]
     public abstract class ContentBase : ItemBase
     {
         #region Public Properties
