@@ -1,30 +1,21 @@
 import React from 'react';
 
 export default class extends React.Component {
-  constructor () {
-    super();
-
-    this.state = { 'errors': {} };
-  }
-
   handleSubmit (e) {
     e.preventDefault && e.preventDefault();
 
     const username = (this.refs.username.value || '').toString();
     const password = (this.refs.password.value || '').toString();
-    let errors = {};
 
-    if (username === '' || password === '') {
-      if (username === '') { errors['username'] = 'Required field'; };
-      if (password === '') { errors['password'] = 'Required field'; };
-
-      this.refs[Object.keys(errors)[0]].focus();
+    if (username === '') {
+      this.refs.username.focus();
+    }
+    else if (password === '') {
+      this.refs.password.focus();
     }
     else {
       this.props.onSubmit(username, password, this.refs.persist.checked);
     }
-
-    this.setState({ 'errors': errors });
   }
 
   handleReset () {
@@ -33,8 +24,6 @@ export default class extends React.Component {
     this.refs.persist.checked = false;
 
     this.refs.username.focus();
-
-    this.setState({ 'errors': {} });
   }
 
   componentWillReceiveProps (nextProps) {
@@ -44,17 +33,13 @@ export default class extends React.Component {
     }
   }
 
-  _renderField (id, type, placeholder, label, errors) {
+  _renderField (id, type, placeholder, label) {
     let classes = ['control'];
-    if (errors[id]) {
-      classes.push('is-danger');
-    }
 
     return (
       <fieldset className={classes.join(' ')}>
         <label htmlFor={id}>{label}</label>
         <input type={type} className='input' id={id} placeholder={placeholder} ref={id} />
-        {errors[id] && (<p className='is-danger'>{errors[id]}</p>)}
       </fieldset>
     );
   }
@@ -74,8 +59,8 @@ export default class extends React.Component {
   render () {
     return (
       <form>
-        {this._renderField('username', 'text', 'admin', 'Username', this.state.errors)}
-        {this._renderField('password', 'password', 'changeme', 'Password', this.state.errors)}
+        {this._renderField('username', 'text', 'admin', 'Username')}
+        {this._renderField('password', 'password', 'changeme', 'Password')}
         <fieldset className='form-group checkbox'>
           <label>
             <input type='checkbox' ref='persist' /> Remember me

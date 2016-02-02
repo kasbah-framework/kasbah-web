@@ -47,8 +47,9 @@ export class ContentView extends React.Component {
     componentWillMount () {
       let { query } = this.props.location;
 
-      this.props.fetchChildren(query.node || null);
       this.props.loadTypes();
+
+      this.props.fetchChildren(query.node || null);
       if (query.node) {
         this.props.loadContent(query.node);
       }
@@ -57,7 +58,9 @@ export class ContentView extends React.Component {
     componentWillReceiveProps (nextProps) {
       if (this.props.location.query.node !== nextProps.location.query.node) {
         this.props.fetchChildren(nextProps.location.query.node);
-        this.props.loadContent(nextProps.location.query.node);
+        if (nextProps.location.query.node) {
+          this.props.loadContent(nextProps.location.query.node);
+        }
       }
     }
 
@@ -76,12 +79,6 @@ export class ContentView extends React.Component {
         return;
       }
       this.props.createNode(query.node, alias, type);
-
-
-      // var alias = prompt('What shall this node be called?');
-      // if (alias) {
-      //   this.props.createNode(node, alias, type.id);
-      // }
     }
 
     render () {
