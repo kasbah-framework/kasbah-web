@@ -20,7 +20,7 @@ const config = {
   // Server Configuration
   // ----------------------------------
   server_host : 'localhost',
-  server_port : process.env.PORT || 3000,
+  server_port : process.env.PORT || 3004,
 
   // ----------------------------------
   // Compiler Configuration
@@ -79,7 +79,7 @@ config.globals = {
   '__DEBUG__'    : config.env === 'development' && !argv.no_debug,
   '__DEBUG_NEW_WINDOW__' : !!argv.nw,
 
-  'API_URL'      : JSON.stringify(process.env.API_URL || '')
+  'API_URL'      : JSON.stringify(process.env.API_URL || (process.env.NODE_ENV == 'production' ? '' : 'http://admin.kasbah.io'))
 };
 
 // ------------------------------------

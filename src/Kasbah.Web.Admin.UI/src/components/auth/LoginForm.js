@@ -72,7 +72,9 @@ export default class extends React.Component {
         <div className='text-center'>
               <button type='reset'
                 className='button'
-                onClick={this.handleReset.bind(this)}>Reset</button>
+                onClick={this.handleReset.bind(this)}>
+                <span>Reset</span>
+              </button>
               <button type='submit'
                 className={['button', 'is-primary', this.props.loading ? 'is-loading' : null].join(' ')}
                 onClick={this.handleSubmit.bind(this)}
