@@ -61,8 +61,8 @@ export default class extends React.Component {
       <form>
         {this._renderField('username', 'text', 'admin', 'Username')}
         {this._renderField('password', 'password', 'changeme', 'Password')}
-        <fieldset className='form-group checkbox'>
-          <label>
+        <fieldset className='control'>
+          <label className='checkbox'>
             <input type='checkbox' ref='persist' /> Remember me
           </label>
         </fieldset>
