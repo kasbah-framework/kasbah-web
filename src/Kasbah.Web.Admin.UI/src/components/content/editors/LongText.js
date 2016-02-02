@@ -15,6 +15,6 @@ export default class extends React.Component {
 
     render () {
       // return <AceEditor onChange={this.handleChange.bind(this)} value={this.props.value} />;
-      return (<textarea className='form-control' onChange={this.handleChange.bind(this)} value={this.props.value} />);
+      return (<textarea className='textarea' onChange={this.handleChange.bind(this)} value={this.props.value} />);
     }
 }

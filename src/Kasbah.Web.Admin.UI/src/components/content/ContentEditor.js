@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Editor from './Editor';
-import { DropDownButton, DropDownButtonItem, Button } from 'components/ui';
 import { actions as contentActions } from '../../redux/modules/content';
 import { actions as treeActions } from '../../redux/modules/tree';
 
@@ -13,8 +12,6 @@ class ContentEditor extends React.Component {
       errors: React.PropTypes.object,
       updateModel: React.PropTypes.func.isRequired,
       saveContent: React.PropTypes.func.isRequired,
-      types: React.PropTypes.object.isRequired,
-      onAddChild: React.PropTypes.func.isRequired,
       deleteNode: React.PropTypes.func.isRequired
     };
 
@@ -44,17 +41,13 @@ class ContentEditor extends React.Component {
       return (
         <div>
             <Editor modelDefinition={this.props.modelDefinition} model={this.props.model} errors={this.props.errors || {}} onFieldChange={this.handleFieldChange.bind(this)} />
-            <div className='form-group'>
-              <DropDownButton buttonSize='sm' label='Save' buttonState='success'>
-                <DropDownButtonItem onClick={() => this.handleSave()}>Save only</DropDownButtonItem>
-                <DropDownButtonItem onClick={() => this.handleSaveAndPublish()}>Save and publish</DropDownButtonItem>
-              </DropDownButton>
-              <DropDownButton buttonSize='sm' label='Add child node' buttonState='secondary'>
-                {this.props.types.types.map((type, index) => <DropDownButtonItem key={index} onClick={this.props.onAddChild.bind(this, this.props.node, type)}>{type.displayName}</DropDownButtonItem>)}
-              </DropDownButton>
-              <Button label='Delete' buttonSize='sm' buttonState='danger' onClick={() => this.handleDelete()} />
-              <Button label='View history' buttonSize='sm' buttonState='info' onClick={() => this.handleViewHistory()} />
-            </div>
+
+            <hr />
+
+            <button className='button is-primary' onClick={() => this.handleSave()}>Save only</button>
+            <button className='button is-primary' onClick={() => this.handleSaveAndPublish()}>Save and publish</button>
+            <button className='button is-danger' onClick={() => this.handleDelete()}>Delete</button>
+            <button className='button' onClick={() => this.handleViewHistory()}>View history</button>
         </div>);
     }
 }

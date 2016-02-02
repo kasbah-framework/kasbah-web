@@ -1,6 +1,5 @@
 import React from 'react';
 import Editors from './editors';
-import { Tab, Tabs, TabList , TabPanel } from 'react-tabs';
 
 export default class extends React.Component {
     static propTypes = {
@@ -9,6 +8,14 @@ export default class extends React.Component {
       errors: React.PropTypes.object.isRequired,
       onFieldChange: React.PropTypes.func.isRequired
     };
+
+    constructor() {
+      super();
+
+      this.state = {
+        activeSection: null //this.props.modelDefinition.sections[0]
+      };
+    }
 
     _renderField (field) {
       let editor = Editors.Text;
@@ -21,7 +28,7 @@ export default class extends React.Component {
       const editorEl = React.createElement(editor, { field: field, onChange: this.props.onFieldChange.bind(this), value: this.props.model[field.alias] });
 
       return (
-            <fieldset className='form-group' key={field.alias}>
+            <fieldset className='control' key={field.alias}>
                 <label htmlFor={field.alias} className='control-label'>{field.displayName}</label>
                 {editorEl}
                 {this.props.errors[field.alias] && (<p className='help-block'>{this.props.errors[field.alias]}</p>)}
@@ -29,6 +36,10 @@ export default class extends React.Component {
     }
 
     renderSection(section) {
+      if (!section) {
+        return null;
+      }
+
       return this.props
         .modelDefinition
         .fields
@@ -36,17 +47,25 @@ export default class extends React.Component {
         .map(field => this._renderField(field));
     }
 
+    handleSectionChange(section) {
+      this.setState({
+        activeSection: section
+      });
+    }
+
     render () {
       const tabs = this.props.modelDefinition.sections;
       return (
         <form>
-          <Tabs>
-            <TabList>
-              {tabs.map(ent => <Tab key={ent}>{ent}</Tab>)}
-            </TabList>
+          <div className='tabs'>
+            <ul>
+              {tabs.map(ent => <li key={ent} className={this.state.activeSection == ent ? 'is-active' : null}><a onClick={() => this.handleSectionChange(ent)}>{ent}</a></li>)}
+            </ul>
 
-          {tabs.map((ent, index) => <TabPanel key={index}>{this.renderSection(ent)}</TabPanel>)}
-          </Tabs>
+            <div>
+              {this.renderSection(this.state.activeSection)}
+            </div>
+          </div>
         </form>);
     }
 }

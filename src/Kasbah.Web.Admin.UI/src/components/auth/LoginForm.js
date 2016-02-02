@@ -85,16 +85,19 @@ export default class extends React.Component {
         {this._renderError()}
 
         <div className='text-center'>
-          <button type='reset'
-            className='btn btn-secondary'
-            onClick={this.handleReset.bind(this)}>Reset</button>
-          <button type='submit'
-            className='btn btn-lg btn-primary'
-            onClick={this.handleSubmit.bind(this)}
-            disabled={this.props.loading}>
-            {this.props.loading && (<i className='fa fa-spinner fa-spin' />)}
-            <span>Login</span>
-          </button>
+          <div className='columns___'>
+            <div className='container'>
+              <button type='reset'
+                className='button'
+                onClick={this.handleReset.bind(this)}>Reset</button>
+              <button type='submit'
+                className={['button', 'is-primary', this.props.loading ? 'is-loading' : null].join(' ')}
+                onClick={this.handleSubmit.bind(this)}
+                disabled={this.props.loading}>
+                <span>Login</span>
+              </button>
+            </div>
+          </div>
         </div>
       </form>
     );

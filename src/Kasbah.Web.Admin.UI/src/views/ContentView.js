@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { actions as treeActions } from '../redux/modules/tree';
 import { actions as contentActions } from '../redux/modules/content';
@@ -46,40 +47,92 @@ export class ContentView extends React.Component {
     componentWillMount () {
       let { query } = this.props.location;
 
-      this.props.fetchChildren(query.site || null);
+      this.props.fetchChildren(query.node || null);
       this.props.loadTypes();
+      if (query.node) {
+        this.props.loadContent(query.node);
+      }
     }
 
-    handleAddChild (node, type) {
-      var alias = prompt('What shall this node be called?');
-      if (alias) {
-        this.props.createNode(node, alias, type.id);
+    componentWillReceiveProps (nextProps) {
+      if (this.props.location.query.node !== nextProps.location.query.node) {
+        this.props.fetchChildren(nextProps.location.query.node);
+        this.props.loadContent(nextProps.location.query.node);
       }
+    }
+
+    handleAddChild () {
+      let { query } = this.props.location;
+
+      const type = (this.refs.nodeType.value || '').toString();
+      var alias = (this.refs.nodeAlias.value || '').toString();
+
+      if (type == '') {
+        this.refs.nodeType.focus();
+        return;
+      }
+      if (alias == '') {
+        this.refs.nodeAlias.focus();
+        return;
+      }
+      this.props.createNode(query.node, alias, type);
+
+
+      // var alias = prompt('What shall this node be called?');
+      // if (alias) {
+      //   this.props.createNode(node, alias, type.id);
+      // }
     }
 
     render () {
       let { query } = this.props.location;
       return (
-        <div className='container page-content'>
-          <div className='container-fluid'>
-            <div className='row'>
-              <div className='col-lg-3'>
-                <div className='card'>
-                  <NodeList
-                    parent={query.site || null}
-                    nodeTree={this.props.tree}
-                    onNodeSelected={this.handleNodeSelected.bind(this)}
-                    onToggleNode={this.handleToggleNode.bind(this)}
-                    className='node-list list-group list-group-flush' />
+        <div className='container'>
+            <div className='columns'>
+              <div className='column is-3'>
+
+                <div className='menu'>
+                  <p className="menu-heading">
+                    Context
+                  </p>
+                  <p className="menu-tabs">
+                    <a className="is-active" href="#">Child nodes</a>
+                  </p>
+                  {Object.keys(this.props.tree.nodes)
+                    .map(k => this.props.tree.nodes[k])
+                    .filter(ent => ent.parent === query.node || (ent.parent == null && !query.node))
+                    .map(ent =>
+                      <Link key={ent.id} className="menu-block is-active" to={{ pathname: '/content', query: { node: ent.id } }}>
+                        <span className="menu-icon">
+                          <i className="fa fa-book"></i>
+                        </span>
+                        {ent.alias}
+                      </Link>
+                  )}
+                  <div className='menu-block'>
+                    <p className='control'>
+                      <span className={['select', 'is-fullwidth', this.props.types.types ? null : 'is-loading'].join(' ')}>
+                        <select ref='nodeType'>
+                          <option value=''></option>
+                          {this.props.types.types && this.props.types.types.map((ent, index) => <option key={index} value={ent.id}>{ent.displayName}</option>)}
+                        </select>
+                      </span>
+                    </p>
+                    <p className='control'>
+                      <input className="input" type="text" placeholder="Node alias" ref='nodeAlias' />
+                    </p>
+                    <button className="button is-primary is-fullwidth" onClick={() => this.handleAddChild()}>
+                      Add child
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <div className='col-lg-9'>
-                {this.state.selectedNode &&
-                  this.props.content.modelDefinition &&
+              <div className='column is-9'>
+                {this.props.content.modelDefinition &&
                   this.props.content.data &&
                   <ContentEditor
-                    node={this.state.selectedNode.id}
+                    node={query.node}
                     modelDefinition={this.props.content.modelDefinition}
                     model={this.props.content.data}
                     errors={{}}
@@ -87,7 +140,6 @@ export class ContentView extends React.Component {
                     onAddChild={this.handleAddChild.bind(this)} />}
               </div>
             </div>
-          </div>
         </div>);
     }
 }
