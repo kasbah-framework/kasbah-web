@@ -37,11 +37,11 @@ export default class extends React.Component {
       const editorEl = React.createElement(editor, { field: field, onChange: this.props.onFieldChange.bind(this), value: this.props.model[field.alias] });
 
       return (
-            <fieldset className='control' key={field.alias}>
-                <label htmlFor={field.alias} className='control-label'>{field.displayName}</label>
-                {editorEl}
-                {this.props.errors[field.alias] && (<p className='help-block'>{this.props.errors[field.alias]}</p>)}
-            </fieldset>);
+        <fieldset className='control' key={field.alias}>
+          <label htmlFor={field.alias} className='control-label'>{field.displayName}</label>
+          {editorEl}
+          {this.props.errors[field.alias] && (<p className='help-block'>{this.props.errors[field.alias]}</p>)}
+        </fieldset>);
     }
 
     renderSection (section) {
@@ -66,7 +66,7 @@ export default class extends React.Component {
       const tabs = this.props.modelDefinition.sections;
       return (
         <form>
-          <div className='tabs'>
+          <div className='tabs is-toggle'>
             <ul>
               {tabs.map(ent => <li key={ent} className={this.state.activeSection === ent ? 'is-active' : null}><a onClick={() => this.handleSectionChange(ent)}>{ent}</a></li>)}
             </ul>

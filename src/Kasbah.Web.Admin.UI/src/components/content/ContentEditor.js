@@ -40,14 +40,14 @@ class ContentEditor extends React.Component {
     render () {
       return (
         <div>
-            <Editor node={this.props.node} modelDefinition={this.props.modelDefinition} model={this.props.model} errors={this.props.errors || {}} onFieldChange={this.handleFieldChange.bind(this)} />
+          <Editor node={this.props.node} modelDefinition={this.props.modelDefinition} model={this.props.model} errors={this.props.errors || {}} onFieldChange={this.handleFieldChange.bind(this)} />
 
-            <hr />
+          <hr />
 
-            <button className='button is-primary' onClick={() => this.handleSave()}>Save only</button>
-            <button className='button is-primary' onClick={() => this.handleSaveAndPublish()}>Save and publish</button>
-            <button className='button is-danger' onClick={() => this.handleDelete()}>Delete</button>
-            <button className='button' onClick={() => this.handleViewHistory()}>View history</button>
+          <button className='button is-primary' onClick={() => this.handleSave()}>Save only</button>
+          <button className='button is-primary' onClick={() => this.handleSaveAndPublish()}>Save and publish</button>
+          <button className='button is-danger' onClick={() => this.handleDelete()}>Delete</button>
+          <button className='button' onClick={() => this.handleViewHistory()}>View history</button>
         </div>);
     }
 }
