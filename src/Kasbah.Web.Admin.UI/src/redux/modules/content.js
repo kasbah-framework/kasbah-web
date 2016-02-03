@@ -1,7 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { checkHttpStatus, parseJSON } from '../../utils';
-import MimeTypes from 'constants/MimeTypes';
-import fetch from 'isomorphic-fetch';
+import { fetchWrapper } from 'utils';
 
 // ------------------------------------
 // Constants
@@ -51,9 +49,7 @@ export function loadContentRequest () {
 export function loadContent (id) {
   return (dispatch) => {
     dispatch(loadContentRequest());
-    return fetch(`${API_URL}/api/content/${id}`, { credentials: 'include', headers: { 'Authorization': `Bearer ${localStorage.token}` } })
-      .then(checkHttpStatus)
-      .then(parseJSON)
+    return fetchWrapper(`${API_URL}/api/content/${id}`, 'GET')
       .then(response => {
         if (response.success) {
           dispatch(loadContentSuccess(response));
@@ -105,30 +101,20 @@ export function saveContentRequest () {
 export function saveContent (node, data, setActive) {
   return (dispatch) => {
     dispatch(saveContentRequest());
-    return fetch(`${API_URL}/api/content`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Accept': MimeTypes.application.json,
-        'Content-Type': MimeTypes.application.json,
-        'Authorization': `Bearer ${localStorage.token}`
-      },
-      body: JSON.stringify({
-        node, data, setActive
+
+    const body = { node, data, setActive };
+
+    return fetchWrapper(`${API_URL}/api/content`, 'POST', body)
+      .then(response => {
+        if (response.success) {
+          dispatch(saveContentSuccess(response));
+        } else {
+          dispatch(saveContentFailure(response));
+        }
       })
-    })
-    .then(checkHttpStatus)
-    .then(parseJSON)
-    .then(response => {
-      if (response.success) {
-        dispatch(saveContentSuccess(response));
-      } else {
-        dispatch(saveContentFailure(response));
-      }
-    })
-    .catch(error => {
-      dispatch(saveContentFailure(error.response));
-    });
+      .catch(error => {
+        dispatch(saveContentFailure(error.response));
+      });
   };
 }
 

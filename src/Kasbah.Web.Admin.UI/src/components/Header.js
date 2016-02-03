@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { clearAuthToken } from 'utils';
 
 export default class extends React.Component {
 
@@ -8,9 +9,9 @@ export default class extends React.Component {
   };
 
   handleLogout () {
-    sessionStorage.removeItem('isAuthenticated');
-
-    this.context.router.push('/');
+    clearAuthToken();
+// console.log(this.context.router);
+    this.context.router.push('/login');
   }
 
   render () {
@@ -18,7 +19,7 @@ export default class extends React.Component {
       <header className='header'>
         <div className='container'>
           <div className='header-left'>
-            <Link className='header-item' to='/'>KASBAH</Link>
+            <Link className='header-item' to='/'><strong>KASBAH</strong></Link>
             <Link className='header-item' to='/content'>Content</Link>
             <Link className='header-item' to='/media'>Media</Link>
             <Link className='header-item' to='/analytics'>Analytics</Link>

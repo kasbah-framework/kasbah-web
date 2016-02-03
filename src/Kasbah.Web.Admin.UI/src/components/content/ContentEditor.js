@@ -40,7 +40,7 @@ class ContentEditor extends React.Component {
     render () {
       return (
         <div>
-            <Editor modelDefinition={this.props.modelDefinition} model={this.props.model} errors={this.props.errors || {}} onFieldChange={this.handleFieldChange.bind(this)} />
+            <Editor node={this.props.node} modelDefinition={this.props.modelDefinition} model={this.props.model} errors={this.props.errors || {}} onFieldChange={this.handleFieldChange.bind(this)} />
 
             <hr />
 

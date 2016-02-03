@@ -90,9 +90,9 @@ export class ContentView extends React.Component {
 
                 <div className='menu'>
                   <p className='menu-heading'>
-                    {this.props.content.node.alias}
+                    {this.props.content.node && this.props.content.node.alias}
                   </p>
-                  {this.props.content.node.parent &&
+                  {this.props.content.node && this.props.content.node.parent &&
                     <Link className='menu-block' to={{ pathname: '/content', query: { node: this.props.content.node.parent } }}>
                       <span className='menu-icon'>
                         <i className='fa fa-level-up'></i>

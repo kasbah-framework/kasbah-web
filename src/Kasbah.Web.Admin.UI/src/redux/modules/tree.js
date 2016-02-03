@@ -1,4 +1,5 @@
 import { handleActions } from 'redux-actions';
+import { fetchWrapper } from 'utils';
 
 function clone (obj) {
   return JSON.parse(JSON.stringify(obj));
@@ -18,7 +19,6 @@ export const NODE_VERSION_ADD_FIELD = 'NODE_VERSION_ADD_FIELD';
 // ------------------------------------
 // Actions
 // ------------------------------------
-import fetch from 'isomorphic-fetch';
 
 export const REQUEST_NODES = 'REQUEST_NODES';
 function requestNodes (parent) {
@@ -43,8 +43,7 @@ function receiveNodes (parent, data) {
 export const fetchChildren = (parent) => {
   return (dispatch, getState) => {
     dispatch(requestNodes(parent));
-    return fetch(`${API_URL}/api/children?id=${parent}`, { credentials: 'include', headers: { 'Authorization': `Bearer ${localStorage.token}` } })
-      .then(response => response.json())
+    return fetchWrapper(`${API_URL}/api/children?id=${parent}`)
       .then(json => dispatch(receiveNodes(parent, json)));
   };
 };
@@ -94,8 +93,7 @@ function receiveNodeVersions (node, data) {
 export function fetchNodeVersions (node) {
   return dispatch => {
     dispatch(requestNodeVersions(node));
-    return fetch(`${API_URL}/api/versions/${node}`, { credentials: 'include', headers: { 'Authorization': `Bearer ${localStorage.token}` } })
-      .then(response => response.json())
+    return fetchWrapper(`${API_URL}/api/versions/${node}`)
       .then(json => dispatch(receiveNodeVersions(node, json)));
   };
 }
@@ -115,8 +113,7 @@ export function fetchNodeVersion (id, version) {
   return dispatch => {
     dispatch(requestNodeVersions(id, version));
 
-    return fetch(`${API_URL}/api/version/${id}/${version}`, { credentials: 'include', headers: { 'Authorization': `Bearer ${localStorage.token}` } })
-      .then(response => response.json())
+    return fetchWrapper(`${API_URL}/api/version/${id}/${version}`)
       .then(json => dispatch(receiveNodeVersion(id, version, json)));
   };
 }
@@ -150,19 +147,8 @@ function notifyNodeCreated (id) {
 }
 
 export function createNode (parent, alias, type) {
-  const options = {
-    method: 'POST',
-    credentials: 'include',
-    body: JSON.stringify({ parent, alias, type }),
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.token}`
-    }
-  };
   return dispatch => {
-    return fetch(`${API_URL}/api/node`, options)
-      .then(response => response.json())
+    return fetchWrapper(`${API_URL}/api/node`, 'POST', { parent, alias, type })
       .then(json => {
         dispatch(notifyNodeCreated(json));
         dispatch(fetchChildren(parent));
@@ -181,19 +167,8 @@ function notifyNodeVersionCreated (node, id) {
 }
 
 export function createNodeVersion (node) {
-  const options = {
-    method: 'POST',
-    credentials: 'include',
-    body: JSON.stringify({}),
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.token}`
-    }
-  };
   return dispatch => {
-    return fetch(`${API_URL}/api/node/${node}/version`, options)
-      .then(response => response.json())
+    return fetchWrapper(`${API_URL}/api/node/${node}/version`, 'POST', {})
       .then(json => {
         dispatch(notifyNodeVersionCreated(json));
         dispatch(fetchNodeVersions(node));
@@ -213,19 +188,8 @@ export function addField (node, version, name) {
 }
 
 export function setActiveVersion (id, version) {
-  const options = {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.token}`
-    }
-  };
-
   return dispatch => {
-    return fetch(`${API_URL}/api/node/${id}/set-active/${version}`, options)
-      .then(response => response.json())
+    return fetchWrapper(`${API_URL}/api/node/${id}/set-active/${version}`, 'POST')
       .then(json => {
           // dispatch(notifyNodeVersionCreated(json));
       });
@@ -233,22 +197,10 @@ export function setActiveVersion (id, version) {
 }
 
 export function save (node, version, values) {
-  const options = {
-    method: 'POST',
-    credentials: 'include',
-    body: JSON.stringify(values),
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.token}`
-    }
-  };
-
   return dispatch => {
-    return fetch(`${API_URL}/api/save/${node}/${version}`, options)
+    return fetchWrapper(`${API_URL}/api/save/${node}/${version}`, 'POST', values)
       .then(response => response.json())
       .then(json => {
-
       });
   };
 }
@@ -264,18 +216,8 @@ function notifyNodeDeleted (id) {
 }
 
 export function deleteNode (id) {
-  const options = {
-    method: 'DELETE',
-    credentials: 'include',
-    body: JSON.stringify({ id }),
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.token}`
-    }
-  };
   return dispatch => {
-    return fetch(`${API_URL}/api/node`, options)
+    return fetchWrapper(`${API_URL}/api/node`, 'DELETE', { id })
       .then(resp => {
         dispatch(notifyNodeDeleted(id));
       });

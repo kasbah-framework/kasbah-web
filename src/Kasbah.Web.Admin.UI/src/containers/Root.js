@@ -3,6 +3,7 @@ import { Route, IndexRoute } from 'react-router';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import CoreLayout from 'layouts/CoreLayout';
+import { getAuthToken } from 'utils';
 
 import HomeView from 'views/HomeView';
 import ContentView from 'views/ContentView';
@@ -18,7 +19,7 @@ export default class Root extends React.Component {
   };
 
   checkAuth(nextState, replace) {
-    if (!sessionStorage.isAuthenticated) {
+    if (!getAuthToken()) {
       replace({
         pathname: '/login',
         state: { nextPathname: nextState.location.pathname }

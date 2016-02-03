@@ -20,9 +20,7 @@ export class LoginView extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.auth.isAuthenticated) {
-            sessionStorage.isAuthenticated = true;
-
+        if (nextProps.auth.token) {
             const { history } = this.context;
             const { location } = this.props;
 

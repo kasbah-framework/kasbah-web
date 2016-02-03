@@ -12,11 +12,7 @@ $family-sans-serif: "Source Sans Pro", "Open Sans Pro", "Helvetica Neue", "Helve
 @import 'node-tree';
 
 div > .button {
-    margin-right: 4px;
-
-    &:last-child {
-        margin-right: 0;
-    }
+    margin: 0 4px;
 }
 
 .view-container {

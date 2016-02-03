@@ -1,6 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { checkHttpStatus, parseJSON } from '../../utils';
-import MimeTypes from 'constants/MimeTypes';
+import { fetchWrapper } from 'utils';
 
 // ------------------------------------
 // Constants
@@ -21,9 +20,7 @@ const loadTypesSuccess = (data) => {
 
 export const loadTypes = () => {
   return (dispatch) => {
-    return fetch(`${API_URL}/api/types`, { credentials: 'include', headers: { 'Authorization': `Bearer ${localStorage.token}` } })
-      .then(checkHttpStatus)
-      .then(parseJSON)
+    return fetchWrapper(`${API_URL}/api/types`)
       .then(response => {
         if (response.success) {
           dispatch(loadTypesSuccess(response));

@@ -168,7 +168,7 @@ namespace Kasbah.Web.Admin.Controllers
             };
         }
 
-        [Route("/api/modules")]
+        [Route("/api/modules"), AllowAnonymous]
         public IEnumerable<string> GetAdditionalModules()
         {
             return _applicationContext.AdditionalModules;

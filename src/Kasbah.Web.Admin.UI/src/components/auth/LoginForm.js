@@ -34,12 +34,10 @@ export default class extends React.Component {
   }
 
   _renderField (id, type, placeholder, label) {
-    let classes = ['control'];
-
     return (
-      <fieldset className={classes.join(' ')}>
+      <fieldset className='control'>
         <label htmlFor={id}>{label}</label>
-        <input type={type} className='input' id={id} placeholder={placeholder} ref={id} />
+        <input type={type} className='input' id={id} placeholder={placeholder} ref={id} autoCorrect={false} autoCapitalize={false} />
       </fieldset>
     );
   }
@@ -47,8 +45,8 @@ export default class extends React.Component {
   _renderError () {
     if (this.props.error) {
       return (
-        <div className='notification is-danger'>
-          <i className='fa fa-warning' /> {this.props.error}
+        <div className='notification is-warning'>
+          {this.props.error}
         </div>
       );
     }
@@ -69,7 +67,7 @@ export default class extends React.Component {
 
         {this._renderError()}
 
-        <div className='text-center'>
+        <div>
               <button type='reset'
                 className='button'
                 onClick={this.handleReset.bind(this)}>

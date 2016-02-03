@@ -3,6 +3,7 @@ import Editors from './editors';
 
 export default class extends React.Component {
     static propTypes = {
+      node: React.PropTypes.string.isRequired,
       modelDefinition: React.PropTypes.object.isRequired,
       model: React.PropTypes.object.isRequired,
       errors: React.PropTypes.object.isRequired,
@@ -15,6 +16,14 @@ export default class extends React.Component {
       this.state = {
         activeSection: null //this.props.modelDefinition.sections[0]
       };
+    }
+
+    componentWillReceiveProps(nextProps) {
+      if (nextProps.node !== this.props.node) {
+        this.setState({
+          activeSection: nextProps.modelDefinition.sections[0]
+        });
+      }
     }
 
     _renderField (field) {
