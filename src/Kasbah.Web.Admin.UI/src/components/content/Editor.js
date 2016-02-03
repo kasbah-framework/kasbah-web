@@ -10,15 +10,15 @@ export default class extends React.Component {
       onFieldChange: React.PropTypes.func.isRequired
     };
 
-    constructor() {
+    constructor () {
       super();
 
       this.state = {
-        activeSection: null //this.props.modelDefinition.sections[0]
+        activeSection: null
       };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps (nextProps) {
       if (nextProps.node !== this.props.node) {
         this.setState({
           activeSection: nextProps.modelDefinition.sections[0]
@@ -44,7 +44,7 @@ export default class extends React.Component {
             </fieldset>);
     }
 
-    renderSection(section) {
+    renderSection (section) {
       if (!section) {
         return null;
       }
@@ -52,11 +52,11 @@ export default class extends React.Component {
       return this.props
         .modelDefinition
         .fields
-        .filter(ent => ent.section == section)
+        .filter(ent => ent.section === section)
         .map(field => this._renderField(field));
     }
 
-    handleSectionChange(section) {
+    handleSectionChange (section) {
       this.setState({
         activeSection: section
       });
@@ -68,7 +68,7 @@ export default class extends React.Component {
         <form>
           <div className='tabs'>
             <ul>
-              {tabs.map(ent => <li key={ent} className={this.state.activeSection == ent ? 'is-active' : null}><a onClick={() => this.handleSectionChange(ent)}>{ent}</a></li>)}
+              {tabs.map(ent => <li key={ent} className={this.state.activeSection === ent ? 'is-active' : null}><a onClick={() => this.handleSectionChange(ent)}>{ent}</a></li>)}
             </ul>
 
             <div>

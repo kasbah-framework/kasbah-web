@@ -1,6 +1,8 @@
 {
   "parser"  : "babel-eslint",
   "extends" : [
+    "standard",
+    "standard-react"
   ],
   "env"     : {
     "browser" : true
@@ -10,6 +12,7 @@
     "__PROD__"     : false,
     "__DEBUG__"    : false,
     "__DEBUG_NEW_WINDOW__" : false,
+    "__BASENAME__" : false,
     "API_URL"      : false
   },
   "rules": {

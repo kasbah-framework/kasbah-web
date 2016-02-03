@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { actions as treeActions } from '../redux/modules/tree';
 import { actions as contentActions } from '../redux/modules/content';
 import { actions as typeActions } from '../redux/modules/types';
-import NodeList from 'components/tree/NodeList';
 import ContentEditor from 'components/content/ContentEditor';
 
 const mapStateToProps = (state) => ({
@@ -18,6 +17,7 @@ export class ContentView extends React.Component {
       tree: React.PropTypes.object.isRequired,
       content: React.PropTypes.object,
       types: React.PropTypes.object.isRequired,
+      location: React.PropTypes.object.isRequired,
 
       fetchChildren: React.PropTypes.func.isRequired,
       toggleNode: React.PropTypes.func.isRequired,
@@ -70,11 +70,11 @@ export class ContentView extends React.Component {
       const type = (this.refs.nodeType.value || '').toString();
       var alias = (this.refs.nodeAlias.value || '').toString();
 
-      if (type == '') {
+      if (type === '') {
         this.refs.nodeType.focus();
         return;
       }
-      if (alias == '') {
+      if (alias === '') {
         this.refs.nodeAlias.focus();
         return;
       }
@@ -133,7 +133,7 @@ export class ContentView extends React.Component {
               </div>
 
               <div className='column is-9'>
-                {this.props.content.modelDefinition &&
+                {query.node && this.props.content.modelDefinition &&
                   this.props.content.data &&
                   <ContentEditor
                     node={query.node}

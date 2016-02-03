@@ -61,8 +61,7 @@ export function parseJSON (response) {
 export function getAuthToken () {
   if (localStorage.token) {
     return localStorage.token;
-  }
-  else if (sessionStorage.token) {
+  } else if (sessionStorage.token) {
     return sessionStorage.token;
   }
 

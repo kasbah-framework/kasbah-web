@@ -299,6 +299,5 @@ export default handleActions({
     delete ret.items[payload.id];
 
     return ret;
-
   }
 }, initialState);

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 export default class SiteList extends React.Component {
     static propTypes = {
-      sites: React.PropTypes.array.isRequired,
+      sites: React.PropTypes.array.isRequired
     };
 
     render () {
@@ -28,11 +28,11 @@ export default class SiteList extends React.Component {
                 <a key={index}
                   href={`http://${dom}`}
                   className='button is-small'
-                  target="_blank">{dom}</a>
+                  target='_blank'>{dom}</a>
               )}
               </td>
             </tr>)}
           </tbody>
-        </table> );
+        </table>);
     }
 }

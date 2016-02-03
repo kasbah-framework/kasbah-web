@@ -31,7 +31,7 @@ class ContentEditor extends React.Component {
 
     }
 
-    handleDelete() {
+    handleDelete () {
       if (confirm('Are you sure?')) {
         this.props.deleteNode(this.props.node);
       }

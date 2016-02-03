@@ -15,57 +15,56 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 // ------------------------------------
 export function loginUserSuccess (token, persist) {
   return {
-      type: LOGIN_USER_SUCCESS,
-      payload: {
-          token,
-          persist
-        }
-    };
+    type: LOGIN_USER_SUCCESS,
+    payload: {
+      token,
+      persist
+    }
+  };
 }
 
 export function loginUserFailure (response) {
   return {
-      type: LOGIN_USER_FAILURE,
-      payload: {
-          errorCode: response ? response.errorCode : -1,
-          errorMessage: response ? response.errorMessage : 'Something went wrong.'
-        }
-    };
+    type: LOGIN_USER_FAILURE,
+    payload: {
+      errorCode: response ? response.errorCode : -1,
+      errorMessage: response ? response.errorMessage : 'Something went wrong.'
+    }
+  };
 }
 
 export function loginUserRequest () {
   return {
-      type: LOGIN_USER_REQUEST
-    };
+    type: LOGIN_USER_REQUEST
+  };
 }
 
 export function logout () {
   return {
-      type: LOGOUT_USER
-    };
+    type: LOGOUT_USER
+  };
 }
 
 export function loginUser (username, password, persist) {
   return (dispatch) => {
-      dispatch(loginUserRequest());
-      const body = {
-        username,
-        password,
-        persist,
-        method: 'password'
-      };
-
-      return fetchWrapper(`${API_URL}/api/auth/login`, 'POST', body)
-        .then(response => {
-          if (response.success) {
-              dispatch(loginUserSuccess(response.token, persist));
-            }
-            else {
-              dispatch(loginUserFailure(response));
-            }
-        })
-        .catch(error => dispatch(loginUserFailure(error.response)));
+    dispatch(loginUserRequest());
+    const body = {
+      username,
+      password,
+      persist,
+      method: 'password'
     };
+
+    return fetchWrapper(`${API_URL}/api/auth/login`, 'POST', body)
+      .then(response => {
+        if (response.success) {
+          dispatch(loginUserSuccess(response.token, persist));
+        } else {
+          dispatch(loginUserFailure(response));
+        }
+      })
+      .catch(error => dispatch(loginUserFailure(error.response)));
+  };
 }
 
 export const actions = {
@@ -101,8 +100,7 @@ export default handleActions({
       var decoded = decode(token);
       if (payload.persist) {
         localStorage.token = token;
-      }
-      else {
+      } else {
         sessionStorage.token = token;
       }
       return {

@@ -10,7 +10,7 @@ export default class extends React.Component {
 
   handleLogout () {
     clearAuthToken();
-// console.log(this.context.router);
+
     this.context.router.push('/login');
   }
 
@@ -32,6 +32,6 @@ export default class extends React.Component {
             </div>
           </div>
         </div>
-      </header> );
+      </header>);
   }
 }

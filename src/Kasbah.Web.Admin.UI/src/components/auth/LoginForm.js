@@ -1,6 +1,13 @@
 import React from 'react';
 
 export default class extends React.Component {
+  static propTypes = {
+    error: React.PropTypes.object.isRequired,
+    loading: React.PropTypes.bool.isRequired,
+
+    onSubmit: React.PropTypes.func.isRequired
+  };
+
   handleSubmit (e) {
     e.preventDefault && e.preventDefault();
 
@@ -9,11 +16,9 @@ export default class extends React.Component {
 
     if (username === '') {
       this.refs.username.focus();
-    }
-    else if (password === '') {
+    } else if (password === '') {
       this.refs.password.focus();
-    }
-    else {
+    } else {
       this.props.onSubmit(username, password, this.refs.persist.checked);
     }
   }
