@@ -36,10 +36,6 @@ IF "%SKIP_DNX_INSTALL%"=="" (
     CALL packages\KoreBuild\build\dnvm use default -runtime CLR -arch x86
 )
 
-cd src\Kasbah.Web.Admin.UI
-npm install
-npm run deploy
-cd ..\..
-rimraf src\Kasbah.Web.Admin.UI
+cmd.exe /c build-ui.cmd
 
 packages\Sake\tools\Sake.exe -I packages\KoreBuild\build -I build -f makefile.shade %*

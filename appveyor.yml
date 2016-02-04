@@ -5,7 +5,6 @@ init:
 install:
   - ps: Install-Product node 5
   - npm install rimraf -g
-  - build-ui.cmd
 build_script:
   - build.cmd --quiet --parallel verify
 clone_depth: 1
