@@ -1,5 +1,4 @@
-@echo off
-cd %~dp0
+cd %APPVEYOR_BUILD_FOLDER%
 
 SETLOCAL
 SET NUGET_VERSION=latest

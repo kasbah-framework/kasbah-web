@@ -1,5 +1,4 @@
-@echo off
-cd %~dp0
+cd %APPVEYOR_BUILD_FOLDER%
 
 cd src\Kasbah.Web.Admin.UI
 npm install
