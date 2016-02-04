@@ -59,6 +59,7 @@ export function parseJSON (response) {
 }
 
 export function getAuthToken () {
+  // This should be reading from the state
   if (localStorage.token) {
     return localStorage.token;
   } else if (sessionStorage.token) {
@@ -75,8 +76,7 @@ export function clearAuthToken () {
 
 export function fetchWrapper (url, method, body) {
   let headers = {
-    'Accept': MimeTypes.application.json,
-    'Authorization': `Bearer ${localStorage.token}`
+    'Accept': MimeTypes.application.json
   };
 
   const authToken = getAuthToken();
