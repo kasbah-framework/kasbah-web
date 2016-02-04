@@ -13,6 +13,6 @@ export default class extends React.Component {
     }
 
     render () {
-      return (<input className='input' type='date' onChange={this.handleChange.bind(this)} value={this.props.value} />);
+      return <input className='input' type='date' onChange={this.handleChange.bind(this)} value={this.props.value} />;
     }
 }
