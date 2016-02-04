@@ -70,9 +70,7 @@
     "redux-actions": "^0.9.0",
     "redux-thunk": "^1.0.0",
     "url": "^0.11.0",
-    "yargs": "^3.18.0"
-  },
-  "devDependencies": {
+    "yargs": "^3.18.0",
     "babel-core": "^6.3.17",
     "babel-eslint": "^5.0.0-beta6",
     "babel-loader": "^6.2.0",
