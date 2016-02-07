@@ -1,5 +1,5 @@
 using System;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNet.Authentication.JwtBearer;
 using Microsoft.AspNet.Builder;
 
@@ -22,7 +22,7 @@ namespace Kasbah.Web.Admin
                     IssuerSigningKey = ServiceConfiguration.Key,
                     ValidAudience = ServiceConfiguration.TokenOptions.Audience,
                     ValidIssuer = ServiceConfiguration.TokenOptions.Issuer,
-                    ValidateSignature = true,
+                    // ValidateSignature = true,
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 }

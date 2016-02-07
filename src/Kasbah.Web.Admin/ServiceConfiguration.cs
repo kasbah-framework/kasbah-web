@@ -1,5 +1,5 @@
 using System;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.Linq;
 using Kasbah.Identity;
 using Kasbah.Identity.Models;

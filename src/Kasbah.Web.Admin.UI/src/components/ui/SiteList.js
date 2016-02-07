@@ -18,7 +18,7 @@ export default class SiteList extends React.Component {
           <tbody>
           {this.props.sites.map(site =>
             <tr key={site.id}>
-              <td>
+              <td className='table-link'>
                 <Link key={site.id} to={{ pathname: '/content', query: { node: site.id } }}>
                   {site.displayName}
                 </Link>
