@@ -19,11 +19,12 @@ export default class extends React.Component {
       <header className='header'>
         <div className='container'>
           <div className='header-left'>
-            <Link className='header-item' to='/'><strong>KASBAH</strong></Link>
             <Link className='header-item' to='/content'>Content</Link>
             <Link className='header-item' to='/media'>Media</Link>
-            {/*<Link className='header-item' to='/analytics'>Analytics</Link>
-            <Link className='header-item' to='/users'>Users</Link>*/}
+          </div>
+
+          <div className='header-center'>
+            <Link className='header-item' to='/'><strong>KASBAH</strong></Link>
           </div>
 
           <div className='header-right'>

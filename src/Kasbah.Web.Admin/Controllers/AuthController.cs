@@ -16,11 +16,12 @@ namespace Kasbah.Web.Admin.Controllers
     {
         #region Public Constructors
 
-        public AuthController(UserManager<KasbahUser> userManager, SignInManager<KasbahUser> signInManager, ILoggerFactory loggerFactory)
+        public AuthController(UserManager<KasbahUser> userManager, SignInManager<KasbahUser> signInManager, ILoggerFactory loggerFactory, TokenAuthOptions tokenAuthOptions)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _log = loggerFactory.CreateLogger<AuthController>();
+            _tokenAuthOptions = tokenAuthOptions;
 
             EnsureAdmin().Wait();
         }
@@ -93,6 +94,7 @@ namespace Kasbah.Web.Admin.Controllers
 
         readonly ILogger _log;
         readonly SignInManager<KasbahUser> _signInManager;
+        readonly TokenAuthOptions _tokenAuthOptions;
         readonly UserManager<KasbahUser> _userManager;
 
         #endregion
@@ -126,9 +128,9 @@ namespace Kasbah.Web.Admin.Controllers
             var identity = new ClaimsIdentity(new GenericIdentity(user.UserName, "TokenAuth"), new[] { new Claim("EntityID", user.Id, ClaimValueTypes.String) });
 
             var securityToken = handler.CreateToken(
-                issuer: ServiceConfiguration.TokenOptions.Issuer,
-                audience: ServiceConfiguration.TokenOptions.Audience,
-                signingCredentials: ServiceConfiguration.TokenOptions.SigningCredentials,
+                issuer: _tokenAuthOptions.Issuer,
+                audience: _tokenAuthOptions.Audience,
+                signingCredentials: _tokenAuthOptions.SigningCredentials,
                 subject: identity,
                 expires: expires);
 
