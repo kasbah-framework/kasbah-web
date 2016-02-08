@@ -22,8 +22,6 @@ export default class extends React.Component {
             <Link className='header-item' to='/'><strong>KASBAH</strong></Link>
             <Link className='header-item' to='/content'>Content</Link>
             <Link className='header-item' to='/media'>Media</Link>
-            <Link className='header-item' to='/analytics'>Analytics</Link>
-            <Link className='header-item' to='/users'>Users</Link>
           </div>
 
           <div className='header-right'>

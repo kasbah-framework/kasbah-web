@@ -55,7 +55,11 @@ namespace Kasbah.Web.Admin
 
         public static RSAParameters GetRandomKey()
         {
+#if DNXCORE50
+            using (var rsa = new RSAOpenSsl(2048))
+#else
             using (var rsa = new RSACryptoServiceProvider(2048))
+#endif
             {
                 try
                 {
@@ -63,14 +67,16 @@ namespace Kasbah.Web.Admin
                 }
                 finally
                 {
+#if !DNXCORE50
                     rsa.PersistKeyInCsp = false;
+#endif
                 }
             }
         }
 
-        #endregion
+#endregion
 
-        #region Private Classes
+#region Private Classes
 
         /// <summary>
         /// Util class to allow restoring RSA parameters from JSON as the normal
@@ -78,7 +84,7 @@ namespace Kasbah.Web.Admin
         /// </summary>
         private class RSAParametersWithPrivate
         {
-            #region Public Properties
+#region Public Properties
 
             public byte[] D { get; set; }
             public byte[] DP { get; set; }
@@ -89,9 +95,9 @@ namespace Kasbah.Web.Admin
             public byte[] P { get; set; }
             public byte[] Q { get; set; }
 
-            #endregion
+#endregion
 
-            #region Public Methods
+#region Public Methods
 
             public void SetParameters(RSAParameters p)
             {
@@ -120,9 +126,9 @@ namespace Kasbah.Web.Admin
                 };
             }
 
-            #endregion
+#endregion
         }
 
-        #endregion
+#endregion
     }
 }
