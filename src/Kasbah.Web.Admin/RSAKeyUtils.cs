@@ -74,9 +74,9 @@ namespace Kasbah.Web.Admin
             }
         }
 
-#endregion
+        #endregion
 
-#region Private Classes
+        #region Private Classes
 
         /// <summary>
         /// Util class to allow restoring RSA parameters from JSON as the normal
@@ -84,7 +84,7 @@ namespace Kasbah.Web.Admin
         /// </summary>
         private class RSAParametersWithPrivate
         {
-#region Public Properties
+            #region Public Properties
 
             public byte[] D { get; set; }
             public byte[] DP { get; set; }
@@ -95,9 +95,9 @@ namespace Kasbah.Web.Admin
             public byte[] P { get; set; }
             public byte[] Q { get; set; }
 
-#endregion
+            #endregion
 
-#region Public Methods
+            #region Public Methods
 
             public void SetParameters(RSAParameters p)
             {
@@ -126,9 +126,9 @@ namespace Kasbah.Web.Admin
                 };
             }
 
-#endregion
+            #endregion
         }
 
-#endregion
+        #endregion
     }
 }

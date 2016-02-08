@@ -2,6 +2,7 @@ using System;
 using System.IdentityModel.Tokens;
 using Microsoft.AspNet.Authentication.JwtBearer;
 using Microsoft.AspNet.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Kasbah.Web.Admin
 {
@@ -11,7 +12,8 @@ namespace Kasbah.Web.Admin
 
         public static IApplicationBuilder UseKasbahWebAdmin(this IApplicationBuilder app)
         {
-            app.UseCors("allowAnyOrigin");
+            var tokenAuthOptions = app.ApplicationServices.GetRequiredService<TokenAuthOptions>();
+            app.UseCors("defaultCorsPolicy");
 
             app.UseIdentity();
 
@@ -19,9 +21,9 @@ namespace Kasbah.Web.Admin
             {
                 TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = ServiceConfiguration.Key,
-                    ValidAudience = ServiceConfiguration.TokenOptions.Audience,
-                    ValidIssuer = ServiceConfiguration.TokenOptions.Issuer,
+                    IssuerSigningKey = tokenAuthOptions.SigningCredentials.Key,
+                    ValidAudience = tokenAuthOptions.Audience,
+                    ValidIssuer = tokenAuthOptions.Issuer,
                     ValidateSignature = true,
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
