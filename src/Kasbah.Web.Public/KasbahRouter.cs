@@ -42,6 +42,9 @@ namespace Kasbah.Web.Public
 
             newRouteData.Routers.Add(_next);
 
+            newRouteData.Values["contentBroker"] = _contentBroker;
+            newRouteData.Values["applicationContext"] = _applicationContext;
+
             try
             {
                 _logger.LogDebug($"Trying to match {context.HttpContext.Request.Host}");
