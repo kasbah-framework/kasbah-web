@@ -1,5 +1,6 @@
 using System;
-using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens;
+//using Microsoft.IdentityModel.Tokens;
 using System.Linq;
 using Kasbah.Identity;
 using Kasbah.Identity.Models;
@@ -62,7 +63,7 @@ namespace Kasbah.Web.Admin
                 auth.DefaultPolicy = bearerPolicy;
             });
 
-            services.AddInstance<IApplicationContext>(config());
+            services.AddInstance(config());
 
             services.AddScoped<IUserStore<KasbahUser>, UserStore>();
             services.AddScoped<IRoleStore<KasbahIdentityRole>, RoleStore>();

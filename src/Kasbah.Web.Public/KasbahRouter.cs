@@ -44,24 +44,24 @@ namespace Kasbah.Web.Public
 
             try
             {
-                _logger.LogVerbose($"Trying to match {context.HttpContext.Request.Host}");
+                _logger.LogDebug($"Trying to match {context.HttpContext.Request.Host}");
                 var site = GetSiteByRequest(context.HttpContext);
                 if (site != null)
                 {
-                    _logger.LogVerbose($"Site matched: {site.Alias}");
+                    _logger.LogDebug($"Site matched: {site.Alias}");
                     newRouteData.Values["site"] = site;
 
                     var node = GetNodeByPath(site, context.HttpContext.Request.Path);
                     if (node != null)
                     {
-                        _logger.LogVerbose($"Node matched: {node.Id}");
+                        _logger.LogDebug($"Node matched: {node.Id}");
                         newRouteData.Values["controller"] = "DefaultContent";
                         newRouteData.Values["action"] = "RenderContent";
 
                         var content = GetContentByNode(node);
                         if (content != null)
                         {
-                            _logger.LogVerbose("Content found");
+                            _logger.LogDebug("Content found");
 
                             if (typeof(VersionedContentBase).IsAssignableFrom(content.GetType()))
                             {
@@ -94,7 +94,7 @@ namespace Kasbah.Web.Public
                         newRouteData.Values["content"] = content;
                         newRouteData.Values["node"] = node;
 
-                        _logger.LogVerbose($"Routing to: ({newRouteData.Values["namespace"]}.){newRouteData.Values["controller"]}.{newRouteData.Values["action"]} (view: {newRouteData.Values["view"]})");
+                        _logger.LogDebug($"Routing to: ({newRouteData.Values["namespace"]}.){newRouteData.Values["controller"]}.{newRouteData.Values["action"]} (view: {newRouteData.Values["view"]})");
                     }
                 }
 

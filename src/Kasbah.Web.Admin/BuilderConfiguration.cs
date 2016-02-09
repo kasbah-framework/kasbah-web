@@ -1,5 +1,6 @@
 using System;
-using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens;
+//using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNet.Authentication.JwtBearer;
 using Microsoft.AspNet.Builder;
 using Microsoft.Extensions.DependencyInjection;
