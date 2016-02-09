@@ -10,9 +10,6 @@ export const LOAD_CONTENT_FAILURE = 'LOAD_CONTENT_FAILURE';
 export const SAVE_CONTENT_REQUEST = 'SAVE_CONTENT_REQUEST';
 export const SAVE_CONTENT_SUCCESS = 'SAVE_CONTENT_SUCCESS';
 export const SAVE_CONTENT_FAILURE = 'SAVE_CONTENT_FAILURE';
-export const SET_ACTIVE_VERSION_REQUEST = 'SET_ACTIVE_VERSION_REQUEST';
-export const SET_ACTIVE_VERSION_SUCCESS = 'SET_ACTIVE_VERSION_SUCCESS';
-export const SET_ACTIVE_VERSION_FAILURE = 'SET_ACTIVE_VERSION_FAILURE';
 export const UPDATE_MODEL = 'UPDATE_MODEL';
 export const SELECT_VERSION = 'SELECT_VERSION';
 export const ADD_VERSION = 'ADD_VERSION';
@@ -118,10 +115,21 @@ export function saveContent (node, data, setActive) {
   };
 }
 
+function unpublish (node) {
+  return (dispatch) => {
+    return fetchWrapper(`${API_URL}/api/node/${node}/set-active`, 'GET', body)
+      .then(response => {
+      })
+      .catch(error => {
+      });
+  };
+}
+
 export const actions = {
   loadContent,
   updateModel,
-  saveContent
+  saveContent,
+  unpublish
 };
 
 // ------------------------------------
