@@ -2,11 +2,22 @@ import React from 'react';
 
 export default class extends React.Component {
   static propTypes = {
-    error: React.PropTypes.object.isRequired,
+    error: React.PropTypes.object,
     loading: React.PropTypes.bool.isRequired,
 
     onSubmit: React.PropTypes.func.isRequired
   };
+
+  componentDidMount () {
+    this.refs.username.focus();
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.error) {
+      this.refs.username.focus();
+      this.refs.username.select();
+    }
+  }
 
   handleSubmit (e) {
     e.preventDefault && e.preventDefault();
@@ -29,13 +40,6 @@ export default class extends React.Component {
     this.refs.persist.checked = false;
 
     this.refs.username.focus();
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.error) {
-      this.refs.username.focus();
-      this.refs.username.select();
-    }
   }
 
   _renderField (id, type, placeholder, label) {

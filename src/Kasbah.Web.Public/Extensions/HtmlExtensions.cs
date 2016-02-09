@@ -46,6 +46,13 @@ namespace Kasbah.Web
                         var module = contentBroker.GetNodeVersion(moduleNode.Id, moduleNode.ActiveVersion.Value, type);
                         var moduleView = (module as ContentBase).View;
 
+                        if (typeof(VersionedContentBase).IsAssignableFrom(type.GetType()))
+                        {
+                            var versionedContent = module as VersionedContentBase;
+
+                            module = versionedContent.SelectVersion(null);
+                        }
+
                         ret.Add(await htmlHelper.PartialAsync(moduleView, module, null));
                     }
 
