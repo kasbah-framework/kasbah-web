@@ -117,7 +117,7 @@ export function saveContent (node, data, setActive) {
 
 function unpublish (node) {
   return (dispatch) => {
-    return fetchWrapper(`${API_URL}/api/node/${node}/set-active`, 'GET', body)
+    return fetchWrapper(`${API_URL}/api/node/${node}/set-active`, 'GET')
       .then(response => {
       })
       .catch(error => {
