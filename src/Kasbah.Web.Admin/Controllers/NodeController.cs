@@ -7,32 +7,13 @@ using Kasbah.Core.ContentBroker;
 using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
+using Kasbah.Web.Admin.Models;
 using Kasbah.Web.Annotations;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 
 namespace Kasbah.Web.Admin
 {
-    public class CreateNodeRequest
-    {
-        #region Public Properties
-
-        public string Alias { get; set; }
-        public Guid? Parent { get; set; }
-        public string Type { get; set; }
-
-        #endregion
-    }
-
-    public class DeleteNodeRequest
-    {
-        #region Public Properties
-
-        public Guid Id { get; set; }
-
-        #endregion
-    }
-
     [Authorize()]
     public class NodeController
     {
@@ -68,7 +49,7 @@ namespace Kasbah.Web.Admin
         [Route("api/children")]
         public IEnumerable<Node> GetChildren(Guid? id = null)
         {
-            return _contentBroker.GetChildren(id).Select(ent => new NodeExt
+            return _contentBroker.GetChildren(id).Select(ent => new NodeWithIcon
             {
                 ActiveVersion = ent.ActiveVersion,
                 HasChildren = ent.HasChildren,
@@ -109,15 +90,6 @@ namespace Kasbah.Web.Admin
         #region Private Fields
 
         readonly ContentBroker _contentBroker;
-
-        #endregion
-    }
-
-    public class NodeExt : Node
-    {
-        #region Public Properties
-
-        public string Icon { get; set; }
 
         #endregion
     }
