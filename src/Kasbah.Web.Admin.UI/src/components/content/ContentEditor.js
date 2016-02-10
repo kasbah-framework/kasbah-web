@@ -51,7 +51,7 @@ class ContentEditor extends React.Component {
 
           <hr />
 
-          <button className='button is-primary' onClick={() => this.handleSave()}>Save only</button>
+          <button className='button is-primary' onClick={() => this.handleSave()}>Save</button>
           <button className='button is-primary' onClick={() => this.handleSaveAndPublish()}>Save and publish</button>
           <button className='button is-warning' onClick={() => this.handleUnpublish()}>Unpublish</button>
           <button className='button is-danger' onClick={() => this.handleDelete()}>Delete</button>
