@@ -18,8 +18,16 @@ export default class extends React.Component {
       };
     }
 
+    componentWillMount () {
+      if (this.props.modelDefinition) {
+        this.setState({
+          activeSection: this.props.modelDefinition.sections[0]
+        });
+      }
+    }
+
     componentWillReceiveProps (nextProps) {
-      if (nextProps.node !== this.props.node) {
+      if (nextProps.modelDefinition !== this.props.modelDefinition) {
         this.setState({
           activeSection: nextProps.modelDefinition.sections[0]
         });
@@ -56,19 +64,13 @@ export default class extends React.Component {
         .map(field => this._renderField(field));
     }
 
-    handleSectionChange (section) {
-      this.setState({
-        activeSection: section
-      });
-    }
-
     render () {
       const tabs = this.props.modelDefinition.sections;
       return (
         <form>
           <div className='tabs is-toggle'>
             <ul>
-              {tabs.map(ent => <li key={ent} className={this.state.activeSection === ent ? 'is-active' : null}><a onClick={() => this.handleSectionChange(ent)}>{ent}</a></li>)}
+              {tabs.map(ent => <li key={ent} className={this.state.activeSection === ent ? 'is-active' : null}><a onClick={() => this.setState({ activeSection: ent })}>{ent}</a></li>)}
             </ul>
 
             <div>
