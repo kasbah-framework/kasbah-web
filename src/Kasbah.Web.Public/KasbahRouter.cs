@@ -92,16 +92,16 @@ namespace Kasbah.Web.Public
                             }
 
                             newRouteData.Values["view"] = content.View;
+
+                            newRouteData.Values["content"] = content;
+                            newRouteData.Values["node"] = node;
+
+                            _logger.LogDebug($"Routing to: ({newRouteData.Values["namespace"]}.){newRouteData.Values["controller"]}.{newRouteData.Values["action"]} (view: {newRouteData.Values["view"]})");
+
+                            context.RouteData = newRouteData;
                         }
-
-                        newRouteData.Values["content"] = content;
-                        newRouteData.Values["node"] = node;
-
-                        _logger.LogDebug($"Routing to: ({newRouteData.Values["namespace"]}.){newRouteData.Values["controller"]}.{newRouteData.Values["action"]} (view: {newRouteData.Values["view"]})");
                     }
                 }
-
-                context.RouteData = newRouteData;
                 await _next.RouteAsync(context);
             }
             finally

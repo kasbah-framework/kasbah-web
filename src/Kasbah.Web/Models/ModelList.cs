@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Kasbah.Core.Utils;
 
 namespace Kasbah.Web.Models
@@ -37,17 +38,15 @@ namespace Kasbah.Web.Models
 
                 _list.Add(type);
 
-#if !DNXCORE50
-                var baseType = type.BaseType;
+                var baseType = type.GetTypeInfo().BaseType;
                 while (baseType != null)
                 {
-                    if (!baseType.IsAbstract && baseType != typeof(object))
+                    if (!baseType.GetTypeInfo().IsAbstract && baseType != typeof(object))
                     {
                         Register(baseType);
                     }
-                    baseType = baseType.BaseType;
+                    baseType = baseType.GetTypeInfo().BaseType;
                 }
-#endif
             }
         }
 

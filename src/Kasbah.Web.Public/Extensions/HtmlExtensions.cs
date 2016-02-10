@@ -8,6 +8,7 @@ using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Models;
 using Microsoft.AspNet.Html.Abstractions;
+using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.AspNet.Mvc.ViewFeatures;
 using Microsoft.Extensions.WebEncoders;
 
@@ -32,7 +33,7 @@ namespace Kasbah.Web
 
         #region Public Methods
 
-        public static async Task<IHtmlContent> ModulesAsync(this HtmlHelper htmlHelper, string section)
+        public static async Task<IHtmlContent> ModulesAsync(this IHtmlHelper htmlHelper, string section)
         {
             var contentBroker = htmlHelper.ViewContext.RouteData.Values["contentBroker"] as ContentBroker;
             var node = htmlHelper.ViewContext.RouteData.Values["node"] as Node;
@@ -75,7 +76,7 @@ namespace Kasbah.Web
 
                     if (ret.Any())
                     {
-                        return new StringHtmlContent(string.Join(Environment.NewLine, ret.Select(ContentToString)));
+                        return htmlHelper.Raw(string.Join(Environment.NewLine, ret.Select(ContentToString)));
                     }
                 }
                 else

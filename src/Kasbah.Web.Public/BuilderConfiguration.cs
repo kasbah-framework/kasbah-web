@@ -1,3 +1,4 @@
+using System;
 using Kasbah.Core.ContentBroker;
 using Microsoft.AspNet.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,9 @@ namespace Kasbah.Web.Public
 
         public static IApplicationBuilder UseKasbahWebPublic(this IApplicationBuilder app)
         {
+            // TODO: Dan wouldn't like this.  I don't really either.
+            ServiceLocator.ApplicationServices = app.ApplicationServices;
+
             app.UseCors("allowAnyOrigin");
 
             app.UseMvc(routes =>
@@ -34,4 +38,10 @@ namespace Kasbah.Web.Public
 
         #endregion
     }
+
+    public static class ServiceLocator
+    {
+        public static IServiceProvider ApplicationServices { get; set; }
+    }
+
 }
