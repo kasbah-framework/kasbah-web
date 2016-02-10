@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Kasbah.Core;
 using Kasbah.Core.ContentBroker;
+using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Admin.Models;
 using Kasbah.Web.Annotations;
@@ -97,12 +98,21 @@ namespace Kasbah.Web.Admin.Controllers
             {
                 data = _contentBroker.GetNodeVersion(node.Id, latestVersion.Id);
             }
+            var hierarchy = new List<Node>();
+            var current = node.Parent;
+            while (current.HasValue)
+            {
+                var parent = _contentBroker.GetNode(current.Value);
+                hierarchy.Add(parent);
+                current = parent.Parent;
+            }
 
             return new GetContentResponse
             {
                 ModelDefinition = GetModelDefinition(type),
                 Data = data,
-                Node = node
+                Node = node,
+                Hierarchy = hierarchy
             };
         }
 

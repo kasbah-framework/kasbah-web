@@ -136,6 +136,7 @@ const initialState = {
   modelDefinition: null,
   data: null,
   node: null,
+  hierarchy: null,
   errorCode: null,
   errorMessage: null
 };
@@ -155,6 +156,7 @@ export default handleActions({
         'modelDefinition': payload.content.modelDefinition,
         'data': payload.content.data || {},
         'node': payload.content.node,
+        'hierarchy': payload.content.hierarchy,
         'errorCode': null,
         'errorMessage': null
       });

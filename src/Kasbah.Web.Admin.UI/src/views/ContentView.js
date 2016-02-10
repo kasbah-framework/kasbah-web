@@ -29,7 +29,7 @@ export class ContentView extends React.Component {
     constructor () {
       super();
 
-      this.state = { selectedNode: null };
+      this.state = { selectedNode: null, currentTab: 'children' };
     }
 
     handleNodeSelected (node) {
@@ -79,6 +79,8 @@ export class ContentView extends React.Component {
         return;
       }
       this.props.createNode(query.node, alias, type);
+
+      this.refs.nodeAlias.value = '';
     }
 
     render () {
@@ -100,9 +102,11 @@ export class ContentView extends React.Component {
                       Up one level
                     </Link>}
                   <p className='menu-tabs'>
-                    <a className='is-active' href='#'>Child nodes</a>
+                    <a href='#' className={this.state.currentTab === 'children' && 'is-active'} onClick={() => this.setState({ currentTab: 'children' })}>Child nodes</a>
+                    <a href='#' className={this.state.currentTab === 'hierarchy' && 'is-active'} onClick={() => this.setState({ currentTab: 'hierarchy' })}>Hierarchy</a>
                   </p>
-                  {Object.keys(this.props.tree.nodes)
+
+                  {this.state.currentTab === 'children' && Object.keys(this.props.tree.nodes)
                     .map(k => this.props.tree.nodes[k])
                     .filter(ent => ent.parent === query.node || (ent.parent == null && !query.node))
                     .map(ent =>
@@ -113,6 +117,17 @@ export class ContentView extends React.Component {
                         {ent.alias}
                       </Link>
                   )}
+
+                  {this.state.currentTab === 'hierarchy' && this.props.content.hierarchy
+                    .map(ent =>
+                      <Link key={ent.id} className='menu-block' to={{ pathname: '/content', query: { node: ent.id } }}>
+                        <span className='menu-icon'>
+                          <i className={`fa fa-${ent.icon || 'file-text-o'}`}></i>
+                        </span>
+                        {ent.alias}
+                      </Link>
+                  )}
+
                   <div className='menu-block'>
                     <p className='control'>
                       <span className={['select', 'is-fullwidth', this.props.types.types ? null : 'is-loading'].join(' ')}>

@@ -25,8 +25,8 @@ namespace Kasbah.Web.Admin.Models
         #region Public Properties
 
         public object Data { get; set; }
+        public IEnumerable<Node> Hierarchy { get; internal set; }
         public ModelDefinition ModelDefinition { get; set; }
-
         public Node Node { get; set; }
 
         #endregion

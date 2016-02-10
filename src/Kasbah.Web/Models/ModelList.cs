@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.Utils;
 
 namespace Kasbah.Web.Models
@@ -25,7 +26,7 @@ namespace Kasbah.Web.Models
 
         #region Public Methods
 
-        public void Register<T>() where T : ContentBase
+        public void Register<T>() where T : ItemBase
         {
             Register(typeof(T));
         }
