@@ -15,6 +15,23 @@ namespace Kasbah.Web
 {
     public static class HtmlExtensions
     {
+        #region Private Methods
+
+        static string ContentToString(IHtmlContent content)
+        {
+            if (content == null) { return null; }
+
+            var writer = new System.IO.StringWriter();
+
+            content.WriteTo(writer, new HtmlEncoder());
+
+            return writer.ToString();
+        }
+
+        #endregion
+
+        #region Public Methods
+
         public static async Task<IHtmlContent> ModulesAsync(this HtmlHelper htmlHelper, string section)
         {
             var contentBroker = htmlHelper.ViewContext.RouteData.Values["contentBroker"] as ContentBroker;
@@ -74,15 +91,6 @@ namespace Kasbah.Web
             return new StringHtmlContent(string.Empty);
         }
 
-        public static string ContentToString(IHtmlContent content)
-        {
-            if (content == null) { return null; }
-
-            var writer = new System.IO.StringWriter();
-
-            content.WriteTo(writer, new HtmlEncoder());
-
-            return writer.ToString();
-        }
+        #endregion
     }
 }

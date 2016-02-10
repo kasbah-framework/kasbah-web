@@ -7,11 +7,10 @@ namespace Kasbah.Web
     {
         #region Public Properties
 
+        IEnumerable<string> AdditionalModules { get; set; }
         ModelList ModelList { get; }
 
         SiteList Sites { get; set; }
-
-        IEnumerable<string> AdditionalModules { get; set; }
 
         #endregion
     }
