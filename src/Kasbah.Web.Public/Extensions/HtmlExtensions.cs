@@ -7,15 +7,34 @@ using Kasbah.Core.ContentBroker;
 using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Models;
+using Kasbah.Web.Public;
 using Microsoft.AspNet.Html.Abstractions;
+using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.AspNet.Mvc.ViewFeatures;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.WebEncoders;
 
 namespace Kasbah.Web
 {
     public static class HtmlExtensions
     {
+        #region Private Fields
+
+        static ILogger _log;
+
+        #endregion
+
+        #region Private Properties
+
+        static ILogger Log
+        {
+            get { return (_log = (_log ?? ServiceLocator.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(HtmlExtensions).FullName))); }
+        }
+
+        #endregion
+
         #region Private Methods
 
         static string ContentToString(IHtmlContent content)
@@ -33,15 +52,15 @@ namespace Kasbah.Web
 
         #region Public Methods
 
-        public static async Task<IHtmlContent> ModulesAsync(this IHtmlHelper htmlHelper, string section)
+        public static async Task<IHtmlContent> ModulesAsync(this IHtmlHelper htmlHelper, string section, IViewComponentHelper viewComponentHelper = null)
         {
             var contentBroker = htmlHelper.ViewContext.RouteData.Values["contentBroker"] as ContentBroker;
             var node = htmlHelper.ViewContext.RouteData.Values["node"] as Node;
 
             if (node == null)
             {
-                // An attempt has been made to render modules on a page that is not managed
-                // by the content tree, i.e., a custom controller/action
+                _log.LogWarning($"An attempt has been made to render modules on a page that is not managed by the content tree. View: '{htmlHelper.ViewContext.View.Path}' Section: {section}");
+
                 return null;
             }
 
@@ -62,7 +81,6 @@ namespace Kasbah.Web
 
                         var type = TypeUtil.TypeFromName(moduleNode.Type);
                         var module = contentBroker.GetNodeVersion(moduleNode.Id, moduleNode.ActiveVersion.Value, type);
-                        var moduleView = (module as ContentBase).View;
 
                         if (typeof(VersionedContentBase).IsAssignableFrom(type.GetType()))
                         {
@@ -71,7 +89,28 @@ namespace Kasbah.Web
                             module = versionedContent.SelectVersion(null);
                         }
 
-                        ret.Add(await htmlHelper.PartialAsync(moduleView, module, null));
+                        if (module is ContentBase)
+                        {
+                            var moduleView = (module as ContentBase).View;
+
+                            ret.Add(await htmlHelper.PartialAsync(moduleView, module, null));
+                        }
+                        else if (module is ModuleBase)
+                        {
+                            var moduleModule = (module as ModuleBase);
+                            if (!string.IsNullOrEmpty(moduleModule.ViewComponent))
+                            {
+                                if (viewComponentHelper == null) { throw new ArgumentNullException(nameof(viewComponentHelper)); }
+
+                                ret.Add(await viewComponentHelper.InvokeAsync(moduleModule.ViewComponent, module));
+                            }
+                            else
+                            {
+                                var moduleView = (module as ModuleBase).View;
+
+                                ret.Add(await htmlHelper.PartialAsync(moduleView, module, null));
+                            }
+                        }
                     }
 
                     if (ret.Any())
@@ -81,17 +120,17 @@ namespace Kasbah.Web
                 }
                 else
                 {
-                    // TODO: log this attempt to render modules that don't exist.
+                    _log.LogWarning($"An attempt has been made to render modules where no modules exist for this section.  View: '{htmlHelper.ViewContext.View.Path}' Section: {section}");
                 }
             }
             else
             {
-                // TODO: log this attempt to render modules that don't exist.
+                _log.LogWarning($"An attempt has been made to render modules where no modules exist.  View: '{htmlHelper.ViewContext.View.Path}' Section: {section}");
             }
 
             return new StringHtmlContent(string.Empty);
         }
-
+        
         #endregion
     }
 }
