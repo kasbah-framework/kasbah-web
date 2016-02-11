@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNet.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kasbah.Web.Public
@@ -14,6 +15,11 @@ namespace Kasbah.Web.Public
             services.AddKasbahWeb();
 
             services.AddMvc();
+
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                options.ViewLocationExpanders.Add(new KasbahViewLocationExpander());
+            });
 
             return services;
         }
