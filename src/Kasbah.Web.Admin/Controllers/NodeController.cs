@@ -77,7 +77,7 @@ namespace Kasbah.Web.Admin
                 Parent = ent.Parent,
                 Type = ent.Type,
                 Icon = TypeUtil.TypeFromName(ent.Type)?.GetTypeInfo().GetAttributeValue<IconAttribute, string>(attr => attr?.Icon)
-            });
+            }).OrderBy(ent => ent.Alias);
         }
 
         [Route("api/version/{id}/{version}")]

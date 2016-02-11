@@ -70,7 +70,7 @@ namespace Kasbah.Web
                 var moduleRoot = contentBroker.GetChild(modulesRoot.Id, section);
                 if (moduleRoot != null)
                 {
-                    var moduleNodes = contentBroker.GetChildren(moduleRoot.Id);
+                    var moduleNodes = contentBroker.GetChildren(moduleRoot.Id).OrderBy(ent => ent.Alias);
                     var ret = new List<IHtmlContent>();
                     foreach (var moduleNode in moduleNodes)
                     {
