@@ -2,8 +2,8 @@ image: microsoft/aspnet:1.0.0-rc1-update1
 stages:
   - build
 before_script:
-  - curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
-  - sudo apt-get install --yes nodejs
+  - curl -sL https://deb.nodesource.com/setup_5.x | -E bash -
+  - apt-get install --yes nodejs
 job1:
   stage: build
   script:
