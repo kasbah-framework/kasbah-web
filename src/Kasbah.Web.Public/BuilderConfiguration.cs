@@ -1,6 +1,7 @@
 using System;
 using Kasbah.Core.ContentBroker;
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -19,12 +20,19 @@ namespace Kasbah.Web.Public
 
             app.UseMvc(routes =>
             {
+                var routers = app.ApplicationServices.GetServices<IKasbahRouter>();
+                foreach (var router in routers)
+                {
+                    routes.Routes.Add(router);
+                }
+
                 var defaultHandler = new KasbahRouter(routes.DefaultHandler,
                     app.ApplicationServices.GetRequiredService<ILoggerFactory>(),
                     app.ApplicationServices.GetRequiredService<IApplicationContext>(),
                     app.ApplicationServices.GetRequiredService<ContentBroker>());
 
                 routes.DefaultHandler = defaultHandler;
+                // routes.Routes.Add(defaultHandler);
 
                 routes.MapRoute(
                     name: "default",
