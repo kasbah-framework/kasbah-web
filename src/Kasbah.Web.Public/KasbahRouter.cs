@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Kasbah.Web.Public
 {
-    public class KasbahRouter : IRouter
+    public class KasbahRouter : IKasbahRouter
     {
         #region Public Constructors
 
