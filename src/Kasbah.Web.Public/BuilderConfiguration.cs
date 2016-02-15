@@ -25,13 +25,11 @@ namespace Kasbah.Web.Public
                     routes.Routes.Add(router);
                 }
 
-                var defaultHandler = new KasbahRouter(routes.DefaultHandler,
+                // Service locator again...
+                routes.Routes.Add(new KasbahRouter(routes.DefaultHandler,
                     app.ApplicationServices.GetRequiredService<ILoggerFactory>(),
                     app.ApplicationServices.GetRequiredService<IApplicationContext>(),
-                    app.ApplicationServices.GetRequiredService<ContentBroker>());
-
-                routes.DefaultHandler = defaultHandler;
-                // routes.Routes.Add(defaultHandler);
+                    app.ApplicationServices.GetRequiredService<ContentBroker>()));
 
                 routes.MapRoute(
                     name: "default",
