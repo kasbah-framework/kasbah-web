@@ -1,4 +1,3 @@
-
 using Kasbah.Core.Models;
 
 namespace Kasbah.Web.Admin.Models

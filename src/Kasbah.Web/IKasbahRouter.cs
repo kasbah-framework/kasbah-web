@@ -4,6 +4,5 @@ namespace Kasbah.Web
 {
     public interface IKasbahRouter : IRouter
     {
-
     }
 }

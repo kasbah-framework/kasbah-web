@@ -1,7 +1,6 @@
 using System;
 using Kasbah.Core.ContentBroker;
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -49,7 +48,10 @@ namespace Kasbah.Web.Public
 
     public static class ServiceLocator
     {
-        public static IServiceProvider ApplicationServices { get; set; }
-    }
+        #region Public Properties
 
+        public static IServiceProvider ApplicationServices { get; set; }
+
+        #endregion
+    }
 }
