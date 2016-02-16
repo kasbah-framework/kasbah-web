@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Kasbah.Web.Models;
 
@@ -11,6 +12,7 @@ namespace Kasbah.Web
         ModelList ModelList { get; }
 
         SiteList Sites { get; set; }
+        IDictionary<Guid, Site> SiteNodeMap { get;  set; }
 
         #endregion
     }

@@ -25,6 +25,9 @@ namespace Kasbah.Web.Public
                 }
             }
 
+            ret.Add("/Views/{0}/{1}.cshtml");
+            ret.Add("/Views/{0}.cshtml");
+
             return ret;
         }
 

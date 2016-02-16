@@ -54,7 +54,7 @@ namespace Kasbah.Web.Admin.Controllers
                     Alias = site.Alias,
                     DisplayName = site.DisplayName,
                     Domains = site.Domains.Select(dom => dom.Domain),
-                    Id = site.Node.Id
+                    Id = _applicationContext.SiteNodeMap.ToDictionary(e => e.Value, e => e.Key)[site]
                 })
             };
         }
