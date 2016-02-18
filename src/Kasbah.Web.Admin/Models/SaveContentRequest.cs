@@ -6,10 +6,8 @@ namespace Kasbah.Web.Admin.Models
     {
         #region Public Properties
 
-        public Guid Node { get; set; }
-
         public object Data { get; set; }
-
+        public Guid Node { get; set; }
         public bool SetActive { get; set; }
 
         #endregion

@@ -1,18 +1,8 @@
 using System.Collections.Generic;
+using Kasbah.Core.Models;
 
 namespace Kasbah.Web.Admin.Models
 {
-    public class GetContentResponse : BaseApiResponse
-    {
-        #region Public Properties
-
-        public ModelDefinition ModelDefinition { get; set; }
-
-        public object Data { get; set; }
-
-        #endregion
-    }
-
     public class FieldDef
     {
         #region Public Properties
@@ -26,6 +16,18 @@ namespace Kasbah.Web.Admin.Models
         public string Section { get; set; }
 
         public string Type { get; set; }
+
+        #endregion
+    }
+
+    public class GetContentResponse : BaseApiResponse
+    {
+        #region Public Properties
+
+        public object Data { get; set; }
+        public IEnumerable<Node> Hierarchy { get; internal set; }
+        public ModelDefinition ModelDefinition { get; set; }
+        public Node Node { get; set; }
 
         #endregion
     }

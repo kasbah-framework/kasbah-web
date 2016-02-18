@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import DevTools from 'containers/DevToolsWindow';
+import MimeTypes from 'constants/MimeTypes';
 
 export function createConstants (...constants) {
   return constants.reduce((acc, constant) => {
@@ -55,4 +56,46 @@ export function checkHttpStatus (response) {
 
 export function parseJSON (response) {
   return response.json();
+}
+
+export function getAuthToken () {
+  // This should be reading from the state
+  if (localStorage.token) {
+    return localStorage.token;
+  } else if (sessionStorage.token) {
+    return sessionStorage.token;
+  }
+
+  return null;
+}
+
+export function clearAuthToken () {
+  localStorage.removeItem('token');
+  sessionStorage.removeItem('token');
+}
+
+export function fetchWrapper (url, method, body) {
+  let headers = {
+    'Accept': MimeTypes.application.json
+  };
+
+  const authToken = getAuthToken();
+  if (authToken) {
+    headers['Authorization'] = `Bearer ${authToken}`;
+  }
+
+  let config = {
+    method: method || 'GET',
+    credentials: 'include',
+    headers
+  };
+
+  if (body) {
+    config.headers['Content-Type'] = MimeTypes.application.json;
+    config.body = JSON.stringify(body);
+  }
+
+  return fetch(url, config)
+  .then(checkHttpStatus)
+  .then(parseJSON);
 }

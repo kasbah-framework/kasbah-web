@@ -1,7 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { checkHttpStatus, parseJSON } from '../../utils';
-import MimeTypes from 'constants/MimeTypes';
-import fetch from 'isomorphic-fetch';
+import { fetchWrapper } from 'utils';
 
 // ------------------------------------
 // Constants
@@ -12,9 +10,6 @@ export const LOAD_CONTENT_FAILURE = 'LOAD_CONTENT_FAILURE';
 export const SAVE_CONTENT_REQUEST = 'SAVE_CONTENT_REQUEST';
 export const SAVE_CONTENT_SUCCESS = 'SAVE_CONTENT_SUCCESS';
 export const SAVE_CONTENT_FAILURE = 'SAVE_CONTENT_FAILURE';
-export const SET_ACTIVE_VERSION_REQUEST = 'SET_ACTIVE_VERSION_REQUEST';
-export const SET_ACTIVE_VERSION_SUCCESS = 'SET_ACTIVE_VERSION_SUCCESS';
-export const SET_ACTIVE_VERSION_FAILURE = 'SET_ACTIVE_VERSION_FAILURE';
 export const UPDATE_MODEL = 'UPDATE_MODEL';
 export const SELECT_VERSION = 'SELECT_VERSION';
 export const ADD_VERSION = 'ADD_VERSION';
@@ -51,9 +46,7 @@ export function loadContentRequest () {
 export function loadContent (id) {
   return (dispatch) => {
     dispatch(loadContentRequest());
-    return fetch(`${API_URL}/api/content/${id}`, { credentials: 'include', headers: { 'Authorization': `Bearer ${localStorage.token}` } })
-      .then(checkHttpStatus)
-      .then(parseJSON)
+    return fetchWrapper(`${API_URL}/api/content/${id}`, 'GET')
       .then(response => {
         if (response.success) {
           dispatch(loadContentSuccess(response));
@@ -105,37 +98,34 @@ export function saveContentRequest () {
 export function saveContent (node, data, setActive) {
   return (dispatch) => {
     dispatch(saveContentRequest());
-    return fetch(`${API_URL}/api/content`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Accept': MimeTypes.application.json,
-        'Content-Type': MimeTypes.application.json,
-        'Authorization': `Bearer ${localStorage.token}`
-      },
-      body: JSON.stringify({
-        node, data, setActive
+
+    const body = { node, data, setActive };
+
+    return fetchWrapper(`${API_URL}/api/content`, 'POST', body)
+      .then(response => {
+        if (response.success) {
+          dispatch(saveContentSuccess(response));
+        } else {
+          dispatch(saveContentFailure(response));
+        }
       })
-    })
-    .then(checkHttpStatus)
-    .then(parseJSON)
-    .then(response => {
-      if (response.success) {
-        dispatch(saveContentSuccess(response));
-      } else {
-        dispatch(saveContentFailure(response));
-      }
-    })
-    .catch(error => {
-      dispatch(saveContentFailure(error.response));
-    });
+      .catch(error => {
+        dispatch(saveContentFailure(error.response));
+      });
+  };
+}
+
+function unpublish (node) {
+  return (dispatch) => {
+    return fetchWrapper(`${API_URL}/api/node/${node}/set-active`, 'POST');
   };
 }
 
 export const actions = {
   loadContent,
   updateModel,
-  saveContent
+  saveContent,
+  unpublish
 };
 
 // ------------------------------------
@@ -145,6 +135,8 @@ const initialState = {
   isLoading: false,
   modelDefinition: null,
   data: null,
+  node: null,
+  hierarchy: null,
   errorCode: null,
   errorMessage: null
 };
@@ -153,7 +145,6 @@ export default handleActions({
   [LOAD_CONTENT_REQUEST]: (state, { payload }) => {
     return Object.assign({}, state, {
       'isLoading': true,
-      'currentVersion': null,
       'errorCode': null,
       'errorMessage': null
     });
@@ -164,6 +155,8 @@ export default handleActions({
         'isLoading': false,
         'modelDefinition': payload.content.modelDefinition,
         'data': payload.content.data || {},
+        'node': payload.content.node,
+        'hierarchy': payload.content.hierarchy,
         'errorCode': null,
         'errorMessage': null
       });

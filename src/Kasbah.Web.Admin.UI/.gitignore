@@ -1,2 +1,7 @@
-dist/
-!bin/
+.DS_STORE
+*.log
+
+node_modules
+
+dist
+coverage

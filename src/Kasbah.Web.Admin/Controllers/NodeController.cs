@@ -1,24 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using Kasbah.Core;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.Models;
+using Kasbah.Core.Utils;
+using Kasbah.Web.Admin.Models;
+using Kasbah.Web.Annotations;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 
 namespace Kasbah.Web.Admin
 {
-    public class CreateNodeRequest
-    {
-        #region Public Properties
-
-        public string Alias { get; set; }
-        public Guid? Parent { get; set; }
-        public string Type { get; set; }
-
-        #endregion
-    }
-
     [Authorize()]
     public class NodeController
     {
@@ -45,10 +40,25 @@ namespace Kasbah.Web.Admin
             return _contentBroker.Save<ItemBase>(id, Guid.NewGuid(), null);
         }
 
+        [HttpDelete, Route("api/node")]
+        public void DeleteNode([FromBody]DeleteNodeRequest request)
+        {
+            _contentBroker.Delete(request.Id);
+        }
+
         [Route("api/children")]
         public IEnumerable<Node> GetChildren(Guid? id = null)
         {
-            return _contentBroker.GetChildren(id);
+            return _contentBroker.GetChildren(id).Select(ent => new NodeWithIcon
+            {
+                ActiveVersion = ent.ActiveVersion,
+                HasChildren = ent.HasChildren,
+                Alias = ent.Alias,
+                Id = ent.Id,
+                Parent = ent.Parent,
+                Type = ent.Type,
+                Icon = TypeUtil.TypeFromName(ent.Type)?.GetTypeInfo().GetAttributeValue<IconAttribute, string>(attr => attr?.Icon)
+            }).OrderBy(ent => ent.Alias);
         }
 
         [Route("api/version/{id}/{version}")]

@@ -1,6 +1,5 @@
 import { handleActions } from 'redux-actions';
-import MimeTypes from '../../constants/MimeTypes';
-import { parseJSON, checkHttpStatus } from 'utils';
+import { fetchWrapper } from 'utils';
 import decode from 'jwt-decode';
 
 // ------------------------------------
@@ -14,75 +13,58 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function loginUserSuccess (token) {
+export function loginUserSuccess (token, persist) {
   return {
-      type: LOGIN_USER_SUCCESS,
-      payload: {
-          token: token
-        }
-    };
+    type: LOGIN_USER_SUCCESS,
+    payload: {
+      token,
+      persist
+    }
+  };
 }
 
 export function loginUserFailure (response) {
   return {
-      type: LOGIN_USER_FAILURE,
-      payload: {
-          errorCode: response ? response.errorCode : -1,
-          errorMessage: response ? response.errorMessage : 'Something went wrong.'
-        }
-    };
+    type: LOGIN_USER_FAILURE,
+    payload: {
+      errorCode: response ? response.errorCode : -1,
+      errorMessage: response ? response.errorMessage : 'Something went wrong.'
+    }
+  };
 }
 
 export function loginUserRequest () {
   return {
-      type: LOGIN_USER_REQUEST
-    };
+    type: LOGIN_USER_REQUEST
+  };
 }
 
 export function logout () {
   return {
-      type: LOGOUT_USER
-    };
-}
-
-export function logoutAndRedirect () {
-  return (dispatch, state) => {
-      dispatch(logout());
-      dispatch(pushState(null, '/login'));
-    };
+    type: LOGOUT_USER
+  };
 }
 
 export function loginUser (username, password, persist) {
   return (dispatch) => {
-      dispatch(loginUserRequest());
-      return fetch(`${API_URL}/api/auth/login`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-              'Accept': MimeTypes.application.json,
-              'Content-Type': MimeTypes.application.json
-            },
-          body: JSON.stringify({
-              username,
-              password,
-              persist,
-              method: 'password'
-            })
-        })
-        .then(checkHttpStatus)
-        .then(parseJSON)
-        .then(response => {
-          if (response.success) {
-              dispatch(loginUserSuccess(response.token));
-            }
-            else {
-              dispatch(loginUserFailure(response));
-            }
-        })
-        .catch(error => {
-          dispatch(loginUserFailure(error.response));
-        });
+    dispatch(loginUserRequest());
+    const body = {
+      username,
+      password,
+      persist,
+      method: 'password'
     };
+
+    return fetchWrapper(`${API_URL}/api/auth/login`, 'POST', body)
+      .then(response => {
+        if (response.success) {
+          dispatch(loginUserSuccess(response.token, persist));
+        } else {
+          dispatch(loginUserFailure(response));
+        }
+      })
+      .catch(error => dispatch(loginUserFailure(error.response)));
+  };
 }
 
 export const actions = {
@@ -116,7 +98,11 @@ export default handleActions({
     try {
       var token = payload.token;
       var decoded = decode(token);
-      localStorage.token = token;
+      if (payload.persist) {
+        localStorage.token = token;
+      } else {
+        sessionStorage.token = token;
+      }
       return {
         'isAuthenticating': false,
         'isAuthenticated': true,

@@ -1,3 +1,4 @@
+using System;
 using Kasbah.Core.ContentBroker;
 using Microsoft.AspNet.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,16 +12,24 @@ namespace Kasbah.Web.Public
 
         public static IApplicationBuilder UseKasbahWebPublic(this IApplicationBuilder app)
         {
+            // TODO: Dan wouldn't like this.  I don't really either.
+            ServiceLocator.ApplicationServices = app.ApplicationServices;
+
             app.UseCors("allowAnyOrigin");
 
             app.UseMvc(routes =>
             {
-                var defaultHandler = new KasbahRouter(routes.DefaultHandler,
+                var routers = app.ApplicationServices.GetServices<IKasbahRouter>();
+                foreach (var router in routers)
+                {
+                    routes.Routes.Add(router);
+                }
+
+                // Service locator again...
+                routes.Routes.Add(new KasbahRouter(routes.DefaultHandler,
                     app.ApplicationServices.GetRequiredService<ILoggerFactory>(),
                     app.ApplicationServices.GetRequiredService<IApplicationContext>(),
-                    app.ApplicationServices.GetRequiredService<ContentBroker>());
-
-                routes.DefaultHandler = defaultHandler;
+                    app.ApplicationServices.GetRequiredService<ContentBroker>()));
 
                 routes.MapRoute(
                     name: "default",
@@ -31,6 +40,15 @@ namespace Kasbah.Web.Public
 
             return app;
         }
+
+        #endregion
+    }
+
+    public static class ServiceLocator
+    {
+        #region Public Properties
+
+        public static IServiceProvider ApplicationServices { get; set; }
 
         #endregion
     }

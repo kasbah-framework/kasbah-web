@@ -16,11 +16,12 @@ namespace Kasbah.Web.Admin.Controllers
     {
         #region Public Constructors
 
-        public AuthController(UserManager<KasbahUser> userManager, SignInManager<KasbahUser> signInManager, ILoggerFactory loggerFactory)
+        public AuthController(UserManager<KasbahUser> userManager, SignInManager<KasbahUser> signInManager, ILoggerFactory loggerFactory, TokenAuthOptions tokenAuthOptions)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _log = loggerFactory.CreateLogger<AuthController>();
+            _tokenAuthOptions = tokenAuthOptions;
 
             EnsureAdmin().Wait();
         }
@@ -93,29 +94,12 @@ namespace Kasbah.Web.Admin.Controllers
 
         readonly ILogger _log;
         readonly SignInManager<KasbahUser> _signInManager;
+        readonly TokenAuthOptions _tokenAuthOptions;
         readonly UserManager<KasbahUser> _userManager;
 
         #endregion
 
         #region Private Methods
-
-        string GetToken(KasbahUser user, DateTime? expires)
-        {
-            var handler = new JwtSecurityTokenHandler();
-
-            // Here, you should create or look up an identity for the user which is being authenticated.
-            // For now, just creating a simple generic identity.
-            var identity = new ClaimsIdentity(new GenericIdentity(user.UserName, "TokenAuth"), new[] { new Claim("EntityID", user.Id, ClaimValueTypes.String) });
-
-            var securityToken = handler.CreateToken(
-                issuer: ServiceConfiguration.TokenOptions.Issuer,
-                audience: ServiceConfiguration.TokenOptions.Audience,
-                signingCredentials: ServiceConfiguration.TokenOptions.SigningCredentials,
-                subject: identity,
-                expires: expires);
-
-            return handler.WriteToken(securityToken);
-        }
 
         async Task EnsureAdmin()
         {
@@ -133,6 +117,24 @@ namespace Kasbah.Web.Admin.Controllers
                     throw new Exception($"Failed to create admin user: {result.Errors.FirstOrDefault().Description}");
                 }
             }
+        }
+
+        string GetToken(KasbahUser user, DateTime? expires)
+        {
+            var handler = new JwtSecurityTokenHandler();
+
+            // Here, you should create or look up an identity for the user which is being authenticated.
+            // For now, just creating a simple generic identity.
+            var identity = new ClaimsIdentity(new GenericIdentity(user.UserName, "TokenAuth"), new[] { new Claim("EntityID", user.Id, ClaimValueTypes.String) });
+
+            var securityToken = handler.CreateToken(
+                issuer: _tokenAuthOptions.Issuer,
+                audience: _tokenAuthOptions.Audience,
+                signingCredentials: _tokenAuthOptions.SigningCredentials,
+                subject: identity,
+                expires: expires);
+
+            return handler.WriteToken(securityToken);
         }
 
         #endregion

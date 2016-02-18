@@ -1,5 +1,4 @@
-@echo off
-cd %~dp0
+cd %APPVEYOR_BUILD_FOLDER%
 
 SETLOCAL
 SET NUGET_VERSION=latest
@@ -36,5 +35,7 @@ IF "%SKIP_DNX_INSTALL%"=="" (
 ) ELSE (
     CALL packages\KoreBuild\build\dnvm use default -runtime CLR -arch x86
 )
+
+cmd.exe /c build-ui.cmd
 
 packages\Sake\tools\Sake.exe -I packages\KoreBuild\build -I build -f makefile.shade %*

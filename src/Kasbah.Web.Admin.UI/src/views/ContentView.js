@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { actions as treeActions } from '../redux/modules/tree';
 import { actions as contentActions } from '../redux/modules/content';
 import { actions as typeActions } from '../redux/modules/types';
-import NodeList from 'components/tree/NodeList';
 import ContentEditor from 'components/content/ContentEditor';
+import NodeNavigator from 'components/NodeNavigator';
 
 const mapStateToProps = (state) => ({
   tree: state.tree,
@@ -13,83 +13,77 @@ const mapStateToProps = (state) => ({
 });
 
 export class ContentView extends React.Component {
-    static propTypes = {
-      tree: React.PropTypes.object.isRequired,
-      content: React.PropTypes.object,
-      types: React.PropTypes.object.isRequired,
+  static propTypes = {
+    tree: React.PropTypes.object.isRequired,
+    content: React.PropTypes.object,
+    types: React.PropTypes.object.isRequired,
+    location: React.PropTypes.object.isRequired,
 
-      fetchChildren: React.PropTypes.func.isRequired,
-      toggleNode: React.PropTypes.func.isRequired,
-      loadContent: React.PropTypes.func.isRequired,
-      loadTypes: React.PropTypes.func.isRequired,
-      createNode: React.PropTypes.func.isRequired
-    };
+    fetchChildren: React.PropTypes.func.isRequired,
+    toggleNode: React.PropTypes.func.isRequired,
+    loadContent: React.PropTypes.func.isRequired,
+    loadTypes: React.PropTypes.func.isRequired,
+    createNode: React.PropTypes.func.isRequired
+  };
 
-    constructor () {
-      super();
+  handleNodeSelected (node) {
+    this.setState({ selectedNode: node });
+    this.props.loadContent(node.id);
+  }
 
-      this.state = { selectedNode: null };
+  handleToggleNode (node) {
+    this.props.toggleNode(node);
+    if (!node.expanded) {
+      this.props.fetchChildren(node.id);
     }
+  }
 
-    handleNodeSelected (node) {
-      this.setState({ selectedNode: node });
-      this.props.loadContent(node.id);
+  componentWillMount () {
+    let { query } = this.props.location;
+
+    this.props.loadTypes();
+
+    this.props.fetchChildren(query.node || null);
+    if (query.node) {
+      this.props.loadContent(query.node);
     }
+  }
 
-    handleToggleNode (node) {
-      this.props.toggleNode(node);
-      if (!node.expanded) {
-        this.props.fetchChildren(node.id);
+  componentWillReceiveProps (nextProps) {
+    if (this.props.location.query.node !== nextProps.location.query.node) {
+      this.props.fetchChildren(nextProps.location.query.node);
+      if (nextProps.location.query.node) {
+        this.props.loadContent(nextProps.location.query.node);
       }
     }
+  }
 
-    componentWillMount () {
-      let { query } = this.props.location;
+  render () {
+    return (
+      <div className='container'>
+          <div className='columns'>
+            <div className='column is-3'>
+              <NodeNavigator
+                content={this.props.content}
+                types={this.props.types}
+                tree={this.props.tree}
+                onCreateNode={this.props.createNode} />
+            </div>
 
-      this.props.fetchChildren(query.site || null);
-      this.props.loadTypes();
-    }
-
-    handleAddChild (node, type) {
-      var alias = prompt('What shall this node be called?');
-      if (alias) {
-        this.props.createNode(node, alias, type.id);
-      }
-    }
-
-    render () {
-      let { query } = this.props.location;
-      return (
-        <div className='container page-content'>
-          <div className='container-fluid'>
-            <div className='row'>
-              <div className='col-lg-3'>
-                <div className='card'>
-                  <NodeList
-                    parent={query.site || null}
-                    nodeTree={this.props.tree}
-                    onNodeSelected={this.handleNodeSelected.bind(this)}
-                    onToggleNode={this.handleToggleNode.bind(this)}
-                    className='node-list list-group list-group-flush' />
-                </div>
-              </div>
-
-              <div className='col-lg-9'>
-                {this.state.selectedNode &&
-                  this.props.content.modelDefinition &&
-                  this.props.content.data &&
-                  <ContentEditor
-                    node={this.state.selectedNode.id}
-                    modelDefinition={this.props.content.modelDefinition}
-                    model={this.props.content.data}
-                    errors={{}}
-                    types={this.props.types}
-                    onAddChild={this.handleAddChild.bind(this)} />}
-              </div>
+            <div className='column is-9'>
+              {this.props.content.modelDefinition &&
+                this.props.content.data &&
+                <ContentEditor
+                  node={this.props.content.node.id}
+                  modelDefinition={this.props.content.modelDefinition}
+                  model={this.props.content.data}
+                  errors={{}}
+                  types={this.props.types}
+                  onAddChild={() => this.handleAddChild()} />}
             </div>
           </div>
-        </div>);
-    }
+      </div>);
+  }
 }
 
 const actions = {

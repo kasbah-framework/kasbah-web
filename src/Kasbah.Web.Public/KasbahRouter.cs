@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.Models;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Kasbah.Web.Public
 {
-    public class KasbahRouter : IRouter
+    public class KasbahRouter : IKasbahRouter
     {
         #region Public Constructors
 
@@ -41,26 +42,37 @@ namespace Kasbah.Web.Public
 
             newRouteData.Routers.Add(_next);
 
+            newRouteData.Values["contentBroker"] = _contentBroker;
+            newRouteData.Values["applicationContext"] = _applicationContext;
+
             try
             {
-                _logger.LogVerbose($"Trying to match {context.HttpContext.Request.Host}");
+                _logger.LogDebug($"Trying to match {context.HttpContext.Request.Host}.  Available sites: {string.Join(", ", _applicationContext.Sites.SelectMany(s => s.Domains).SelectMany(d => d.Domain))}");
                 var site = GetSiteByRequest(context.HttpContext);
                 if (site != null)
                 {
-                    _logger.LogVerbose($"Site matched: {site.Alias}");
+                    _logger.LogDebug($"Site matched: {site.Alias}");
                     newRouteData.Values["site"] = site;
 
                     var node = GetNodeByPath(site, context.HttpContext.Request.Path);
                     if (node != null)
                     {
-                        _logger.LogVerbose($"Node matched: {node.Id}");
+                        _logger.LogDebug($"Node matched: {node.Id}");
                         newRouteData.Values["controller"] = "DefaultContent";
                         newRouteData.Values["action"] = "RenderContent";
 
                         var content = GetContentByNode(node);
                         if (content != null)
                         {
-                            _logger.LogVerbose("Content found");
+                            _logger.LogDebug("Content found");
+
+                            if (typeof(VersionedContentBase).IsAssignableFrom(content.GetType()))
+                            {
+                                var versionedContent = content as VersionedContentBase;
+
+                                content = versionedContent.SelectVersion(context);
+                            }
+
                             if (!string.IsNullOrEmpty(content.Controller) && !string.IsNullOrEmpty(content.Action))
                             {
                                 if (content.Controller.Contains("."))
@@ -80,16 +92,16 @@ namespace Kasbah.Web.Public
                             }
 
                             newRouteData.Values["view"] = content.View;
+
+                            newRouteData.Values["content"] = content;
+                            newRouteData.Values["node"] = node;
+
+                            _logger.LogDebug($"Routing to: ({newRouteData.Values["namespace"]}.){newRouteData.Values["controller"]}.{newRouteData.Values["action"]} (view: {newRouteData.Values["view"]})");
+
+                            context.RouteData = newRouteData;
                         }
-
-                        newRouteData.Values["content"] = content;
-                        newRouteData.Values["node"] = node;
-
-                        _logger.LogVerbose($"Routing to: ({newRouteData.Values["namespace"]}.){newRouteData.Values["controller"]}.{newRouteData.Values["action"]} (view: {newRouteData.Values["view"]})");
                     }
                 }
-
-                context.RouteData = newRouteData;
                 await _next.RouteAsync(context);
             }
             finally

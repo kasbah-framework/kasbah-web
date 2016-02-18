@@ -8,7 +8,10 @@ class NodeSelectMulti extends React.Component {
     static propTypes = {
       field: React.PropTypes.object.isRequired,
       value: React.PropTypes.any,
-      onChange: React.PropTypes.func.isRequired
+      onChange: React.PropTypes.func.isRequired,
+      fetchChildren: React.PropTypes.func.isRequired,
+      toggleNode: React.PropTypes.func.isRequired,
+      tree: React.PropTypes.object.isRequired
     };
 
     componentWillMount () {
@@ -32,7 +35,7 @@ class NodeSelectMulti extends React.Component {
       }
     }
 
-    handleRemoveClick(index, ev) {
+    handleRemoveClick (index, ev) {
       ev.preventDefault();
 
       const newVal = [...this.props.value];
@@ -42,7 +45,7 @@ class NodeSelectMulti extends React.Component {
     }
 
     renderList () {
-      if (!this.props.value || this.props.value.length == 0) {
+      if (!this.props.value || this.props.value.length === 0) {
         return <pre>Nothing selected</pre>;
       }
 

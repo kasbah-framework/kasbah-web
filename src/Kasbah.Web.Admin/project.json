@@ -18,7 +18,11 @@
   },
   "frameworks": {
     "dnx451": { },
-    "dnxcore50": { }
+    "dnxcore50": {
+      "dependencies": {
+        "System.Security.Cryptography.OpenSsl": "4.0.0-rc2-*"
+      }
+    }
   },
   "resource": [
     "wwwroot/**/*"

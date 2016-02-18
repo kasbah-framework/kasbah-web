@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Kasbah.Web.Models;
 
 namespace Kasbah.Web
@@ -6,9 +8,11 @@ namespace Kasbah.Web
     {
         #region Public Properties
 
+        IEnumerable<string> AdditionalModules { get; set; }
         ModelList ModelList { get; }
 
         SiteList Sites { get; set; }
+        IDictionary<Guid, Site> SiteNodeMap { get;  set; }
 
         #endregion
     }

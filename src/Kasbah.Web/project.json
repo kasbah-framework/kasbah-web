@@ -18,7 +18,9 @@
     "Microsoft.AspNet.Cors": "6.0.0-rc1-*",
     "Microsoft.AspNet.Mvc": "6.0.0-rc1-*",
     "Microsoft.Extensions.Logging": "1.0.0-rc1-*",
-    "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-*"
+    "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-*",
+    "Microsoft.Extensions.DependencyInjection": "1.0.0-rc1-*",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-*"
   },
   "frameworks": {
     "dnx451": { },

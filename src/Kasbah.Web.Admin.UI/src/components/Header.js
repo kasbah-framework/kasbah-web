@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { clearAuthToken } from 'utils';
 
 export default class extends React.Component {
 
@@ -8,37 +9,30 @@ export default class extends React.Component {
   };
 
   handleLogout () {
-    sessionStorage.removeItem('isAuthenticated');
+    clearAuthToken();
 
-    this.context.router.push('/');
+    this.context.router.push('/login');
   }
 
   render () {
     return (
-      <nav className='navbar navbar-dark navbar-static-top header'>
+      <header className='header'>
         <div className='container'>
-          <Link className='navbar-brand' to='/'><img src='/logo.png' height='30' style={{margin:0}} /></Link>
-          <ul className='nav navbar-nav'>
-            <li className='nav-item'>
-              <Link className='nav-link' to='/content'>Content</Link>
-            </li>
-            <li className='nav-item'>
-              <Link className='nav-link' to='/media'>Media</Link>
-            </li>
-            <li className='nav-item'>
-              <Link className='nav-link' to='/analytics'>Analytics</Link>
-            </li>
-            <li className='nav-item'>
-              <Link className='nav-link' to='/users'>Users</Link>
-            </li>
-          </ul>
+          <div className='header-left'>
+            <Link className='header-item' to='/content'>Content</Link>
+            <Link className='header-item' to='/media'>Media</Link>
+          </div>
 
-          <ul className='nav navbar-nav pull-right'>
-            <li className='nav-item'>
-              <button className='btn-link nav-link' onClick={this.handleLogout.bind(this)}>Logout</button>
-            </li>
-          </ul>
+          <div className='header-center'>
+            <Link className='header-item' to='/'><strong>KASBAH</strong></Link>
+          </div>
+
+          <div className='header-right'>
+            <div className='header-item'>
+              <button className='button' onClick={this.handleLogout.bind(this)}>Logout</button>
+            </div>
+          </div>
         </div>
-      </nav> );
+      </header>);
   }
 }

@@ -8,7 +8,10 @@ class NodeSelectSingle extends React.Component {
     static propTypes = {
       field: React.PropTypes.object.isRequired,
       value: React.PropTypes.any,
-      onChange: React.PropTypes.func.isRequired
+      onChange: React.PropTypes.func.isRequired,
+      fetchChildren: React.PropTypes.func.isRequired,
+      toggleNode: React.PropTypes.func.isRequired,
+      tree: React.PropTypes.object.isRequired
     };
 
     componentWillMount () {

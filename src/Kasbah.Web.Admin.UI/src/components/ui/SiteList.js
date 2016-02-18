@@ -3,27 +3,36 @@ import { Link } from 'react-router';
 
 export default class SiteList extends React.Component {
     static propTypes = {
-      sites: React.PropTypes.array.isRequired,
+      sites: React.PropTypes.array.isRequired
     };
 
     render () {
       return (
-        <ul className='list-group list-group-flush'>
-        {this.props.sites.map(site =>
-          <li className='list-group-item' key={site.id}>
-            {site.domains.map((dom, index) =>
-              <a key={index}
-                href={`http://${dom}`}
-                className='pull-right label label-pill label-default'
-                target="_blank">{dom}</a>
-            )}
-
-            <h6 className="list-group-item-heading">
-              <Link key={site.id} to={{ pathname: '/content', query: { site: site.id } }}>
-                {site.displayName}
-              </Link>
-            </h6>
-          </li>)}
-        </ul> );
+        <table className='table is-striped'>
+          <thead>
+            <tr>
+              <th>Sites hosted</th>
+              <th>Public domain</th>
+            </tr>
+          </thead>
+          <tbody>
+          {this.props.sites.map(site =>
+            <tr key={site.id}>
+              <td className='table-link'>
+                <Link key={site.id} to={{ pathname: '/content', query: { node: site.id } }}>
+                  {site.displayName}
+                </Link>
+              </td>
+              <td>
+              {site.domains.map((dom, index) =>
+                <a key={index}
+                  href={`http://${dom}`}
+                  className='button is-small'
+                  target='_blank'>{dom}</a>
+              )}
+              </td>
+            </tr>)}
+          </tbody>
+        </table>);
     }
 }

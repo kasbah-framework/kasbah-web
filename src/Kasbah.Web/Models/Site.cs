@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.ContentBroker.Models;
-using Kasbah.Core.ContentTree;
+using Kasbah.Web.Annotations;
 
 namespace Kasbah.Web.Models
 {
@@ -20,6 +20,7 @@ namespace Kasbah.Web.Models
         #endregion
     }
 
+    [Icon("home")]
     public class Site : ItemBase
     {
         #region Public Constructors

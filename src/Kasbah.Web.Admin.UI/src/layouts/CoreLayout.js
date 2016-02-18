@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from 'components/Header';
-import '../styles/core.scss';
+import 'styles/core.scss';
 import 'font-awesome/scss/font-awesome.scss';
 
 // Note: Stateless/function components *will not* hot reload!
@@ -15,7 +15,7 @@ import 'font-awesome/scss/font-awesome.scss';
 function CoreLayout ({ children }) {
   return (
     <div className='page-container'>
-                <Header />
+      <Header />
 
       <div className='view-container'>
         {children}

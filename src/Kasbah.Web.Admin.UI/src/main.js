@@ -1,17 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
-import { syncReduxAndRouter } from 'redux-simple-router';
+import { useRouterHistory } from 'react-router';
+import { createHistory } from 'history';
+import makeRoutes from './routes';
 import Root from './containers/Root';
 import configureStore from './redux/configureStore';
+import { getAuthToken } from 'utils';
 
-const history = createBrowserHistory();
-const store = configureStore(window.__INITIAL_STATE__);
+const historyConfig = { basename: __BASENAME__ };
+const history = useRouterHistory(createHistory)(historyConfig);
 
-syncReduxAndRouter(history, store, (state) => state.router);
+(function () {
+  window.__INITIAL_STATE__ = window.__INITIAL_STATE__ || {};
+  const authToken = getAuthToken();
+  if (authToken) {
+    window.__INITIAL_STATE__.auth = { token: authToken, isAuthenticated: true };
+  }
+})();
+
+const initialState = window.__INITIAL_STATE__;
+const store = configureStore({ initialState, history });
+
+const routes = makeRoutes(store);
 
 // Render the React application to the DOM
 ReactDOM.render(
-  <Root history={history} store={store} />,
+  <Root history={history} routes={routes} store={store} />,
   document.getElementById('root')
 );
