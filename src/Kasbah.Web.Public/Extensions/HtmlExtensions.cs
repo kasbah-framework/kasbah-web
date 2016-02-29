@@ -52,6 +52,14 @@ namespace Kasbah.Web
 
         #region Public Methods
 
+        /// <summary>
+        /// Renders all modules that belong to <paramref name="section"/>.
+        /// </summary>
+        /// <param name="htmlHelper">The HTML helper.</param>
+        /// <param name="section">The section to render.</param>
+        /// <param name="viewComponentHelper">The view component helper.</param>
+        /// <returns>The rendered HTML content from the matching modules.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static async Task<IHtmlContent> ModulesAsync(this IHtmlHelper htmlHelper, string section, IViewComponentHelper viewComponentHelper = null)
         {
             var contentBroker = htmlHelper.ViewContext.RouteData.Values["contentBroker"] as ContentBroker;
