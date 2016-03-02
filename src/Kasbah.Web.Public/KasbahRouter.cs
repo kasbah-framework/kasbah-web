@@ -37,6 +37,8 @@ namespace Kasbah.Web.Public
 
         public async Task RouteAsync(RouteContext context)
         {
+            var kasbahWebContext = GetKasbahWebContext(context);
+
             var oldRouteData = context.RouteData;
             var newRouteData = new RouteData(oldRouteData);
 
@@ -44,6 +46,7 @@ namespace Kasbah.Web.Public
 
             newRouteData.Values["contentBroker"] = _contentBroker;
             newRouteData.Values["applicationContext"] = _applicationContext;
+            newRouteData.Values["kasbahWebContext"] = kasbahWebContext;
 
             try
             {
@@ -70,7 +73,7 @@ namespace Kasbah.Web.Public
                             {
                                 var versionedContent = content as VersionedContentBase;
 
-                                content = versionedContent.SelectVersion(context);
+                                content = versionedContent.SelectVersion(kasbahWebContext);
                             }
 
                             if (!string.IsNullOrEmpty(content.Controller) && !string.IsNullOrEmpty(content.Action))
@@ -149,6 +152,17 @@ namespace Kasbah.Web.Public
         Site GetSiteByRequest(HttpContext context)
         {
             return _applicationContext.Sites.FirstOrDefault(ent => ent.Domains.Any(dom => dom.Domain == context.Request.Host.ToString()));
+        }
+
+        KasbahWebContext GetKasbahWebContext(RouteContext context)
+        {
+            // TODO: build the web context based on the current request
+            // including user details
+            return new KasbahWebContext
+            {
+                ApplicationContext = _applicationContext,
+                RouteContext = context
+            };
         }
 
         #endregion

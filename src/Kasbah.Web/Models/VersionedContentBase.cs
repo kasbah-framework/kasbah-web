@@ -15,7 +15,7 @@ namespace Kasbah.Web.Models
 
         #region Public Methods
 
-        public abstract ContentBase SelectVersion(object context);
+        public abstract ContentBase SelectVersion(KasbahWebContext context);
 
         #endregion
     }
