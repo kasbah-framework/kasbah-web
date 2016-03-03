@@ -29,7 +29,8 @@ namespace Kasbah.Web.Public
                 routes.Routes.Add(new KasbahRouter(routes.DefaultHandler,
                     app.ApplicationServices.GetRequiredService<ILoggerFactory>(),
                     app.ApplicationServices.GetRequiredService<IApplicationContext>(),
-                    app.ApplicationServices.GetRequiredService<ContentBroker>()));
+                    app.ApplicationServices.GetRequiredService<ContentBroker>(), 
+                    app.ApplicationServices.GetRequiredService<IKasbahWebUserProfiler>()));
 
                 routes.MapRoute(
                     name: "default",

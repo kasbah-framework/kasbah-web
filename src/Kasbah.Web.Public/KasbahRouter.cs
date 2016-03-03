@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -15,15 +16,13 @@ namespace Kasbah.Web.Public
     {
         #region Public Constructors
 
-        public KasbahRouter(IRouter next, ILoggerFactory loggerFactory, IApplicationContext applicationContext, ContentBroker contentBroker)
+        public KasbahRouter(IRouter next, ILoggerFactory loggerFactory, IApplicationContext applicationContext, ContentBroker contentBroker, IKasbahWebUserProfiler userProfiler)
         {
             _next = next;
-
             _logger = loggerFactory.CreateLogger<KasbahRouter>();
-
             _applicationContext = applicationContext;
-
             _contentBroker = contentBroker;
+            _userProfiler = userProfiler;
         }
 
         #endregion
@@ -54,20 +53,23 @@ namespace Kasbah.Web.Public
                 var site = GetSiteByRequest(context.HttpContext);
                 if (site != null)
                 {
-                    _logger.LogDebug($"Site matched: {site.Alias}");
                     newRouteData.Values["site"] = site;
+                    kasbahWebContext.Site = site;
 
                     var node = GetNodeByPath(site, context.HttpContext.Request.Path);
                     if (node != null)
                     {
-                        _logger.LogDebug($"Node matched: {node.Id}");
+                        newRouteData.Values["node"] = node;
+                        kasbahWebContext.Node = node;
+
                         newRouteData.Values["controller"] = "DefaultContent";
                         newRouteData.Values["action"] = "RenderContent";
 
                         var content = GetContentByNode(node);
                         if (content != null)
                         {
-                            _logger.LogDebug("Content found");
+                            newRouteData.Values["content"] = content;
+                            kasbahWebContext.Content = content;
 
                             if (typeof(VersionedContentBase).IsAssignableFrom(content.GetType()))
                             {
@@ -96,9 +98,6 @@ namespace Kasbah.Web.Public
 
                             newRouteData.Values["view"] = content.View;
 
-                            newRouteData.Values["content"] = content;
-                            newRouteData.Values["node"] = node;
-
                             _logger.LogDebug($"Routing to: ({newRouteData.Values["namespace"]}.){newRouteData.Values["controller"]}.{newRouteData.Values["action"]} (view: {newRouteData.Values["view"]})");
 
                             context.RouteData = newRouteData;
@@ -106,6 +105,13 @@ namespace Kasbah.Web.Public
                     }
                 }
                 await _next.RouteAsync(context);
+
+                // Profile the user after everything has happened
+                _userProfiler?.ProfileUser(kasbahWebContext);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occurred processing a request: {ex.Message}", ex);
             }
             finally
             {
@@ -124,6 +130,7 @@ namespace Kasbah.Web.Public
         readonly ContentBroker _contentBroker;
         readonly ILogger _logger;
         readonly IRouter _next;
+        readonly IKasbahWebUserProfiler _userProfiler;
 
         #endregion
 
@@ -136,6 +143,22 @@ namespace Kasbah.Web.Public
                 return _contentBroker.GetNodeVersion(node.Id, node.ActiveVersion.Value, TypeUtil.TypeFromName(node.Type)) as ContentBase;
             }
             return null;
+        }
+
+        KasbahWebContext GetKasbahWebContext(RouteContext context)
+        {
+            var ret = new KasbahWebContext
+            {
+                ApplicationContext = _applicationContext,
+                RouteContext = context,
+                HttpContext = context.HttpContext,
+                CurrentHost = context.HttpContext.Request.Host,
+                CurrentPath = context.HttpContext.Request.Path
+            };
+
+            ret.UserProfile = _userProfiler?.GetProfile(ret) ?? KasbahWebUserProfile.Empty;
+
+            return ret;
         }
 
         Node GetNodeByPath(Site site, string path)
@@ -152,17 +175,6 @@ namespace Kasbah.Web.Public
         Site GetSiteByRequest(HttpContext context)
         {
             return _applicationContext.Sites.FirstOrDefault(ent => ent.Domains.Any(dom => dom.Domain == context.Request.Host.ToString()));
-        }
-
-        KasbahWebContext GetKasbahWebContext(RouteContext context)
-        {
-            // TODO: build the web context based on the current request
-            // including user details
-            return new KasbahWebContext
-            {
-                ApplicationContext = _applicationContext,
-                RouteContext = context
-            };
         }
 
         #endregion

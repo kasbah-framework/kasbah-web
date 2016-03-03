@@ -17,6 +17,8 @@ namespace Kasbah.Web
 
             services.AddScoped<Kasbah.Web.Services.UrlService>();
 
+            services.AddScoped<IKasbahWebUserProfiler, DefaultKasbahWebUserProfiler>();
+
             return services;
         }
 
