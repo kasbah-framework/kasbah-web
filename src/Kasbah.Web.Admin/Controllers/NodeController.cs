@@ -14,7 +14,7 @@ using Microsoft.AspNet.Mvc;
 
 namespace Kasbah.Web.Admin
 {
-    [Authorize()]
+    // [Authorize()]
     public class NodeController
     {
         #region Public Constructors

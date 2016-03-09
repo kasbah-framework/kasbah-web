@@ -2,22 +2,22 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import CoreLayout from 'layouts/CoreLayout';
 
-import { getAuthToken } from 'utils';
+// import { getAuthToken } from 'utils';
 
 import HomeView from 'views/HomeView';
-import ContentView from 'views/ContentView';
+import ContentView from 'containers/content/ContentView';
 import AnalyticsView from 'views/AnalyticsView';
 import UserView from 'views/UserView';
 import MediaView from 'views/MediaView';
 import LoginView from 'views/LoginView';
 
 function checkAuth (nextState, replace) {
-  if (!getAuthToken()) {
-    replace({
-      pathname: '/login',
-      state: { nextPathname: nextState.location.pathname }
-    });
-  }
+//   if (!getAuthToken()) {
+//     replace({
+//       pathname: '/login',
+//       state: { nextPathname: nextState.location.pathname }
+//     });
+//   }
 }
 
 export default (store) => (

@@ -7,10 +7,7 @@ import { fetchWrapper } from 'utils';
 const FETCH_CHILDREN = 'FETCH_CHILDREN';
 const FETCH_CHILDREN_SUCCESS = 'FETCH_CHILDREN_SUCCESS';
 const FETCH_CHILDREN_FAILURE = 'FETCH_CHILDREN_FAILURE';
-
-const FETCH_NODE = 'FETCH_NODE';
-const FETCH_NODE_SUCCESS = 'FETCH_NODE_SUCCESS';
-const FETCH_NODE_FAILURE = 'FETCH_NODE_FAILURE';
+const TOGGLE_NODE = 'TOGGLE_NODE';
 
 // ------------------------------------
 // Actions
@@ -38,37 +35,40 @@ function fetchChildrenFailure (data) {
   };
 }
 
-function fetchNode (id) {
-  const request = fetchWrapper(`${API_URL}/api/content/${id}`);
-
-  return {
-    type: FETCH_NODE,
-    payload: request
+function fetchChildrenDispatcher (parent) {
+  return (dispatch) => {
+    dispatch(fetchChildren(parent)).payload.then((response) => {
+      dispatch(fetchChildrenSuccess({ parent, data: response }));
+    })
+    .catch((response) => {
+      dispatch(fetchChildrenFailure(response));
+    });
   };
 }
 
-function fetchNodeSuccess (data) {
+function toggleNode (node) {
   return {
-    type: FETCH_NODE_SUCCESS,
-    payload: data
+    type: TOGGLE_NODE,
+    payload: node
   };
 }
 
-function fetchNodeFailure (data) {
-  return {
-    type: FETCH_NODE_FAILURE,
-    payload: data
+function toggleNodeDispatcher (node) {
+  return (dispatch, state) => {
+    dispatch(toggleNode(node));
+
+    dispatch(fetchChildrenDispatcher(node.id));
   };
 }
 
 export const actions = {
+  fetchChildrenDispatcher,
   fetchChildren,
   fetchChildrenSuccess,
   fetchChildrenFailure,
 
-  fetchNode,
-  fetchNodeSuccess,
-  fetchNodeFailure
+  toggleNodeDispatcher,
+  toggleNode
 };
 
 // ------------------------------------
@@ -77,12 +77,8 @@ export const actions = {
 const initialState = {
   isLoading: false,
   errorMessage: null,
-
-  nodesByParent: {}, // for "NodeNavigator"
-  selectedNode: null, // for "Breadcrumbs" and "ContentEditor",
-  selectedNodeHierarchy: [],
-  values: {}, // for "ContentEditor"
-  model: {} // for "ContentEditor"
+  nodesByParent: {},
+  expandedNodes: {}
 };
 
 export default handleActions({
@@ -98,21 +94,10 @@ export default handleActions({
   [FETCH_CHILDREN_FAILURE]: (state, { payload }) => {
     return { ...state, isLoading: false, errorMessage: payload };
   },
+  [TOGGLE_NODE]: (state, { payload }) => {
+    let expandedNodes = { ...state.expandedNodes };
+    expandedNodes[payload.id] = !expandedNodes[payload.id];
 
-  [FETCH_NODE]: (state, { payload }) => {
-    return { ...state, isLoading: true };
-  },
-  [FETCH_NODE_SUCCESS]: (state, { payload }) => {
-    return {
-      ...state,
-      isLoading: false,
-      selectedNode: payload.node,
-      selectedNodeHierarchy: payload.hierarchy,
-      model: payload.model,
-      values: payload.values
-    };
-  },
-  [FETCH_NODE_FAILURE]: (state, { payload }) => {
-    return { ...state, isLoading: false, errorMessage: payload };
+    return { ...state, expandedNodes };
   }
 }, initialState);

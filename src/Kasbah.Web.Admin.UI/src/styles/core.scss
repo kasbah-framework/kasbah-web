@@ -28,3 +28,48 @@ div > .button {
         display: block;
     }
 }
+
+$spacer:                     1rem !default;
+$spacer-x:                   $spacer !default;
+$spacer-y:                   $spacer !default;
+
+$breadcrumb-padding-vertical:   .75rem !default;
+$breadcrumb-padding-horizontal: 1rem !default;
+
+$white: #fff !default;
+$transparent: transparent !default;
+$gray-light:                #818a91 !default;
+$gray-lighter:              #eceeef !default;
+
+$breadcrumb-bg:                 $transparent !default;
+$breadcrumb-divider-color:      $gray-light !default;
+$breadcrumb-active-color:       $gray-light !default;
+$breadcrumb-divider:            "/" !default;
+
+.breadcrumb {
+  padding: $breadcrumb-padding-vertical $breadcrumb-padding-horizontal;
+  margin-bottom: $spacer-y;
+  list-style: none;
+  background-color: $breadcrumb-bg;
+  // @include border-radius($border-radius);
+
+  > li {
+    display: inline-block;
+
+    + li:before {
+      $nbsp: "\00a0";
+      padding-right: .5rem;
+      padding-left: .5rem;
+      color: $breadcrumb-divider-color;
+      content: "#{$breadcrumb-divider}#{$nbsp}"; // Unicode space added since inline-block means non-collapsing white-space
+    }
+  }
+
+  > .active {
+    color: $breadcrumb-active-color;
+  }
+}
+
+.fa {
+  vertical-align: baseline;
+}

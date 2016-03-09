@@ -15,7 +15,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Kasbah.Web.Admin.Controllers
 {
-    [Authorize()]
+    // [Authorize()]
     public class ContentController : Controller
     {
         #region Public Constructors

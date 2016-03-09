@@ -1,97 +1,29 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { actions as treeActions } from '../redux/modules/tree';
-import { actions as contentActions } from '../redux/modules/content';
-import { actions as typeActions } from '../redux/modules/types';
-import ContentEditor from 'components/content/ContentEditor';
-import NodeNavigator from 'components/NodeNavigator';
+import NodeNavigator from 'containers/content/NodeNavigator';
+import ContentEditor from 'containers/content/ContentEditor';
 
-const mapStateToProps = (state) => ({
-  tree: state.tree,
-  content: state.content,
-  types: state.types
-});
-
-export class ContentView extends React.Component {
+export default class extends React.Component {
   static propTypes = {
-    tree: React.PropTypes.object.isRequired,
-    content: React.PropTypes.object,
-    types: React.PropTypes.object.isRequired,
-    location: React.PropTypes.object.isRequired,
+    init: React.PropTypes.func.isRequired,
 
-    fetchChildren: React.PropTypes.func.isRequired,
-    toggleNode: React.PropTypes.func.isRequired,
-    loadContent: React.PropTypes.func.isRequired,
-    loadTypes: React.PropTypes.func.isRequired,
-    createNode: React.PropTypes.func.isRequired
+    location: React.PropTypes.object.isRequired
   };
 
-  handleNodeSelected (node) {
-    this.setState({ selectedNode: node });
-    this.props.loadContent(node.id);
-  }
-
-  handleToggleNode (node) {
-    this.props.toggleNode(node);
-    if (!node.expanded) {
-      this.props.fetchChildren(node.id);
-    }
-  }
-
   componentWillMount () {
-    let { query } = this.props.location;
-
-    this.props.loadTypes();
-
-    this.props.fetchChildren(query.node || null);
-    if (query.node) {
-      this.props.loadContent(query.node);
-    }
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (this.props.location.query.node !== nextProps.location.query.node) {
-      this.props.fetchChildren(nextProps.location.query.node);
-      if (nextProps.location.query.node) {
-        this.props.loadContent(nextProps.location.query.node);
-      }
-    }
+    this.props.init(this.props.location.query.node || null);
   }
 
   render () {
     return (
       <div className='container'>
-          <div className='columns'>
-            <div className='column is-3'>
-              <NodeNavigator
-                content={this.props.content}
-                types={this.props.types}
-                tree={this.props.tree}
-                onCreateNode={this.props.createNode} />
-            </div>
-
-            <div className='column is-9'>
-              {this.props.content.modelDefinition &&
-                this.props.content.data &&
-                <ContentEditor
-                  node={this.props.content.node.id}
-                  modelDefinition={this.props.content.modelDefinition}
-                  model={this.props.content.data}
-                  errors={{}}
-                  types={this.props.types}
-                  onAddChild={() => this.handleAddChild()} />}
-            </div>
+        <div className='columns'>
+          <div className='column is-3'>
+            <NodeNavigator />
           </div>
+          <div className='column is-9'>
+            <ContentEditor />
+          </div>
+        </div>
       </div>);
   }
-}
-
-const actions = {
-  fetchChildren: treeActions.fetchChildren,
-  toggleNode: treeActions.toggleNode,
-  loadContent: contentActions.loadContent,
-  loadTypes: typeActions.loadTypes,
-  createNode: treeActions.createNode
 };
-
-export default connect(mapStateToProps, actions)(ContentView);

@@ -1,16 +1,18 @@
 import { combineReducers } from 'redux';
 import { routeReducer as router } from 'react-router-redux';
 import auth from './modules/auth';
-import content from './modules/content';
+// import content from './modules/content';
 import sites from './modules/sites';
-import tree from './modules/tree';
+// import tree from './modules/tree';
 import types from './modules/types';
+import contentTree from './modules/content-tree';
 
 export default combineReducers({
   auth,
-  content,
+  // content,
   sites,
-  tree,
+  // tree,
   types,
-  router
+  router,
+  contentTree
 });

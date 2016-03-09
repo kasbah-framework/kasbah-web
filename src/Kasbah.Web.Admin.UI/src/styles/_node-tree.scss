@@ -1,4 +1,4 @@
-.node-list {
+.node-tree {
     list-style-type: none;
     padding-left: 0;
 
@@ -6,19 +6,12 @@
         button {
             border: none;
             background-color: transparent;
-            text-decoration: underline;
-            color: rgba(150, 150, 150, 0.4);
             text-align: left;
             margin: 0;
             padding: 0;
 
             i {
                 margin: 4px;
-                color: #222;
-            }
-
-            span {
-                color: #222;
             }
 
             &:focus {
@@ -31,17 +24,13 @@
             justify-content: space-between;
 
             button.toggle i {
-                font-size: 16px;
+                font-size: 14px;
             }
         }
 
-        & > .node-list {
+        & > .node-tree {
             display: block;
-            padding-left: 20px;
-
-            li {
-                background-color: rgba(0, 0, 0, 0.03);
-            }
+            padding-left: 15px;
         }
     }
 }
