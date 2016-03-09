@@ -139,7 +139,10 @@ export default handleActions({
     return {
       ...state,
       isLoading: false,
-      errorMessage: payload
+      errorMessage: payload,
+      node: null,
+      model: null,
+      values: null
     };
   },
   [UPDATE_FIELD]: (state, { payload }) => {
