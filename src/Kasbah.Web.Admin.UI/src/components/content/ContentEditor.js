@@ -3,6 +3,7 @@ import Editor from './Editor';
 
 export default class ContentEditor extends React.Component {
   static propTypes = {
+    isLoading: React.PropTypes.bool.isRequired,
     node: React.PropTypes.object,
     model: React.PropTypes.object.isRequired,
     values: React.PropTypes.object.isRequired,
@@ -22,10 +23,10 @@ export default class ContentEditor extends React.Component {
         <hr />
 
         <div>
-          <button className='button is-primary' onClick={() => this.props.save(false)}>Save</button>
-          <button className='button is-primary' onClick={() => this.props.save(true)}>Save and publish</button>
-          <button className='button is-warning' onClick={() => this.props.unpublish()}>Unpublish</button>
-          <button className='button is-danger' onClick={() => this.handleDelete()}>Delete</button>
+          <button disabled={this.props.isLoading} className='button is-primary' onClick={() => this.props.save(false)}>Save</button>
+          <button disabled={this.props.isLoading} className='button is-primary' onClick={() => this.props.save(true)}>Save and publish</button>
+          <button disabled={this.props.isLoading} className='button is-warning' onClick={() => this.props.unpublish()}>Unpublish</button>
+          <button disabled={this.props.isLoading} className='button is-danger' onClick={() => this.handleDelete()}>Delete</button>
         </div>
 
       </div>);
