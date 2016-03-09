@@ -15,7 +15,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updateField: (field, value) => dispatch(actions.updateField(field, value)),
-    save: (publish) => dispatch(actions.saveDispatcher(publish))
+    save: (publish) => dispatch(actions.saveDispatcher(publish)),
+    unpublish: () => dispatch(actions.unpublishDispatcher())
   };
 };
 

@@ -40,6 +40,6 @@ const initialState = {};
 
 export default handleActions({
   [LOAD_TYPES_SUCCESS]: (state, { payload }) => {
-    return Object.assign({}, state, payload.data);
+    return { ...state, ...payload.data };
   }
 }, initialState);

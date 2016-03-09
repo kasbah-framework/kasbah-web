@@ -11,6 +11,9 @@ const UPDATE_FIELD = 'UPDATE_FIELD';
 const SAVE = 'SAVE';
 const SAVE_SUCCESS = 'SAVE_SUCCESS';
 const SAVE_FAILURE = 'SAVE_FAILURE';
+const UNPUBLISH = 'UNPUBLISH';
+const UNPUBLISH_SUCCESS = 'UNPUBLISH_SUCCESS';
+const UNPUBLISH_FAILURE = 'UNPUBLISH_FAILURE';
 
 // ------------------------------------
 // Actions
@@ -96,6 +99,41 @@ function saveDispatcher (publish) {
   };
 }
 
+function unpublish (id) {
+  const request = fetchWrapper(`${API_URL}/api/node/${id}/set-active`, 'POST');
+
+  return {
+    type: UNPUBLISH,
+    payload: request
+  };
+}
+
+function unpublishSuccess (data) {
+  return {
+    type: UNPUBLISH_SUCCESS,
+    payload: { data }
+  };
+}
+
+function unpublishFailure (data) {
+  return {
+    type: UNPUBLISH_FAILURE,
+    payload: { data }
+  };
+}
+
+function unpublishDispatcher (publish) {
+  return (dispatch, getState) => {
+    const { contentEditor } = getState();
+    dispatch(unpublish(contentEditor.node.id)).payload.then((response) => {
+      dispatch(unpublishSuccess(response));
+    })
+    .catch((response) => {
+      dispatch(unpublishFailure(response));
+    });
+  };
+}
+
 export const actions = {
   selectNode,
   selectNodeSuccess,
@@ -107,7 +145,12 @@ export const actions = {
   save,
   saveSuccess,
   saveFailure,
-  saveDispatcher
+  saveDispatcher,
+
+  unpublish,
+  unpublishSuccess,
+  unpublishFailure,
+  unpublishDispatcher
 };
 
 // ------------------------------------
@@ -170,6 +213,24 @@ export default handleActions({
     };
   },
   [SAVE_FAILURE]: (state, { payload }) => {
+    return {
+      ...state,
+      isLoading: false
+    };
+  },
+  [UNPUBLISH]: (state, { payload }) => {
+    return {
+      ...state,
+      isLoading: true
+    };
+  },
+  [UNPUBLISH_SUCCESS]: (state, { payload }) => {
+    return {
+      ...state,
+      isLoading: false
+    };
+  },
+  [UNPUBLISH_FAILURE]: (state, { payload }) => {
     return {
       ...state,
       isLoading: false

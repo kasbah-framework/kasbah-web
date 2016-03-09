@@ -8,7 +8,8 @@ export default class ContentEditor extends React.Component {
     values: React.PropTypes.object.isRequired,
 
     updateField: React.PropTypes.func.isRequired,
-    save: React.PropTypes.func.isRequired
+    save: React.PropTypes.func.isRequired,
+    unpublish: React.PropTypes.func.isRequired
   };
 
   render () {
@@ -23,7 +24,7 @@ export default class ContentEditor extends React.Component {
         <div>
           <button className='button is-primary' onClick={() => this.props.save(false)}>Save</button>
           <button className='button is-primary' onClick={() => this.props.save(true)}>Save and publish</button>
-          <button className='button is-warning' onClick={() => this.handleUnpublish()}>Unpublish</button>
+          <button className='button is-warning' onClick={() => this.props.unpublish()}>Unpublish</button>
           <button className='button is-danger' onClick={() => this.handleDelete()}>Delete</button>
         </div>
 
