@@ -1,12 +1,12 @@
 import React from 'react';
 import Editors from './editors';
 
-export default class extends React.Component {
+export default class Editor extends React.Component {
     static propTypes = {
-      node: React.PropTypes.string.isRequired,
-      modelDefinition: React.PropTypes.object.isRequired,
+      node: React.PropTypes.object.isRequired,
       model: React.PropTypes.object.isRequired,
-      errors: React.PropTypes.object.isRequired,
+      values: React.PropTypes.object.isRequired,
+
       onFieldChange: React.PropTypes.func.isRequired
     };
 
@@ -19,22 +19,22 @@ export default class extends React.Component {
     }
 
     componentWillMount () {
-      if (this.props.modelDefinition) {
+      if (this.props.model) {
         this.setState({
-          activeSection: this.props.modelDefinition.sections[0]
+          activeSection: this.props.model.sections[0].displayName
         });
       }
     }
 
     componentWillReceiveProps (nextProps) {
-      if (nextProps.modelDefinition !== this.props.modelDefinition) {
+      if (nextProps.model !== this.props.model) {
         this.setState({
-          activeSection: nextProps.modelDefinition.sections[0]
+          activeSection: nextProps.model.sections[0].displayName
         });
       }
     }
 
-    _renderField (field) {
+    _renderField (field, index) {
       let editor = Editors.Text;
       for (var ent in Editors) {
         if (Editors[ent].alias === field.type) {
@@ -42,13 +42,18 @@ export default class extends React.Component {
         }
       }
 
-      const editorEl = React.createElement(editor, { field: field, onChange: this.props.onFieldChange.bind(this), value: this.props.model[field.alias] });
+      const editorProps = {
+        field: field,
+        onChange: this.props.onFieldChange.bind(this),
+        value: this.props.values[field.alias]
+      };
+
+      const editorEl = React.createElement(editor, editorProps);
 
       return (
-        <fieldset className='control' key={field.alias}>
+        <fieldset className='control' key={index}>
           <label htmlFor={field.alias} className='control-label'>{field.displayName}</label>
           {editorEl}
-          {this.props.errors[field.alias] && (<p className='help-block'>{this.props.errors[field.alias]}</p>)}
         </fieldset>);
     }
 
@@ -58,19 +63,22 @@ export default class extends React.Component {
       }
 
       return this.props
-        .modelDefinition
+        .model
         .fields
         .filter(ent => ent.section === section)
-        .map(field => this._renderField(field));
+        .map((ent, index) => this._renderField(ent, index));
     }
 
     render () {
-      const tabs = this.props.modelDefinition.sections;
       return (
         <form>
           <div className='tabs is-toggle'>
             <ul>
-              {tabs.map(ent => <li key={ent} className={this.state.activeSection === ent ? 'is-active' : null}><a onClick={() => this.setState({ activeSection: ent })}>{ent}</a></li>)}
+              {this.props.model.sections
+                .map((ent, index) => (
+                  <li key={index} className={this.state.activeSection === ent.displayName ? 'is-active' : null}>
+                    <a onClick={() => this.setState({ activeSection: ent.displayName })}>{ent.displayName}</a>
+                  </li>))}
             </ul>
 
             <div>

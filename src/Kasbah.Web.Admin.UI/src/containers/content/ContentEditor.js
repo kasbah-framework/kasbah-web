@@ -1,23 +1,21 @@
 import { connect } from 'react-redux';
-// import { fetchPosts, fetchPostsSuccess, fetchPostsFailure } from '../actions/index';
 
 import Component from 'components/content/ContentEditor';
+import { actions } from 'redux/modules/content-editor';
 
 const mapStateToProps = (state) => {
   return {
-    // posts: state.posts.postsList.posts,
-    // loading: state.posts.postsList.loading
+    isLoading: state.contentEditor.isLoading,
+    node: state.contentEditor.node,
+    model: state.contentEditor.model,
+    values: state.contentEditor.values
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // fetchPosts: () => {
-    //   dispatch(fetchPosts()).then((response) => {
-    //         let data = response.payload.data ? response.payload.data : {data: 'Network Error'};
-    //         !response.error ? dispatch(fetchPostsSuccess(data)) : dispatch(fetchPostsFailure(data));
-    //       });
-    // }
+    updateField: (field, value) => dispatch(actions.updateField(field, value)),
+    save: (publish) => dispatch(actions.saveDispatcher(publish))
   };
 };
 

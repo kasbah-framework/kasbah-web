@@ -7,6 +7,10 @@ import { fetchWrapper } from 'utils';
 const SELECT_NODE = 'SELECT_NODE';
 const SELECT_NODE_SUCCESS = 'SELECT_NODE_SUCCESS';
 const SELECT_NODE_FAILURE = 'SELECT_NODE_FAILURE';
+const UPDATE_FIELD = 'UPDATE_FIELD';
+const SAVE = 'SAVE';
+const SAVE_SUCCESS = 'SAVE_SUCCESS';
+const SAVE_FAILURE = 'SAVE_FAILURE';
 
 // ------------------------------------
 // Actions
@@ -37,10 +41,57 @@ function selectNodeFailure (data) {
 function selectNodeDispatcher (id) {
   return (dispatch) => {
     dispatch(selectNode(id)).payload.then((response) => {
-      dispatch(selectNodeSuccess({ id, data: response }));
+      dispatch(selectNodeSuccess({ id, ...response }));
     })
     .catch((response) => {
       dispatch(selectNodeFailure(response));
+    });
+  };
+}
+
+function updateField (field, value) {
+  return {
+    type: UPDATE_FIELD,
+    payload: { field, value }
+  };
+}
+
+function save (id, values, publish) {
+  const body = {
+    node: id,
+    data: values,
+    setActive: publish
+  };
+  const request = fetchWrapper(`${API_URL}/api/content`, 'POST', body);
+
+  return {
+    type: SAVE,
+    payload: request
+  };
+}
+
+function saveSuccess (data) {
+  return {
+    type: SAVE_SUCCESS,
+    payload: { data }
+  };
+}
+
+function saveFailure (data) {
+  return {
+    type: SAVE_FAILURE,
+    payload: { data }
+  };
+}
+
+function saveDispatcher (publish) {
+  return (dispatch, getState) => {
+    const { contentEditor } = getState();
+    dispatch(save(contentEditor.node.id, contentEditor.values, publish)).payload.then((response) => {
+      dispatch(saveSuccess(response));
+    })
+    .catch((response) => {
+      dispatch(saveFailure(response));
     });
   };
 }
@@ -49,7 +100,14 @@ export const actions = {
   selectNode,
   selectNodeSuccess,
   selectNodeFailure,
-  selectNodeDispatcher
+  selectNodeDispatcher,
+
+  updateField,
+
+  save,
+  saveSuccess,
+  saveFailure,
+  saveDispatcher
 };
 
 // ------------------------------------
@@ -73,11 +131,45 @@ export default handleActions({
       ...state,
       isLoading: false,
       node: payload.node,
-      values: payload.values,
+      values: payload.values || {},
       model: payload.model
     };
   },
   [SELECT_NODE_FAILURE]: (state, { payload }) => {
-    return { ...state, isLoading: false, errorMessage: payload };
+    return {
+      ...state,
+      isLoading: false,
+      errorMessage: payload
+    };
+  },
+  [UPDATE_FIELD]: (state, { payload }) => {
+    let update = {};
+    update[payload.field] = payload.value;
+
+    return {
+      ...state,
+      values: {
+        ...state.values,
+        ...update
+      }
+    };
+  },
+  [SAVE]: (state, { payload }) => {
+    return {
+      ...state,
+      isLoading: true
+    };
+  },
+  [SAVE_SUCCESS]: (state, { payload }) => {
+    return {
+      ...state,
+      isLoading: false
+    };
+  },
+  [SAVE_FAILURE]: (state, { payload }) => {
+    return {
+      ...state,
+      isLoading: false
+    };
   }
 }, initialState);

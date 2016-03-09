@@ -16,6 +16,7 @@ namespace Kasbah.Web
             services.AddScoped<Kasbah.Core.ContentBroker.ContentBroker>();
 
             services.AddScoped<Kasbah.Web.Services.UrlService>();
+            services.AddScoped<Kasbah.Web.Services.ModelDefinitionService>();
 
             services.AddScoped<IKasbahWebUserProfiler, DefaultKasbahWebUserProfiler>();
 

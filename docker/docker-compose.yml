@@ -1,12 +1,12 @@
 redis:
   build: ./redis
   ports:
-    - "6379"
+    - "56379:6379"
 postgres:
   build: ./postgres
   ports:
-   - "5432"
+   - "55432:5432"
 solr:
   build: ./solr
   ports:
-   - "8983"
+   - "58983:8983"

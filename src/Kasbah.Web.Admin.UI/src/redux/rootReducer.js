@@ -6,6 +6,7 @@ import sites from './modules/sites';
 // import tree from './modules/tree';
 import types from './modules/types';
 import contentTree from './modules/content-tree';
+import contentEditor from './modules/content-editor';
 
 export default combineReducers({
   auth,
@@ -14,5 +15,6 @@ export default combineReducers({
   // tree,
   types,
   router,
-  contentTree
+  contentTree,
+  contentEditor
 });

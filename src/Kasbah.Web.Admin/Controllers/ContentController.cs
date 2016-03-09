@@ -8,6 +8,7 @@ using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Admin.Models;
 using Kasbah.Web.Annotations;
+using Kasbah.Web.Services;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,11 +21,12 @@ namespace Kasbah.Web.Admin.Controllers
     {
         #region Public Constructors
 
-        public ContentController(IApplicationContext applicationContext, ILoggerFactory loggerFactory, ContentBroker contentBroker)
+        public ContentController(IApplicationContext applicationContext, ILoggerFactory loggerFactory, ContentBroker contentBroker, ModelDefinitionService modelDefinitionService)
         {
             _applicationContext = applicationContext;
             _log = loggerFactory.CreateLogger<ContentController>();
             _contentBroker = contentBroker;
+            _modelDefinitionService = modelDefinitionService;
         }
 
         #endregion
@@ -59,30 +61,6 @@ namespace Kasbah.Web.Admin.Controllers
             };
         }
 
-        [Route("/api/controllers")]
-        public GetControllersResponse GetControllers()
-        {
-            const string ControllerNameSuffix = "Controller";
-#if DNXCORE50
-            var types = Assembly.GetEntryAssembly().GetTypes();
-#else
-            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(asm => asm.GetTypes());
-#endif
-            return new GetControllersResponse
-            {
-                Controllers = types
-                    .Where(typ => typ.Name.EndsWith(ControllerNameSuffix) && typ.Name != ControllerNameSuffix)
-                    .Select(typ => new ControllerInfo
-                    {
-                        Alias = typ.Name.Substring(0, typ.Name.Length - ControllerNameSuffix.Length),
-                        DisplayName = typ.Name.Substring(0, typ.Name.Length - ControllerNameSuffix.Length),
-                        Actions = typ.GetMethods()
-                            .Where(meth => meth.IsPublic && meth.DeclaringType == typ && !meth.IsSpecialName && !meth.IsStatic)
-                            .Select(meth => meth.Name)
-                    })
-            };
-        }
-
         [Route("/api/content/{id}"), HttpGet]
         public GetContentResponse GetContent(Guid id)
         {
@@ -109,10 +87,9 @@ namespace Kasbah.Web.Admin.Controllers
 
             return new GetContentResponse
             {
-                ModelDefinition = GetModelDefinition(type),
-                Data = data,
-                Node = node,
-                Hierarchy = hierarchy
+                Model = _modelDefinitionService.GetModelDefinition(type),
+                Values = data,
+                Node = node
             };
         }
 
@@ -146,49 +123,6 @@ namespace Kasbah.Web.Admin.Controllers
             return new SaveContentResponse { };
         }
 
-        #endregion
-
-        #region Private Methods
-
-        static ModelDefinition GetModelDefinition(Type type)
-        {
-            var nameResolver = new CamelCasePropertyNamesContractResolver();
-
-            var editableFields = type.GetRuntimeProperties()
-                .Select(ent => new {
-                    Alias = nameResolver.GetResolvedPropertyName(ent.Name),
-                    Field = ent,
-                    Type = ent.GetAttributeValue<EditorAttribute, string>(attr => attr?.Editor),
-                    Section = ent.GetAttributeValue<SectionAttribute, SectionAttribute>(attr => attr),
-                    Editor = ent.GetAttributeValue<EditorAttribute, EditorAttribute>(attr => attr),
-                    DisplayName = ent.GetAttributeValue<DisplayNameAttribute, DisplayNameAttribute>(attr => attr),
-                    Name = ent.Name
-                })
-                .Where(ent => ent.Type != null);
-
-            return new ModelDefinition
-            {
-                Sections = editableFields
-                    .Select(ent => ent.Section)
-                    .OrderBy(ent => ent?.SortOrder ?? int.MaxValue - 1)
-                    .Select(ent => ent?.Section ?? "General")
-                    .Distinct(),
-                Fields = editableFields
-                    .OrderBy(ent => ent.Editor?.SortOrder ?? int.MaxValue)
-                    .Select(prop =>
-                    {
-                        return new FieldDef
-                        {
-                            Alias = prop.Alias,
-                            DisplayName = prop.DisplayName?.DisplayName ?? prop.Name,
-                            HelpText = prop.DisplayName?.HelpText,
-                            Section = prop.Section?.Section ?? "General",
-                            Type = prop.Type
-                        };
-                    })
-            };
-        }
-
         [Route("/api/modules"), AllowAnonymous]
         public IEnumerable<string> GetAdditionalModules()
         {
@@ -202,6 +136,7 @@ namespace Kasbah.Web.Admin.Controllers
         readonly ContentBroker _contentBroker;
         readonly ILogger _log;
         readonly IApplicationContext _applicationContext;
+        readonly ModelDefinitionService _modelDefinitionService;
 
         #endregion
     }
