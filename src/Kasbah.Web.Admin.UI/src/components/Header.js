@@ -29,7 +29,7 @@ export default class extends React.Component {
 
           <div className='header-right'>
             <div className='header-item'>
-              <button className='button' onClick={this.handleLogout.bind(this)}>Logout</button>
+              <button className='button' onClick={() => this.handleLogout()}>Logout</button>
             </div>
           </div>
         </div>
