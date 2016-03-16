@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Kasbah.Core;
+using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Web.Annotations;
 using Kasbah.Web.Models;
 using Newtonsoft.Json.Serialization;
@@ -14,8 +15,18 @@ namespace Kasbah.Web.Services
         public ModelDefinition GetModelDefinition(Type type)
         {
             var nameResolver = new CamelCasePropertyNamesContractResolver();
+            var typeInfo = type.GetTypeInfo();
 
-            var name = type.GetTypeInfo().GetAttributeValue<DisplayNameAttribute, string>(attr => attr?.DisplayName) ?? type.Name;
+            var isVersioned = typeInfo.IsSubclassOf(typeof(VersionedContentContainer<>));
+
+
+            if (isVersioned)
+            {
+                type = typeInfo.GetGenericArguments().First();
+                typeInfo = type.GetTypeInfo();
+            }
+
+            var name = typeInfo.GetAttributeValue<DisplayNameAttribute, string>(attr => attr?.DisplayName) ?? type.Name;
 
             var properties = type.GetRuntimeProperties();
             var allFields = properties
@@ -56,7 +67,7 @@ namespace Kasbah.Web.Services
             return new ModelDefinition
             {
                 Name = name,
-                IsVersioned = type.GetTypeInfo().IsSubclassOf(typeof(VersionedContentBase)),
+                IsVersioned = isVersioned,
                 Sections = sections,
                 Fields = fields
             };

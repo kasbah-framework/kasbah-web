@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Kasbah.Core.ContentBroker;
+using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Models;
@@ -71,36 +72,38 @@ namespace Kasbah.Web.Public
                             newRouteData.Values["content"] = content;
                             kasbahWebContext.Content = content;
 
-                            if (typeof(VersionedContentBase).IsAssignableFrom(content.GetType()))
+                            if (content.GetType().IsSubclassOf(typeof(VersionedContentContainer<>)))
                             {
-                                var versionedContent = content as VersionedContentBase;
-
-                                content = versionedContent.SelectVersion(kasbahWebContext);
+                                content = content.GetType().GetMethod("SelectVersion").Invoke(kasbahWebContext) as ContentBase;
                             }
 
-                            if (!string.IsNullOrEmpty(content.Controller) && !string.IsNullOrEmpty(content.Action))
+                            if (content != null && content.GetType().IsSubclassOf(typeof(ContentBase)))
                             {
-                                if (content.Controller.Contains("."))
+                                var webContent = content as ContentBase;
+                                if (!string.IsNullOrEmpty(webContent.Controller) && !string.IsNullOrEmpty(webContent.Action))
                                 {
-                                    var parts = content.Controller.Split('.');
-                                    var controller = parts.Last();
-                                    var ns = string.Join(".", parts.Take(parts.Count() - 1));
+                                    if (webContent.Controller.Contains("."))
+                                    {
+                                        var parts = webContent.Controller.Split('.');
+                                        var controller = parts.Last();
+                                        var ns = string.Join(".", parts.Take(parts.Count() - 1));
 
-                                    newRouteData.Values["controller"] = controller;
-                                    newRouteData.Values["namespace"] = ns;
+                                        newRouteData.Values["controller"] = controller;
+                                        newRouteData.Values["namespace"] = ns;
+                                    }
+                                    else
+                                    {
+                                        newRouteData.Values["controller"] = webContent.Controller;
+                                    }
+                                    newRouteData.Values["action"] = webContent.Action;
                                 }
-                                else
-                                {
-                                    newRouteData.Values["controller"] = content.Controller;
-                                }
-                                newRouteData.Values["action"] = content.Action;
+
+                                newRouteData.Values["view"] = webContent.View;
+
+                                _logger.LogDebug($"Routing to: ({newRouteData.Values["namespace"]}.){newRouteData.Values["controller"]}.{newRouteData.Values["action"]} (view: {newRouteData.Values["view"]})");
+
+                                context.RouteData = newRouteData;
                             }
-
-                            newRouteData.Values["view"] = content.View;
-
-                            _logger.LogDebug($"Routing to: ({newRouteData.Values["namespace"]}.){newRouteData.Values["controller"]}.{newRouteData.Values["action"]} (view: {newRouteData.Values["view"]})");
-
-                            context.RouteData = newRouteData;
                         }
                     }
                 }
@@ -136,11 +139,11 @@ namespace Kasbah.Web.Public
 
         #region Private Methods
 
-        ContentBase GetContentByNode(Node node)
+        ItemBase GetContentByNode(Node node)
         {
             if (node.ActiveVersion.HasValue)
             {
-                return _contentBroker.GetNodeVersion(node.Id, node.ActiveVersion.Value, TypeUtil.TypeFromName(node.Type)) as ContentBase;
+                return _contentBroker.GetNodeVersion(node.Id, node.ActiveVersion.Value, TypeUtil.TypeFromName(node.Type)) as ItemBase;
             }
             return null;
         }
