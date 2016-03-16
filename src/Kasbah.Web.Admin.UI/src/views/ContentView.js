@@ -13,6 +13,12 @@ export default class ContentView extends React.Component {
     this.props.init(this.props.location.query.node || null);
   }
 
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.location.query.node !== this.props.location.query.node) {
+      this.props.init(nextProps.location.query.node);
+    }
+  }
+
   render () {
     return (
       <div className='container'>
