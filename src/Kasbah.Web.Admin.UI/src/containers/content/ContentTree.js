@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleNode: (node) => dispatch(actions.toggleNodeDispatcher(node)),
+    fetchChildren: (node) => dispatch(actions.fetchChildrenDispatcher(node.id)),
     selectNode: (node) => dispatch(contentEditorActions.selectNodeDispatcher(node))
   };
 };

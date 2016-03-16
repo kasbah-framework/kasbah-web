@@ -7,7 +7,6 @@ import { fetchWrapper } from 'utils';
 const FETCH_CHILDREN = 'FETCH_CHILDREN';
 const FETCH_CHILDREN_SUCCESS = 'FETCH_CHILDREN_SUCCESS';
 const FETCH_CHILDREN_FAILURE = 'FETCH_CHILDREN_FAILURE';
-const TOGGLE_NODE = 'TOGGLE_NODE';
 
 // ------------------------------------
 // Actions
@@ -46,29 +45,11 @@ function fetchChildrenDispatcher (parent) {
   };
 }
 
-function toggleNode (node) {
-  return {
-    type: TOGGLE_NODE,
-    payload: node
-  };
-}
-
-function toggleNodeDispatcher (node) {
-  return (dispatch, state) => {
-    dispatch(toggleNode(node));
-
-    dispatch(fetchChildrenDispatcher(node.id));
-  };
-}
-
 export const actions = {
   fetchChildrenDispatcher,
   fetchChildren,
   fetchChildrenSuccess,
-  fetchChildrenFailure,
-
-  toggleNodeDispatcher,
-  toggleNode
+  fetchChildrenFailure
 };
 
 // ------------------------------------
@@ -77,8 +58,7 @@ export const actions = {
 const initialState = {
   isLoading: false,
   errorMessage: null,
-  nodesByParent: {},
-  expandedNodes: {}
+  nodesByParent: {}
 };
 
 export default handleActions({
@@ -93,11 +73,5 @@ export default handleActions({
   },
   [FETCH_CHILDREN_FAILURE]: (state, { payload }) => {
     return { ...state, isLoading: false, errorMessage: payload };
-  },
-  [TOGGLE_NODE]: (state, { payload }) => {
-    let expandedNodes = { ...state.expandedNodes };
-    expandedNodes[payload.id] = !expandedNodes[payload.id];
-
-    return { ...state, expandedNodes };
   }
 }, initialState);

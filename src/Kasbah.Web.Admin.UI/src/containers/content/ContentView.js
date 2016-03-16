@@ -8,7 +8,7 @@ import { actions as contentTreeActions } from 'redux/modules/content-tree';
 const mapDispatchToProps = (dispatch) => {
   return {
     init: (parent) => {
-      dispatch(contentTreeActions.fetchChildrenDispatcher(null));
+      dispatch(contentTreeActions.fetchChildrenDispatcher(parent));
     }
   };
 };
