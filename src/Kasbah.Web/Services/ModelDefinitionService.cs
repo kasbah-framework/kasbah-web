@@ -22,7 +22,7 @@ namespace Kasbah.Web.Services
 
             if (isVersioned)
             {
-                type = typeInfo.GetGenericArguments().First();
+                type = typeInfo.GenericTypeArguments.First();
                 typeInfo = type.GetTypeInfo();
             }
 
