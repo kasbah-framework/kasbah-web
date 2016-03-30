@@ -64,6 +64,7 @@ namespace Kasbah.Web
         {
             var contentBroker = htmlHelper.ViewContext.RouteData.Values["contentBroker"] as ContentBroker;
             var node = htmlHelper.ViewContext.RouteData.Values["node"] as Node;
+            var kasbahWebContext = htmlHelper.ViewContext.RouteData.Values["kasbahWebContext"] as KasbahWebContext;
 
             if (node == null)
             {
@@ -90,11 +91,9 @@ namespace Kasbah.Web
                         var type = TypeUtil.TypeFromName(moduleNode.Type);
                         var module = contentBroker.GetNodeVersion(moduleNode.Id, moduleNode.ActiveVersion.Value, type);
 
-                        if (typeof(VersionedContentBase).IsAssignableFrom(type.GetType()))
+                        if (module.GetType().IsSubclassOf(typeof(VersionedContentContainer<>)))
                         {
-                            var versionedContent = module as VersionedContentBase;
-
-                            module = versionedContent.SelectVersion(null);
+                            module = module.GetType().GetMethod("SelectVersion").Invoke(module, new [] { kasbahWebContext }) as ContentBase;
                         }
 
                         if (module is ContentBase)

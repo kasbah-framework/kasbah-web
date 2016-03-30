@@ -74,7 +74,7 @@ namespace Kasbah.Web.Public
 
                             if (content.GetType().IsSubclassOf(typeof(VersionedContentContainer<>)))
                             {
-                                content = content.GetType().GetMethod("SelectVersion").Invoke(kasbahWebContext) as ContentBase;
+                                content = content.GetType().GetMethod("SelectVersion").Invoke(content, new [] { kasbahWebContext }) as ContentBase;
                             }
 
                             if (content != null && content.GetType().IsSubclassOf(typeof(ContentBase)))
