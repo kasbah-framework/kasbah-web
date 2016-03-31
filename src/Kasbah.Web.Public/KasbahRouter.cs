@@ -72,12 +72,12 @@ namespace Kasbah.Web.Public
                             newRouteData.Values["content"] = content;
                             kasbahWebContext.Content = content;
 
-                            if (content.GetType().IsSubclassOf(typeof(VersionedContentContainer<>)))
+                            if (content.GetType().GetTypeInfo().IsSubclassOf(typeof(VersionedContentContainer<>)))
                             {
                                 content = content.GetType().GetMethod("SelectVersion").Invoke(content, new [] { kasbahWebContext }) as ContentBase;
                             }
 
-                            if (content != null && content.GetType().IsSubclassOf(typeof(ContentBase)))
+                            if (content != null && content.GetType().GetTypeInfo().IsSubclassOf(typeof(ContentBase)))
                             {
                                 var webContent = content as ContentBase;
                                 if (!string.IsNullOrEmpty(webContent.Controller) && !string.IsNullOrEmpty(webContent.Action))

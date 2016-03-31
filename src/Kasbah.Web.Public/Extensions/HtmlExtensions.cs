@@ -91,7 +91,7 @@ namespace Kasbah.Web
                         var type = TypeUtil.TypeFromName(moduleNode.Type);
                         var module = contentBroker.GetNodeVersion(moduleNode.Id, moduleNode.ActiveVersion.Value, type);
 
-                        if (module.GetType().IsSubclassOf(typeof(VersionedContentContainer<>)))
+                        if (module.GetType().GetTypeInfo().IsSubclassOf(typeof(VersionedContentContainer<>)))
                         {
                             module = module.GetType().GetMethod("SelectVersion").Invoke(module, new [] { kasbahWebContext }) as ContentBase;
                         }
