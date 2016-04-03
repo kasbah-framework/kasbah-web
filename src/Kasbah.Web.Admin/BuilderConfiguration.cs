@@ -1,7 +1,6 @@
 using System;
 using System.IdentityModel.Tokens;
-using Microsoft.AspNet.Authentication.JwtBearer;
-using Microsoft.AspNet.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kasbah.Web.Admin
@@ -15,20 +14,20 @@ namespace Kasbah.Web.Admin
             var tokenAuthOptions = app.ApplicationServices.GetRequiredService<TokenAuthOptions>();
             app.UseCors("defaultCorsPolicy");
 
-            app.UseIdentity();
+            // app.UseIdentity();
 
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                TokenValidationParameters = new TokenValidationParameters
-                {
-                    IssuerSigningKey = tokenAuthOptions.SigningCredentials.Key,
-                    ValidAudience = tokenAuthOptions.Audience,
-                    ValidIssuer = tokenAuthOptions.Issuer,
-                    ValidateSignature = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                }
-            });
+            // app.UseJwtBearerAuthentication(new JwtBearerOptions
+            // {
+            //     TokenValidationParameters = new TokenValidationParameters
+            //     {
+            //         IssuerSigningKey = tokenAuthOptions.SigningCredentials.Key,
+            //         ValidAudience = tokenAuthOptions.Audience,
+            //         ValidIssuer = tokenAuthOptions.Issuer,
+            //         ValidateSignature = true,
+            //         ValidateLifetime = true,
+            //         ClockSkew = TimeSpan.Zero
+            //     }
+            // });
 
             app.UseMvc();
 

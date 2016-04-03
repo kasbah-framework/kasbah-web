@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 using Kasbah.Core.Cache;
-using Microsoft.AspNet.Http.Features;
+using Microsoft.AspNetCore.Http.Features;
 using Newtonsoft.Json;
 
 namespace Kasbah.Web

@@ -7,8 +7,8 @@ using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Models;
-using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Routing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 
 namespace Kasbah.Web.Public
@@ -72,12 +72,12 @@ namespace Kasbah.Web.Public
                             newRouteData.Values["content"] = content;
                             kasbahWebContext.Content = content;
 
-                            if (content.GetType().IsSubclassOf(typeof(VersionedContentContainer<>)))
+                            if (content.GetType().GetTypeInfo().IsSubclassOf(typeof(VersionedContentContainer<>)))
                             {
                                 content = content.GetType().GetMethod("SelectVersion").Invoke(content, new [] { kasbahWebContext }) as ContentBase;
                             }
 
-                            if (content != null && content.GetType().IsSubclassOf(typeof(ContentBase)))
+                            if (content != null && content.GetType().GetTypeInfo().IsSubclassOf(typeof(ContentBase)))
                             {
                                 var webContent = content as ContentBase;
                                 if (!string.IsNullOrEmpty(webContent.Controller) && !string.IsNullOrEmpty(webContent.Action))
@@ -118,10 +118,10 @@ namespace Kasbah.Web.Public
             }
             finally
             {
-                if (!context.IsHandled)
-                {
-                    context.RouteData = oldRouteData;
-                }
+                // if (!context.IsHandled)
+                // {
+                //     context.RouteData = oldRouteData;
+                // }
             }
         }
 

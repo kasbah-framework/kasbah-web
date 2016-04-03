@@ -9,10 +9,9 @@ using Kasbah.Core.Utils;
 using Kasbah.Web.Admin.Models;
 using Kasbah.Web.Annotations;
 using Kasbah.Web.Services;
-using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Serialization;
 
 namespace Kasbah.Web.Admin.Controllers
 {

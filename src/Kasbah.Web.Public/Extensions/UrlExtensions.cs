@@ -1,7 +1,7 @@
 using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Web.Public;
 using Kasbah.Web.Services;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kasbah.Web

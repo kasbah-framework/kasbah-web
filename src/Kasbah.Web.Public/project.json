@@ -10,10 +10,14 @@
   "projectUrl": "http://www.kasbah.io/",
   "licenseUrl": "",
   "dependencies": {
-    "Kasbah.Web": ""
+    "Kasbah.Web": "1.0.0-*"
   },
   "frameworks": {
-    "dnx451": { },
-    "dnxcore50": { }
+    "netstandardapp1.5": {
+      "imports": [
+        "dotnet5.6",
+        "dnxcore50"
+      ]
+    }
   }
 }

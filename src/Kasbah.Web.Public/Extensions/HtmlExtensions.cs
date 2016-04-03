@@ -2,19 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Kasbah.Core.ContentBroker;
 using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Models;
 using Kasbah.Web.Public;
-using Microsoft.AspNet.Html.Abstractions;
-using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.AspNet.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.WebEncoders;
 
 namespace Kasbah.Web
 {
@@ -43,7 +43,7 @@ namespace Kasbah.Web
 
             var writer = new System.IO.StringWriter();
 
-            content.WriteTo(writer, new HtmlEncoder());
+            content.WriteTo(writer, HtmlEncoder.Default);
 
             return writer.ToString();
         }
@@ -91,7 +91,7 @@ namespace Kasbah.Web
                         var type = TypeUtil.TypeFromName(moduleNode.Type);
                         var module = contentBroker.GetNodeVersion(moduleNode.Id, moduleNode.ActiveVersion.Value, type);
 
-                        if (module.GetType().IsSubclassOf(typeof(VersionedContentContainer<>)))
+                        if (module.GetType().GetTypeInfo().IsSubclassOf(typeof(VersionedContentContainer<>)))
                         {
                             module = module.GetType().GetMethod("SelectVersion").Invoke(module, new [] { kasbahWebContext }) as ContentBase;
                         }

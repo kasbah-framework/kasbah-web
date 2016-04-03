@@ -12,18 +12,22 @@
   "dependencies": {
     "Kasbah.Core": "1.0.0-*",
     "Kasbah.Core.ContentBroker": "1.0.0-*",
-    "Microsoft.AspNet.Diagnostics": "1.0.0-rc1-*",
-    "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-*",
-    "Microsoft.AspNet.Hosting": "1.0.0-rc1-*",
-    "Microsoft.AspNet.Cors": "6.0.0-rc1-*",
-    "Microsoft.AspNet.Mvc": "6.0.0-rc1-*",
-    "Microsoft.Extensions.Logging": "1.0.0-rc1-*",
-    "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-*",
-    "Microsoft.Extensions.DependencyInjection": "1.0.0-rc1-*",
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-*"
+    "Microsoft.AspNetCore.Diagnostics": "1.0.0-rc2-*",
+    "Microsoft.AspNetCore.StaticFiles": "1.0.0-rc2-*",
+    "Microsoft.AspNetCore.Hosting": "1.0.0-rc2-*",
+    "Microsoft.AspNetCore.Cors": "1.0.0-rc2-*",
+    "Microsoft.AspNetCore.Mvc": "1.0.0-rc2-*",
+    "Microsoft.Extensions.Logging": "1.0.0-rc2-*",
+    "Microsoft.Extensions.Logging.Console": "1.0.0-rc2-*",
+    "Microsoft.Extensions.DependencyInjection": "1.0.0-rc2-*",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc2-*"
   },
   "frameworks": {
-    "dnx451": { },
-    "dnxcore50": { }
+    "netstandardapp1.5": {
+      "imports": [
+        "dotnet5.6",
+        "dnxcore50"
+      ]
+    }
   }
 }

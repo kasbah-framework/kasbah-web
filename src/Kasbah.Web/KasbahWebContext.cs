@@ -3,8 +3,8 @@ using System.Net;
 using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.Models;
 using Kasbah.Web.Models;
-using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Routing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
 namespace Kasbah.Web
 {

@@ -3,9 +3,8 @@ using System.IdentityModel.Tokens;
 using System.Linq;
 using Kasbah.Identity;
 using Kasbah.Identity.Models;
-using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Mvc.Formatters;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 
@@ -41,31 +40,31 @@ namespace Kasbah.Web.Admin
             });
 
             var key = new RsaSecurityKey(RSAKeyUtils.GetOrGenerate());
-            var tokenAuthOptions = new TokenAuthOptions
-            {
-                Audience = TokenAudience,
-                Issuer = TokenIssuer,
-                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.SHA256)
-            };
+            // var tokenAuthOptions = new TokenAuthOptions
+            // {
+            //     Audience = TokenAudience,
+            //     Issuer = TokenIssuer,
+            //     SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.SHA256)
+            // };
 
-            services.AddInstance(tokenAuthOptions);
+            // services.AddInstance(tokenAuthOptions);
 
             // Enable the use of an [Authorize("Bearer")] attribute on methods and
             // classes to protect.
-            services.AddAuthorization(auth =>
-            {
-                var bearerPolicy = new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes("Bearer")
-                    .RequireAuthenticatedUser().Build();
-                auth.AddPolicy("Bearer", bearerPolicy);
+            // services.AddAuthorization(auth =>
+            // {
+            //     var bearerPolicy = new AuthorizationPolicyBuilder()
+            //         .AddAuthenticationSchemes("Bearer")
+            //         .RequireAuthenticatedUser().Build();
+            //     auth.AddPolicy("Bearer", bearerPolicy);
 
-                auth.DefaultPolicy = bearerPolicy;
-            });
+            //     auth.DefaultPolicy = bearerPolicy;
+            // });
 
-            services.AddInstance(config());
+            services.AddSingleton(config());
 
-            services.AddScoped<IUserStore<KasbahUser>, UserStore>();
-            services.AddScoped<IRoleStore<KasbahIdentityRole>, RoleStore>();
+            // services.AddScoped<IUserStore<KasbahUser>, UserStore>();
+            // services.AddScoped<IRoleStore<KasbahIdentityRole>, RoleStore>();
 
             services.AddIdentity<KasbahUser, KasbahIdentityRole>()
                 .AddUserStore<UserStore>()

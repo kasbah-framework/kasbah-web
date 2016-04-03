@@ -9,8 +9,7 @@ using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Admin.Models;
 using Kasbah.Web.Annotations;
-using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Kasbah.Web.Admin
 {

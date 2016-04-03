@@ -1,5 +1,5 @@
 using System;
-using Microsoft.AspNet.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kasbah.Web.Public
