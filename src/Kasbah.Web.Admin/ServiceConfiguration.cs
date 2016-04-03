@@ -66,9 +66,9 @@ namespace Kasbah.Web.Admin
             // services.AddScoped<IUserStore<KasbahUser>, UserStore>();
             // services.AddScoped<IRoleStore<KasbahIdentityRole>, RoleStore>();
 
-            services.AddIdentity<KasbahUser, KasbahIdentityRole>()
-                .AddUserStore<UserStore>()
-                .AddDefaultTokenProviders();
+            // services.AddIdentity<KasbahUser, KasbahIdentityRole>()
+            //     .AddUserStore<UserStore>()
+            //     .AddDefaultTokenProviders();
 
             services.AddMvc((options) =>
             {

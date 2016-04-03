@@ -11,7 +11,7 @@ namespace Kasbah.Web.Admin
 
         public static IApplicationBuilder UseKasbahWebAdmin(this IApplicationBuilder app)
         {
-            var tokenAuthOptions = app.ApplicationServices.GetRequiredService<TokenAuthOptions>();
+            // var tokenAuthOptions = app.ApplicationServices.GetRequiredService<TokenAuthOptions>();
             app.UseCors("defaultCorsPolicy");
 
             // app.UseIdentity();
