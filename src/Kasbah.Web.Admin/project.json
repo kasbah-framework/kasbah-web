@@ -19,6 +19,11 @@
   },
   "frameworks": {
     "netstandardapp1.5": {
+      "compilationOptions": {
+        "define": [
+          "DNXCORE50"
+        ]
+      },
       "imports": [
         "dotnet5.6",
         "dnxcore50"

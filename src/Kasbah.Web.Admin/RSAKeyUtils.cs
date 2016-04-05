@@ -55,11 +55,11 @@ namespace Kasbah.Web.Admin
 
         public static RSAParameters GetRandomKey()
         {
-#if DNXCORE50
+// #if DNXCORE50
             using (var rsa = new RSAOpenSsl(2048))
-#else
-            using (var rsa = new RSACryptoServiceProvider(2048))
-#endif
+// #else
+            // using (var rsa = new RSACryptoServiceProvider(2048))
+// #endif
             {
                 try
                 {
@@ -67,9 +67,9 @@ namespace Kasbah.Web.Admin
                 }
                 finally
                 {
-#if !DNXCORE50
-                    rsa.PersistKeyInCsp = false;
-#endif
+// #if !DNXCORE50
+//                     rsa.PersistKeyInCsp = false;
+// #endif
                 }
             }
         }
