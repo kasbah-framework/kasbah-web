@@ -39,7 +39,7 @@ namespace Kasbah.Web.Admin
                 options.DefaultPolicyName = "defaultCorsPolicy";
             });
 
-            var key = new RsaSecurityKey(RSAKeyUtils.GetOrGenerate());
+            // var key = new RsaSecurityKey(RSAKeyUtils.GetOrGenerate());
             // var tokenAuthOptions = new TokenAuthOptions
             // {
             //     Audience = TokenAudience,
