@@ -12,10 +12,10 @@
   "dependencies": {
     "Kasbah.Web": "1.0.0-*",
     "Kasbah.Identity": "1.0.0-*",
-    "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0-rc2-*",
-    "System.IdentityModel.Tokens": "5.0.0-rc2-*",
-    "System.IdentityModel.Tokens.Jwt": "5.0.0-rc2-*",
-    "System.Security.Cryptography.OpenSsl": "4.0.0-rc2-*"
+    "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0-*",
+    "System.IdentityModel.Tokens": "5.0.0-*",
+    "System.IdentityModel.Tokens.Jwt": "5.0.0-*",
+    "System.Security.Cryptography.OpenSsl": "4.0.0-*"
   },
   "frameworks": {
     "netstandardapp1.5": {

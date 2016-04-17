@@ -11,11 +11,11 @@ namespace Kasbah.Web.Admin
 
         public static IApplicationBuilder UseKasbahWebAdmin(this IApplicationBuilder app)
         {
-            // var tokenAuthOptions = app.ApplicationServices.GetRequiredService<TokenAuthOptions>();
             app.UseCors("defaultCorsPolicy");
 
             // app.UseIdentity();
 
+            // var tokenAuthOptions = app.ApplicationServices.GetRequiredService<TokenAuthOptions>();
             // app.UseJwtBearerAuthentication(new JwtBearerOptions
             // {
             //     TokenValidationParameters = new TokenValidationParameters
@@ -29,7 +29,12 @@ namespace Kasbah.Web.Admin
             //     }
             // });
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
             app.UseKasbahWeb();
 

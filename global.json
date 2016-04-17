@@ -1,7 +1,8 @@
 {
     "projects": [
         "src", "test",
-        "../kasbah-core/src"
+        "../kasbah-core/src",
+        "../kasbah-identity/src"
     ],
     "sdk": {
         "version": "1.0.0-rc1-update1",

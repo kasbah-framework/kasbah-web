@@ -1,8 +1,10 @@
 using System;
+using System.Reflection;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using Kasbah.Identity;
 using Kasbah.Identity.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,10 +49,10 @@ namespace Kasbah.Web.Admin
             //     SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.SHA256)
             // };
 
-            // services.AddInstance(tokenAuthOptions);
+            // services.AddSingleton(tokenAuthOptions);
 
-            // Enable the use of an [Authorize("Bearer")] attribute on methods and
-            // classes to protect.
+            // // Enable the use of an [Authorize("Bearer")] attribute on methods and
+            // // classes to protect.
             // services.AddAuthorization(auth =>
             // {
             //     var bearerPolicy = new AuthorizationPolicyBuilder()
@@ -61,8 +63,6 @@ namespace Kasbah.Web.Admin
             //     auth.DefaultPolicy = bearerPolicy;
             // });
 
-            services.AddSingleton(config());
-
             // services.AddScoped<IUserStore<KasbahUser>, UserStore>();
             // services.AddScoped<IRoleStore<KasbahIdentityRole>, RoleStore>();
 
@@ -70,12 +70,14 @@ namespace Kasbah.Web.Admin
             //     .AddUserStore<UserStore>()
             //     .AddDefaultTokenProviders();
 
+            services.AddSingleton(config());
+
             services.AddMvc((options) =>
             {
                 var formatter = options.OutputFormatters.SingleOrDefault(f => f is JsonOutputFormatter) as JsonOutputFormatter;
 
                 formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            });
+            }).AddApplicationPart(typeof(ServiceConfiguration).GetTypeInfo().Assembly);
 
             return services;
         }

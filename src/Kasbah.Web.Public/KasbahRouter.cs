@@ -50,7 +50,7 @@ namespace Kasbah.Web.Public
 
             try
             {
-                _logger.LogDebug($"Trying to match {context.HttpContext.Request.Host}.  Available sites: {string.Join(", ", _applicationContext.Sites.SelectMany(s => s.Domains).SelectMany(d => d.Domain))}");
+                _logger.LogDebug($"Trying to match {context.HttpContext.Request.Host}.  Available sites: {string.Join(", ", _applicationContext.Sites.SelectMany(s => s.Domains).Select(d => d.Domain))}");
                 var site = GetSiteByRequest(context.HttpContext);
                 if (site != null)
                 {
