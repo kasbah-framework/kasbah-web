@@ -35,7 +35,7 @@ namespace Kasbah.Web.Admin
                 var formatter = options.OutputFormatters.SingleOrDefault(f => f is JsonOutputFormatter) as JsonOutputFormatter;
 
                 formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            });
+            }).AddApplicationPart(typeof(ServiceConfiguration).GetTypeInfo().Assembly);
 
             return services;
         }

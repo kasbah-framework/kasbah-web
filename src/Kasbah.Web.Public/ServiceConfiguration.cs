@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +15,9 @@ namespace Kasbah.Web.Public
 
             services.AddKasbahWeb();
 
-            services.AddMvc();
+            services
+                .AddMvc()
+                .AddApplicationPart(typeof(ServiceConfiguration).GetTypeInfo().Assembly);
 
             services.Configure<RazorViewEngineOptions>(options =>
             {

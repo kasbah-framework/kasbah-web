@@ -16,23 +16,25 @@ export default class extends React.Component {
 
   render () {
     return (
-      <header className='header'>
-        <div className='container'>
-          <div className='header-left'>
-            <Link className='header-item' to='/content'>Content</Link>
-            <Link className='header-item' to='/media'>Media</Link>
+      <header className='container'>
+        <nav className='navbar'>
+          <div className='navbar-left'>
+            <div className='navbar-item'><Link to='/content'>Content</Link></div>
+            <div className='navbar-item'><Link to='/media'>Media</Link></div>
           </div>
 
-          <div className='header-center'>
-            <Link className='header-item' to='/'><strong>KASBAH</strong></Link>
+          <div className='navbar-center'>
+            <div className='navbar-item'>
+              <Link to='/'><strong>KASBAH</strong></Link>
+            </div>
           </div>
 
-          <div className='header-right'>
-            <div className='header-item'>
+          <div className='navbar-right'>
+            <div className='navbar-item'>
               <button className='button' onClick={() => this.handleLogout()}>Logout</button>
             </div>
           </div>
-        </div>
+        </nav>
       </header>);
   }
 }
