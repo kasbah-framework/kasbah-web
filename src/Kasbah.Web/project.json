@@ -1,29 +1,30 @@
 {
   "version": "1.0.0-*",
+  "packOptions": {
+    "tags": [
+      "kasbah"
+    ],
+    "projectUrl": "https://www.kasbah.io/",
+    "licenseUrl": "https://www.kasbah.io/license.txt"
+  },
   "description": "Provides the base of a web content management system",
   "authors": [
     "Brendan McKenzie"
   ],
-  "tags": [
-    "kasbah"
-  ],
-  "projectUrl": "http://www.kasbah.io/",
-  "licenseUrl": "",
   "dependencies": {
     "Kasbah.Core": "1.0.0-*",
     "Kasbah.Core.ContentBroker": "1.0.0-*",
-    "Microsoft.AspNet.Diagnostics": "1.0.0-rc1-*",
-    "Microsoft.AspNet.StaticFiles": "1.0.0-rc1-*",
-    "Microsoft.AspNet.Hosting": "1.0.0-rc1-*",
-    "Microsoft.AspNet.Cors": "6.0.0-rc1-*",
-    "Microsoft.AspNet.Mvc": "6.0.0-rc1-*",
-    "Microsoft.Extensions.Logging": "1.0.0-rc1-*",
-    "Microsoft.Extensions.Logging.Console": "1.0.0-rc1-*",
-    "Microsoft.Extensions.DependencyInjection": "1.0.0-rc1-*",
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-*"
+    "Microsoft.AspNetCore.Diagnostics": "1.0.0-rc2-final",
+    "Microsoft.AspNetCore.StaticFiles": "1.0.0-rc2-final",
+    "Microsoft.AspNetCore.Hosting": "1.0.0-rc2-final",
+    "Microsoft.AspNetCore.Cors": "1.0.0-rc2-final",
+    "Microsoft.AspNetCore.Mvc": "1.0.0-rc2-final",
+    "Microsoft.Extensions.Logging": "1.0.0-rc2-final",
+    "Microsoft.Extensions.Logging.Console": "1.0.0-rc2-final",
+    "Microsoft.Extensions.DependencyInjection": "1.0.0-rc2-final",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc2-final"
   },
   "frameworks": {
-    "dnx451": { },
     "dnxcore50": { }
   }
 }

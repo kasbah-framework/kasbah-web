@@ -1,6 +1,6 @@
 using System;
 using Kasbah.Core.ContentBroker;
-using Microsoft.AspNet.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -29,7 +29,7 @@ namespace Kasbah.Web.Public
                 routes.Routes.Add(new KasbahRouter(routes.DefaultHandler,
                     app.ApplicationServices.GetRequiredService<ILoggerFactory>(),
                     app.ApplicationServices.GetRequiredService<IApplicationContext>(),
-                    app.ApplicationServices.GetRequiredService<ContentBroker>(), 
+                    app.ApplicationServices.GetRequiredService<ContentBroker>(),
                     app.ApplicationServices.GetRequiredService<IKasbahWebUserProfiler>()));
 
                 routes.MapRoute(

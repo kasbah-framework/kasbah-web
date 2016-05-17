@@ -7,8 +7,8 @@ using Kasbah.Core.ContentBroker.Models;
 using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
 using Kasbah.Web.Models;
-using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Routing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 
 namespace Kasbah.Web.Public
@@ -50,7 +50,7 @@ namespace Kasbah.Web.Public
 
             try
             {
-                _logger.LogDebug($"Trying to match {context.HttpContext.Request.Host}.  Available sites: {string.Join(", ", _applicationContext.Sites.SelectMany(s => s.Domains).SelectMany(d => d.Domain))}");
+                _logger.LogDebug($"Trying to match {context.HttpContext.Request.Host}.  Available sites: {string.Join(", ", _applicationContext.Sites.SelectMany(s => s.Domains).Select(d => d.Domain))}");
                 var site = GetSiteByRequest(context.HttpContext);
                 if (site != null)
                 {
@@ -118,10 +118,10 @@ namespace Kasbah.Web.Public
             }
             finally
             {
-                if (!context.IsHandled)
-                {
-                    context.RouteData = oldRouteData;
-                }
+                // if (!context.IsHandled)
+                // {
+                //     context.RouteData = oldRouteData;
+                // }
             }
         }
 

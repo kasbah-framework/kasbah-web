@@ -3,7 +3,7 @@ using Kasbah.Core.ContentBroker;
 using Kasbah.Core.Events;
 using Kasbah.Core.Models;
 using Kasbah.Core.Utils;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Kasbah.Web.Public.Controllers
@@ -39,7 +39,7 @@ namespace Kasbah.Web.Public.Controllers
                 return version;
             }
 
-            return HttpNotFound();
+            return NotFound();
         }
 
         [Route("api/node-at")]
