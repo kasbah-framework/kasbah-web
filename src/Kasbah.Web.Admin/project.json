@@ -12,7 +12,10 @@
     "Brendan McKenzie"
   ],
   "dependencies": {
-    "Kasbah.Web": "1.0.0-*"
+    "Kasbah.Web": "1.0.0-*",
+    "Kasbah.Identity": "1.0.0-*",
+    "Microsoft.AspNetCore.Authorization": "1.0.0-rc2-final",
+    "System.Security.Cryptography.Csp": "4.0.0-rc2-24027"
   },
   "frameworks": {
     "dnxcore50": { }
