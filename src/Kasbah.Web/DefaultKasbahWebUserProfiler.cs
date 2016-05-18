@@ -50,7 +50,7 @@ namespace Kasbah.Web
             }
 
             context.UserProfile.LastActive = DateTime.UtcNow;
-            context.UserProfile.RemoteAddr = context.HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress;
+            context.UserProfile.RemoteAddr = context.HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress.ToString();
 
             StoreValue(context, context.UserProfile);
         }

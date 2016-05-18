@@ -37,7 +37,7 @@ namespace Kasbah.Web
 
         public DateTime FirstVisit { get; set; }
         public DateTime LastActive { get; set; }
-        public IPAddress RemoteAddr { get; set; }
+        public string RemoteAddr { get; set; }
 
         #endregion
     }
