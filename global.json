@@ -5,7 +5,7 @@
         "../kasbah-identity/src"
     ],
     "sdk": {
-        "version": "1.0.0-rc1-update1",
+        "version": "1.0.0-rc2-final",
         "runtime": "coreclr",
         "architecture": "x64"
     }
