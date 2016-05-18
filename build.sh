@@ -1,5 +1,5 @@
 dotnet restore
-dotnet build src/**/project.json
+dotnet build --version-suffix $CI_BUILD_ID src/**/project.json
 
 # TODO: build admin ui
 
