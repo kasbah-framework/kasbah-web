@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+// using Microsoft.AspNetCore.Identity;
 using Kasbah.Identity;
 using Kasbah.Identity.Models;
 
@@ -47,12 +47,12 @@ namespace Kasbah.Web.Admin
                 auth.DefaultPolicy = bearerPolicy;
             });
 
-            services.AddScoped<IUserStore<KasbahUser>, UserStore>();
-            services.AddScoped<IRoleStore<KasbahIdentityRole>, RoleStore>();
+            // services.AddScoped<IUserStore<KasbahUser>, UserStore>();
+            // services.AddScoped<IRoleStore<KasbahIdentityRole>, RoleStore>();
 
-            services.AddIdentity<KasbahUser, KasbahIdentityRole>()
-                .AddUserStore<UserStore>()
-                .AddDefaultTokenProviders();
+            // services.AddIdentity<KasbahUser, KasbahIdentityRole>()
+            //     .AddUserStore<UserStore>()
+            //     .AddDefaultTokenProviders();
 
             // var key = new RsaSecurityKey(RSAKeyUtils.GetOrGenerate());
             // var tokenAuthOptions = new TokenAuthOptions

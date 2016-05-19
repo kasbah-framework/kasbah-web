@@ -26,11 +26,11 @@ namespace Kasbah.Web
 
         #endregion
 
-        #region Private Properties
+        #region Constructors
 
-        static ILogger Log
+        static HtmlExtensions()
         {
-            get { return (_log = (_log ?? ServiceLocator.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(HtmlExtensions).FullName))); }
+            _log = ServiceLocator.ApplicationServices.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(HtmlExtensions).FullName);
         }
 
         #endregion

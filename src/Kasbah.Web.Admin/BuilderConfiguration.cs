@@ -17,7 +17,7 @@ namespace Kasbah.Web.Admin
 
             app.UseKasbahWeb();
 
-            app.UseIdentity();
+            // app.UseIdentity();
 
             // var tokenAuthOptions = app.ApplicationServices.GetRequiredService<TokenAuthOptions>();
             // app.UseJwtBearerAuthentication(new JwtBearerOptions
